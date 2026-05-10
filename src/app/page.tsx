@@ -1,13 +1,16 @@
-import { auth } from '@clerk/nextjs/server';
-import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
+import { auth } from "@clerk/nextjs/server";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-import Home from '@/components/pages/home/Home';
-import generateMetadata from '@/lib/helpers/metadata';
-import { getQueryClient } from '@/lib/helpers/queryClient';
-import { getMeKey } from '@/query/auth';
-import { getMe } from '@/endpoints/auth';
+import Home from "@/components/pages/home/Home";
+import { getMe } from "@/endpoints/auth";
+import generateMetadata from "@/lib/helpers/metadata";
+import { getQueryClient } from "@/lib/helpers/queryClient";
+import { getMeKey } from "@/query/auth";
 
-export const metadata = generateMetadata({ title: 'Home' }, { withSuffix: true });
+export const metadata = generateMetadata(
+  { title: "Home" },
+  { withSuffix: true },
+);
 
 const HomePage = async () => {
   const queryClient = getQueryClient();

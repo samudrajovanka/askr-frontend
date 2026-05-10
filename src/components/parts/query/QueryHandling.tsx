@@ -1,43 +1,43 @@
-import type { QueryHandlingProps } from './types';
+import type { QueryHandlingProps } from "./types";
 
 const QueryHandling = <T,>({
-	queryResult,
-	render,
-	...props
+  queryResult,
+  render,
+  ...props
 }: QueryHandlingProps<T>) => {
-	const { data, isLoading, isFetching, isError, isSuccess, error } =
-		queryResult;
+  const { data, isLoading, isFetching, isError, isSuccess, error } =
+    queryResult;
 
-	if (isLoading && isFetching) {
-		return props.renderLoading !== undefined ? (
-			props.renderLoading
-		) : (
-			<p>Loading...</p>
-		);
-	}
+  if (isLoading && isFetching) {
+    return props.renderLoading !== undefined ? (
+      props.renderLoading
+    ) : (
+      <p>Loading...</p>
+    );
+  }
 
-	if (isError) {
-		const status = (error as { status?: number })?.status;
-		if (status === 404) {
-			return props.renderNotFound !== undefined ? (
-				props.renderNotFound
-			) : (
-				<p>Data not found</p>
-			);
-		}
+  if (isError) {
+    const status = (error as { status?: number })?.status;
+    if (status === 404) {
+      return props.renderNotFound !== undefined ? (
+        props.renderNotFound
+      ) : (
+        <p>Data not found</p>
+      );
+    }
 
-		return props.renderError ? props.renderError : <p>Error</p>;
-	}
+    return props.renderError ? props.renderError : <p>Error</p>;
+  }
 
-	if (isSuccess && data) {
-		if (props.checkEmpty?.(data) && props.renderEmpty) {
-			return props.renderEmpty;
-		}
+  if (isSuccess && data) {
+    if (props.checkEmpty?.(data) && props.renderEmpty) {
+      return props.renderEmpty;
+    }
 
-		return render(data);
-	}
+    return render(data);
+  }
 
-	return 'Something when wrong';
+  return "Something when wrong";
 };
 
 export default QueryHandling;

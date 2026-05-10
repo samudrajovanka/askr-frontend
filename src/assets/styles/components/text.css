@@ -1,0 +1,29 @@
+@layer components {
+  .typography-heading {
+    @apply text-2xl md:text-3xl font-bold tracking-tight leading-tight;
+  }
+
+  .typography-subheading {
+    @apply text-xl md:text-2xl font-semibold tracking-tight leading-snug;
+  }
+
+  .typography-subheading-2 {
+    @apply text-base md:text-lg font-semibold leading-snug;
+  }
+
+  .typography-large {
+    @apply text-sm md:text-base font-medium leading-normal;
+  }
+
+  .typography-regular {
+    @apply text-sm md:text-base leading-relaxed;
+  }
+
+  .typography-small {
+    @apply text-xs md:text-sm leading-normal;
+  }
+
+  .typography-xsmall {
+    @apply text-[10px] md:text-xs leading-none;
+  }
+}

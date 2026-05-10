@@ -1,7 +1,9 @@
 const app = {
-  name: 'Web Name',
-  description: 'Description of web application',
-  keywords: ['your', 'keywords']
+  name: "Askr",
+  description:
+    "Design System Token Platform — Create, manage, and publish design tokens",
+  keywords: ["design system", "design tokens", "css variables", "npm package"],
+  url: "askr.dev",
 };
 
 export default app;

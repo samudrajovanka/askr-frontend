@@ -1,9 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
 
-import { getMe } from '@/endpoints/auth';
+import { getMe } from "@/endpoints/auth";
 import { useFetchAuth } from "@/hooks/useFetchAuth";
 
-export const getMeKey = (userId: string | null | undefined) => ['me', userId];
+export const getMeKey = (userId: string | null | undefined) => ["me", userId];
 
 export const useMe = () => {
   const { execute: fetchMe, isSignedIn, userId } = useFetchAuth(getMe);

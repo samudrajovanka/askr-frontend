@@ -1,10 +1,10 @@
 /**
  * ! Example for use react query on client component using hydrate from server
  */
-'use client';
+"use client";
 
-import { useAuth } from '@clerk/nextjs';
-import { useMe } from '@/query/auth';
+import { useAuth } from "@clerk/nextjs";
+import { useMe } from "@/query/auth";
 
 const Home = () => {
   const { isSignedIn } = useAuth();
@@ -15,9 +15,7 @@ const Home = () => {
     <div>
       <p>Current user</p>
 
-      {user && (
-        <p key={user.email}>{user.name ?? user.email}</p>
-      )}
+      {user && <p key={user.email}>{user.name ?? user.email}</p>}
     </div>
   );
 };

@@ -1,9 +1,9 @@
-import { Outfit } from 'next/font/google';
+import { Outfit } from "next/font/google";
 
 const outfit = Outfit({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-outfit'
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-outfit",
 });
 
 export default outfit;

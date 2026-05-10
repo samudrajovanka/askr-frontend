@@ -1,13 +1,15 @@
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
-import app from '@/config/app';
+import app from "@/config/app";
 
 type GenerateMetadataOptions = {
   withSuffix?: boolean;
 };
 
-
-const generateMetadata = (metadata?: Partial<Metadata>, options?: GenerateMetadataOptions): Metadata => {
+const generateMetadata = (
+  metadata?: Partial<Metadata>,
+  options?: GenerateMetadataOptions,
+): Metadata => {
   let title = metadata?.title ?? app.name;
   const description = metadata?.description ?? app.description;
 
@@ -21,13 +23,13 @@ const generateMetadata = (metadata?: Partial<Metadata>, options?: GenerateMetada
     description,
     keywords: metadata?.keywords ?? app.keywords,
     applicationName: app.name,
-    metadataBase: metadata?.metadataBase ?? new URL('http://localhost:3000'),
+    metadataBase: metadata?.metadataBase ?? new URL("http://localhost:3000"),
     openGraph: {
       title,
       description,
-      type: 'website',
-      siteName: app.name
-    }
+      type: "website",
+      siteName: app.name,
+    },
   };
 
   return metadataResult;

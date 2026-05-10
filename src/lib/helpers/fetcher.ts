@@ -21,7 +21,8 @@ const buildUrl = (
   baseUrl?: string,
   params?: FetcherOptions["params"],
 ) => {
-  const url = new URL(path, baseUrl);
+  const finalPath = baseUrl + path;
+  const url = new URL(finalPath);
 
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
@@ -52,10 +53,7 @@ export const fetcher = async <SuccessResponse, ErrorResponse = unknown>(
       "Content-Type": "application/json",
       ...headers,
     },
-    body:
-      body && typeof body !== "string"
-        ? JSON.stringify(body)
-        : body,
+    body: body && typeof body !== "string" ? JSON.stringify(body) : body,
   });
 
   let data: unknown = null;
@@ -79,7 +77,7 @@ export const fetcher = async <SuccessResponse, ErrorResponse = unknown>(
   return {
     status: response.status,
     data: data as SuccessResponse,
-  }
+  };
 };
 
 export { FetchError };

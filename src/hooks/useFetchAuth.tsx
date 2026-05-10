@@ -1,14 +1,8 @@
 import { useAuth } from "@clerk/nextjs";
 import { useCallback } from "react";
 
-export const useFetchAuth = <
-  TArgs extends unknown[],
-  TResult,
->(
-  callback: (
-    token: string,
-    ...args: TArgs
-  ) => Promise<TResult>,
+export const useFetchAuth = <TArgs extends unknown[], TResult>(
+  callback: (token: string, ...args: TArgs) => Promise<TResult>,
 ) => {
   const { getToken, isSignedIn, userId } = useAuth();
 
