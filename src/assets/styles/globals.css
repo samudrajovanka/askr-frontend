@@ -5,6 +5,9 @@
 @import "./components/layout.css" layer(components);
 @import "./components/field.css" layer(components);
 
+/* utilities */
+@import "./utility/sidebar.css";
+
 @custom-variant dark (&:is(.dark *));
 
 :root {

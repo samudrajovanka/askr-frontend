@@ -28,3 +28,40 @@ export const createWorkspace = async (
     },
   );
 };
+
+export const getWorkspace = async (token: string, slug: string) => {
+  return await fetcher<SuccessResponseData<{ workspace: Workspace }>>(
+    `/workspaces/${slug}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+};
+
+export const updateWorkspace = async (
+  token: string,
+  slug: string,
+  payload: CreateWorkspacePayload,
+) => {
+  return await fetcher<SuccessResponseData<{ workspace: Workspace }>>(
+    `/workspaces/${slug}`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    },
+  );
+};
+
+export const deleteWorkspace = async (token: string, slug: string) => {
+  return await fetcher<SuccessResponseData<null>>(`/workspaces/${slug}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

@@ -22,10 +22,12 @@ const WorkspacesPage = () => {
         title="Workspaces"
         description="Manage your design system workspaces"
         rightComponent={
-          <Button onClick={() => setDialogOpen(true)}>
-            <Plus />
-            New Workspace
-          </Button>
+          workspacesQuery.data?.data.data.workspaces.length ? (
+            <Button onClick={() => setDialogOpen(true)}>
+              <Plus />
+              New Workspace
+            </Button>
+          ) : null
         }
       />
 

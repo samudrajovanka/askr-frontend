@@ -1,0 +1,7 @@
+@utility sidebar-margin {
+  @apply ml-62.5;
+}
+
+@utility sidebar-width {
+  @apply w-62.5;
+}

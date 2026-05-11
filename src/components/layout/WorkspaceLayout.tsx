@@ -7,7 +7,7 @@ export default function WorkspaceLayout({
 }) {
   return (
     <div className="min-h-dvh bg-background">
-      <Navbar />
+      <Navbar showWorkspaceSwitcher={true} />
 
       <main className="container-layout py-10">{children}</main>
     </div>

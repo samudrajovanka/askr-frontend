@@ -1,16 +1,18 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
+
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -20,66 +22,64 @@ import {
   InputGroupText,
 } from "@/components/ui/input-group";
 import app from "@/config/app";
-import { createWorkspaceSchema } from "@/endpoints/workspace/validator";
+import { updateWorkspaceSchema } from "@/endpoints/workspace/validator";
 import { isInvalidField } from "@/lib/helpers/field";
 import { generateSlug } from "@/lib/helpers/string";
-import { useCreateWorkspace } from "@/query/workspace";
+import { useUpdateWorkspace } from "@/query/workspace";
+import type { Workspace } from "@/types/workspace";
 
-type Props = {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+type WorkspaceSettingProps = {
+  workspace: Workspace;
 };
 
-const CreateWorkspaceDialog = ({ open, onOpenChange }: Props) => {
-  const [slugTouched, setSlugTouched] = useState(false);
-  const createMutation = useCreateWorkspace();
+const WorkspaceSetting = ({ workspace }: WorkspaceSettingProps) => {
+  const [slugTouched, setSlugTouched] = useState(true);
+  const updateMutation = useUpdateWorkspace();
+  const router = useRouter();
 
   const form = useForm({
     defaultValues: {
-      name: "",
-      slug: "",
+      name: workspace.name,
+      slug: workspace.slug,
     },
     validators: {
-      onChange: createWorkspaceSchema,
-      onSubmit: createWorkspaceSchema,
+      onChange: updateWorkspaceSchema,
+      onSubmit: updateWorkspaceSchema,
     },
     onSubmit: async ({ value }) => {
-      await createMutation.mutateAsync({
-        name: value.name.trim(),
-        slug: value.slug.trim(),
+      await updateMutation.mutateAsync({
+        slug: workspace.slug,
+        payload: {
+          name: value.name.trim(),
+          slug: value.slug.trim(),
+        },
       });
-      toast.success("Workspace created successfully");
-      onOpenChange(false);
+      toast.success("Workspace updated successfully");
+
+      if (value.slug.trim() !== workspace.slug) {
+        router.push(`/w/${value.slug.trim()}/settings/general`);
+      }
     },
   });
 
-  useEffect(() => {
-    if (open) {
-      form.reset();
-      setSlugTouched(false);
-      createMutation.reset();
-    }
-  }, [open, createMutation.reset, form.reset]);
-
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create Workspace</DialogTitle>
-        </DialogHeader>
-
+    <Card>
+      <CardHeader>
+        <CardTitle>Workspace Settings</CardTitle>
+        <CardDescription>Update your workspace details.</CardDescription>
+      </CardHeader>
+      <CardContent>
         <form
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
             form.handleSubmit();
           }}
-          className="flex flex-col gap-5 pt-2"
+          className="flex flex-col gap-5"
         >
           <form.Field name="name">
             {(field) => {
               const isInvalid = isInvalidField(field);
-
               return (
                 <Field data-invalid={isInvalid} data-required>
                   <FieldLabel htmlFor={field.name}>Workspace Name</FieldLabel>
@@ -99,7 +99,6 @@ const CreateWorkspaceDialog = ({ open, onOpenChange }: Props) => {
                       }
                     }}
                     placeholder="e.g. Acme Corp"
-                    autoFocus
                   />
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
@@ -142,35 +141,26 @@ const CreateWorkspaceDialog = ({ open, onOpenChange }: Props) => {
             }}
           </form.Field>
 
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
-              Cancel
-            </Button>
-            <form.Subscribe
-              selector={(state) => [state.canSubmit, state.isSubmitting]}
-            >
-              {([canSubmit, isSubmitting]) => (
+          <form.Subscribe
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
+          >
+            {([canSubmit, isSubmitting]) => (
+              <div className="flex justify-end pt-4">
                 <Button
                   type="submit"
                   disabled={
-                    !canSubmit || isSubmitting || createMutation.isPending
+                    !canSubmit || isSubmitting || updateMutation.isPending
                   }
                 >
-                  {createMutation.isPending
-                    ? "Creating..."
-                    : "Create Workspace"}
+                  {updateMutation.isPending ? "Saving..." : "Save Changes"}
                 </Button>
-              )}
-            </form.Subscribe>
-          </DialogFooter>
+              </div>
+            )}
+          </form.Subscribe>
         </form>
-      </DialogContent>
-    </Dialog>
+      </CardContent>
+    </Card>
   );
 };
 
-export default CreateWorkspaceDialog;
+export default WorkspaceSetting;
