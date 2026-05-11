@@ -1,22 +1,23 @@
 "use client";
 
-import { FolderGit2, Plus, Settings } from "lucide-react";
+import { Plus, Settings } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-
+import { useState } from "react";
+import AddProjectCard from "@/components/parts/project/AddProjectCard";
+import CreateProjectDialog from "@/components/parts/project/CreateProjectDialog";
+import ProjectCard from "@/components/parts/project/ProjectCard";
+import ProjectEmptyState from "@/components/parts/project/ProjectEmptyState";
+import ProjectSkeletonCard from "@/components/parts/project/ProjectSkeletonCard";
+import QueryHandling from "@/components/parts/query/QueryHandling";
 import HeaderSection from "@/components/parts/section/HeaderSection";
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
+import { useProjects } from "@/query/project";
 
 const ProjectsPage = () => {
   const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const projectsQuery = useProjects(workspaceSlug);
 
   return (
     <>
@@ -32,31 +33,56 @@ const ProjectsPage = () => {
               <Settings className="size-4" />
               Settings
             </Link>
-            <Button>
-              <Plus className="size-4" />
-              New Project
-            </Button>
+            {projectsQuery.data?.data.data.projects.length ? (
+              <Button onClick={() => setDialogOpen(true)}>
+                <Plus className="size-4" />
+                New Project
+              </Button>
+            ) : null}
           </div>
         }
       />
 
-      <Empty>
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <FolderGit2 className="text-primary" />
-          </EmptyMedia>
-          <EmptyTitle>No Projects Found</EmptyTitle>
-          <EmptyDescription>
-            Create your first project to get started.
-          </EmptyDescription>
-        </EmptyHeader>
-        <EmptyContent>
-          <Button size="sm">
-            <Plus className="size-4" />
-            Create Project
-          </Button>
-        </EmptyContent>
-      </Empty>
+      <QueryHandling
+        queryResult={projectsQuery}
+        renderLoading={
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ProjectSkeletonCard />
+            <ProjectSkeletonCard />
+            <ProjectSkeletonCard />
+          </div>
+        }
+        renderEmpty={
+          <ProjectEmptyState onCreateClick={() => setDialogOpen(true)} />
+        }
+        checkEmpty={({
+          data: {
+            data: { projects },
+          },
+        }) => projects?.length === 0}
+        render={({
+          data: {
+            data: { projects },
+          },
+        }) => (
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {projects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                workspaceSlug={workspaceSlug}
+              />
+            ))}
+            <AddProjectCard onClick={() => setDialogOpen(true)} />
+          </div>
+        )}
+      />
+
+      <CreateProjectDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        workspaceSlug={workspaceSlug}
+      />
     </>
   );
 };
