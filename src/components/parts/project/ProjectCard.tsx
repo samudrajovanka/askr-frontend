@@ -17,7 +17,7 @@ const ProjectCard = ({ project, workspaceSlug }: Props) => {
     <button
       type="button"
       onClick={() =>
-        router.push(`/w/${workspaceSlug}/p/${project.slug}/tokens`)
+        router.push(`/w/${workspaceSlug}/p/${project.slug}/dashboard`)
       }
       className="cursor-pointer"
     >

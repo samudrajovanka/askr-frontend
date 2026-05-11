@@ -11,17 +11,22 @@ import type { Workspace } from "@/types/workspace";
 import Switcher, { type SwitcherItem } from "./Switcher";
 
 export default function WorkspaceSwitcher() {
-  const params = useParams<{ workspaceSlug: string }>();
+  const params = useParams<{ workspaceSlug?: string }>();
   const router = useRouter();
 
   const workspaceQuery = useWorkspaces();
 
-  const generateCurrentPath = useCallback(
+  const generateRedirectPath = useCallback(
     (slug: string) => {
       const restPath = window.location.pathname.replace(
         `/w/${params?.workspaceSlug}`,
         "",
       );
+
+      if (restPath.startsWith("/p")) {
+        return `/w/${slug}/projects`;
+      }
+
       return `/w/${slug}${restPath}`;
     },
     [params?.workspaceSlug],
@@ -44,10 +49,10 @@ export default function WorkspaceSwitcher() {
       return workspaces.map((workspace) => ({
         id: workspace.id,
         name: workspace.name,
-        onClick: () => router.push(generateCurrentPath(workspace.slug)),
+        onClick: () => router.push(generateRedirectPath(workspace.slug)),
       }));
     },
-    [router, generateCurrentPath],
+    [router, generateRedirectPath],
   );
 
   return (

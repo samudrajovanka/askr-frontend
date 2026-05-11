@@ -1,15 +1,18 @@
 import Logo from "@/components/parts/logo/Logo";
 import WorkspaceSwitcher from "@/components/parts/switcher/WorkspaceSwitcher";
+import ProjectSwitcher from "../switcher/ProjectSwitcher";
 import NavbarProfile from "./NavbarProfile";
 
 type NavbarProps = {
   withoutLogo?: boolean;
   showWorkspaceSwitcher?: boolean;
+  showProjectSwitcher?: boolean;
 };
 
 const Navbar = ({
   withoutLogo = false,
   showWorkspaceSwitcher = false,
+  showProjectSwitcher = false,
 }: NavbarProps) => {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
@@ -17,7 +20,17 @@ const Navbar = ({
         <div className="flex items-center gap-4">
           {!withoutLogo && <Logo />}
 
-          {showWorkspaceSwitcher && <WorkspaceSwitcher />}
+          <div className="flex items-center gap-1">
+            {showWorkspaceSwitcher && <WorkspaceSwitcher />}
+            {showProjectSwitcher && (
+              <>
+                {showWorkspaceSwitcher && (
+                  <span className="text-muted-foreground">/</span>
+                )}
+                <ProjectSwitcher />
+              </>
+            )}
+          </div>
         </div>
 
         <div className="flex items-center gap-3 ml-auto">
