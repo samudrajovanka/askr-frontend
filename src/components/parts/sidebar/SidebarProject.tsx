@@ -1,93 +1,101 @@
 "use client";
 
-import {
-  ArrowLeft,
-  LayoutDashboard,
-  PencilRuler,
-  Rocket,
-  Settings,
-  SquareStack,
-  Workflow,
-} from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Logo from "@/components/parts/logo/Logo";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { projectSidebarType } from "@/constants/sidebar";
+import useSidebarProject from "@/hooks/sidebar/useSidebarProject";
+import useSidebarToken from "@/hooks/sidebar/useSidebarToken";
+import type { ProjectSidebarType } from "@/types/sidebar";
+import { default as NavItem } from "./SidebarNavItem";
 import SidebarWrapper from "./SidebarWrapper";
 
 const SidebarProject = () => {
   const pathname = usePathname();
-  const { workspaceSlug, projectSlug } = useParams();
+  const { workspaceSlug, projectSlug } = useParams() as {
+    workspaceSlug: string;
+    projectSlug: string;
+  };
+  const [activeNavbar, setActiveNavbar] = useState<ProjectSidebarType>(
+    projectSidebarType.PROJECT,
+  );
+  const { navItems: sidebarProjectNavs, header: headerProjectNavs } =
+    useSidebarProject({
+      workspaceSlug,
+      projectSlug,
+      onTypeChange: setActiveNavbar,
+    });
+  const { navItems: sidebarTokenNavs, header: headerTokenNavs } =
+    useSidebarToken({
+      workspaceSlug,
+      projectSlug,
+      headerAction: () => setActiveNavbar(projectSidebarType.PROJECT),
+    });
 
-  const navItems = useMemo(() => {
-    return [
-      {
-        title: "Dashboard",
-        href: `/w/${workspaceSlug}/p/${projectSlug}/dashboard`,
-        icon: LayoutDashboard,
-      },
-      {
-        title: "Tokens",
-        href: `/w/${workspaceSlug}/p/${projectSlug}/tokens`,
-        icon: PencilRuler,
-      },
-      {
-        title: "Release",
-        href: `/w/${workspaceSlug}/p/${projectSlug}/release`,
-        icon: Rocket,
-      },
-      {
-        title: "Integration",
-        href: `/w/${workspaceSlug}/p/${projectSlug}/integration`,
-        icon: Workflow,
-      },
-      {
-        title: "Activity",
-        href: `/w/${workspaceSlug}/p/${projectSlug}/activity`,
-        icon: SquareStack,
-      },
-      {
-        title: "Settings",
-        href: `/w/${workspaceSlug}/p/${projectSlug}/settings/general`,
-        icon: Settings,
-      },
-    ];
-  }, [workspaceSlug, projectSlug]);
+  useEffect(() => {
+    const isTokenPath = pathname.startsWith(
+      `/w/${workspaceSlug}/p/${projectSlug}/token`,
+    );
+    setActiveNavbar(
+      isTokenPath ? projectSidebarType.TOKEN : projectSidebarType.PROJECT,
+    );
+  }, [pathname, workspaceSlug, projectSlug]);
+
+  const activeNavItems = useMemo(() => {
+    return activeNavbar === projectSidebarType.TOKEN
+      ? sidebarTokenNavs
+      : sidebarProjectNavs;
+  }, [activeNavbar, sidebarProjectNavs, sidebarTokenNavs]);
+
+  const activeHeader = useMemo(() => {
+    return activeNavbar === projectSidebarType.TOKEN
+      ? headerTokenNavs
+      : headerProjectNavs;
+  }, [activeNavbar, headerProjectNavs, headerTokenNavs]);
+
+  const renderHeader = () => {
+    const isActionHeader = "action" in activeHeader;
+    const commonProps = {
+      className: buttonVariants({
+        variant: "ghost",
+        className: "relative",
+      }),
+    };
+
+    if (isActionHeader) {
+      return (
+        <Button
+          onClick={activeHeader.action}
+          variant="ghost"
+          className="relative"
+        >
+          <ArrowLeft className="size-4 absolute left-2" />
+          {activeHeader.title}
+        </Button>
+      );
+    }
+
+    return (
+      <Link href={`/w/${workspaceSlug}/projects`} {...commonProps}>
+        <ArrowLeft className="size-4 absolute left-2" />
+        {activeHeader.title}
+      </Link>
+    );
+  };
 
   return (
     <SidebarWrapper>
       <nav className="p-4 h-full bg-background">
         <Logo className="mb-6" />
-
         <div className="flex flex-col gap-1">
-          <Link
-            href={`/w/${workspaceSlug}/projects`}
-            className={buttonVariants({
-              variant: "ghost",
-              className: "relative",
-            })}
-          >
-            <ArrowLeft className="size-4 absolute left-2" />
-            Project
-          </Link>
+          {renderHeader()}
 
-          {navItems.map((item) => {
-            const isActive = pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={buttonVariants({
-                  variant: isActive ? "default" : "ghost",
-                  className: "justify-start",
-                })}
-              >
-                <item.icon className="size-4" />
-                {item.title}
-              </Link>
-            );
-          })}
+          {activeNavItems.map((item, idx) => (
+            <NavItem key={`${item.title}-${idx}`} item={item} />
+          ))}
         </div>
       </nav>
     </SidebarWrapper>

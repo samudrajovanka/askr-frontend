@@ -72,7 +72,7 @@ export default function ProjectSwitcher() {
                 router.push(`/w/${params?.workspaceSlug}/projects`)
               }
             >
-              Go to Workspaces
+              Go to Projects
             </Button>
           )}
         />
