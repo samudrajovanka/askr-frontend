@@ -8,9 +8,10 @@ import Logo from "@/components/parts/logo/Logo";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { projectSidebarType } from "@/constants/sidebar";
 import useSidebarProject from "@/hooks/sidebar/useSidebarProject";
+import useSidebarProjectSetting from "@/hooks/sidebar/useSidebarProjectSetting";
 import useSidebarToken from "@/hooks/sidebar/useSidebarToken";
 import type { ProjectSidebarType } from "@/types/sidebar";
-import { default as NavItem } from "./SidebarNavItem";
+import SidebarNavItem from "./SidebarNavItem";
 import SidebarWrapper from "./SidebarWrapper";
 
 const SidebarProject = () => {
@@ -34,27 +35,40 @@ const SidebarProject = () => {
       projectSlug,
       headerAction: () => setActiveNavbar(projectSidebarType.PROJECT),
     });
+  const { navItems: sidebarSettingNavs, header: headerSettingNavs } =
+    useSidebarProjectSetting({
+      workspaceSlug,
+      projectSlug,
+      headerAction: () => setActiveNavbar(projectSidebarType.PROJECT),
+    });
 
   useEffect(() => {
     const isTokenPath = pathname.startsWith(
       `/w/${workspaceSlug}/p/${projectSlug}/token`,
     );
-    setActiveNavbar(
-      isTokenPath ? projectSidebarType.TOKEN : projectSidebarType.PROJECT,
+    const isSettingPath = pathname.startsWith(
+      `/w/${workspaceSlug}/p/${projectSlug}/settings`,
     );
+    if (isTokenPath) {
+      setActiveNavbar(projectSidebarType.TOKEN);
+    } else if (isSettingPath) {
+      setActiveNavbar(projectSidebarType.SETTING);
+    } else {
+      setActiveNavbar(projectSidebarType.PROJECT);
+    }
   }, [pathname, workspaceSlug, projectSlug]);
 
   const activeNavItems = useMemo(() => {
-    return activeNavbar === projectSidebarType.TOKEN
-      ? sidebarTokenNavs
-      : sidebarProjectNavs;
-  }, [activeNavbar, sidebarProjectNavs, sidebarTokenNavs]);
+    if (activeNavbar === projectSidebarType.TOKEN) return sidebarTokenNavs;
+    if (activeNavbar === projectSidebarType.SETTING) return sidebarSettingNavs;
+    return sidebarProjectNavs;
+  }, [activeNavbar, sidebarProjectNavs, sidebarTokenNavs, sidebarSettingNavs]);
 
   const activeHeader = useMemo(() => {
-    return activeNavbar === projectSidebarType.TOKEN
-      ? headerTokenNavs
-      : headerProjectNavs;
-  }, [activeNavbar, headerProjectNavs, headerTokenNavs]);
+    if (activeNavbar === projectSidebarType.TOKEN) return headerTokenNavs;
+    if (activeNavbar === projectSidebarType.SETTING) return headerSettingNavs;
+    return headerProjectNavs;
+  }, [activeNavbar, headerProjectNavs, headerTokenNavs, headerSettingNavs]);
 
   const renderHeader = () => {
     const isActionHeader = "action" in activeHeader;
@@ -94,7 +108,7 @@ const SidebarProject = () => {
           {renderHeader()}
 
           {activeNavItems.map((item, idx) => (
-            <NavItem key={`${item.title}-${idx}`} item={item} />
+            <SidebarNavItem key={`${item.title}-${idx}`} item={item} />
           ))}
         </div>
       </nav>

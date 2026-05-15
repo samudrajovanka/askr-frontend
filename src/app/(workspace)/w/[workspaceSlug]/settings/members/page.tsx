@@ -6,13 +6,8 @@ export const metadata = generateMetadata(
   { withSuffix: true },
 );
 
-type Props = {
-  params: Promise<{ workspaceSlug: string }>;
-};
-
-const MembersRoute = async ({ params }: Props) => {
-  const resolvedParams = await params;
-  return <MembersSettingsPage workspaceSlug={resolvedParams.workspaceSlug} />;
+const MembersRoute = () => {
+  return <MembersSettingsPage />;
 };
 
 export default MembersRoute;

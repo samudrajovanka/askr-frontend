@@ -6,20 +6,24 @@ import { useParams, usePathname } from "next/navigation";
 import { useMemo } from "react";
 import Logo from "@/components/parts/logo/Logo";
 import { buttonVariants } from "@/components/ui/button";
+import { sidebarNavType } from "@/constants/sidebar";
+import type { SidebarNavItem as SidebarNavItemType } from "@/types/sidebar";
+import SidebarNavItem from "./SidebarNavItem";
 import SidebarWrapper from "./SidebarWrapper";
 
 const SidebarSetting = () => {
-  const pathname = usePathname();
   const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
 
-  const navItems = useMemo(() => {
+  const navItems = useMemo<SidebarNavItemType[]>(() => {
     return [
       {
+        type: sidebarNavType.LINK,
         title: "General",
         href: `/w/${workspaceSlug}/settings/general`,
         icon: Settings,
       },
       {
+        type: sidebarNavType.LINK,
         title: "Members",
         href: `/w/${workspaceSlug}/settings/members`,
         icon: Users,
@@ -44,22 +48,9 @@ const SidebarSetting = () => {
             Settings
           </Link>
 
-          {navItems.map((item) => {
-            const isActive = pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={buttonVariants({
-                  variant: isActive ? "default" : "ghost",
-                  className: "justify-start",
-                })}
-              >
-                <item.icon className="size-4" />
-                {item.title}
-              </Link>
-            );
-          })}
+          {navItems.map((item, idx) => (
+            <SidebarNavItem key={`${item.title}-${idx}`} item={item} />
+          ))}
         </div>
       </nav>
     </SidebarWrapper>

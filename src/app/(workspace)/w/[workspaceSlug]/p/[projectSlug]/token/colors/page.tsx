@@ -1,4 +1,4 @@
-import TokenColorPage from "@/components/pages/token/TokenColorPage";
+import TokenColorPage from "@/components/pages/workspace/projects/token/TokenColorPage";
 import generateMetadata from "@/lib/helpers/metadata";
 
 export const metadata = generateMetadata(

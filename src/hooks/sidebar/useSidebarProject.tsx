@@ -79,10 +79,14 @@ const useSidebarProject = ({
         icon: SquareStack,
       },
       {
-        type: sidebarNavType.LINK,
+        type: sidebarNavType.BUTTON,
         title: "Settings",
         href: generateHref("settings/general"),
         icon: Settings,
+        action: () =>
+          handleChangeUrl(generateHref("settings/general"), () =>
+            onTypeChange(projectSidebarType.SETTING),
+          ),
       },
     ];
   }, [generateHref, onTypeChange, handleChangeUrl]);

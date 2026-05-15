@@ -8,7 +8,6 @@ export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
-  params: Promise<{ workspaceSlug: string }>;
 }) {
   const queryClient = getQueryClient();
   const { getToken, userId } = await auth();
