@@ -1,3 +1,9 @@
+import type z from "zod";
+import type {
+  createProjectSchema,
+  updateProjectSchema,
+} from "@/endpoints/project/validator";
+
 export type Project = {
   id: string;
   name: string;
@@ -9,14 +15,5 @@ export type Project = {
   updatedAt: string;
 };
 
-export type CreateProjectPayload = {
-  name: string;
-  slug: string;
-  description?: string;
-};
-
-export type UpdateProjectPayload = {
-  name?: string;
-  slug?: string;
-  description?: string | null;
-};
+export type CreateProjectPayload = z.infer<typeof createProjectSchema>;
+export type UpdateProjectPayload = z.infer<typeof updateProjectSchema>;

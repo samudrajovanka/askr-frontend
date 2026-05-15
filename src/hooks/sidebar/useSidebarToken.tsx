@@ -1,4 +1,4 @@
-import { PencilRuler } from "lucide-react";
+import { Palette } from "lucide-react";
 import { useMemo } from "react";
 import { sidebarNavType } from "@/constants/sidebar";
 import type { SidebarNavItem } from "@/types/sidebar";
@@ -20,7 +20,7 @@ const useSidebarToken = ({
         type: sidebarNavType.LINK,
         title: "Color",
         href: `/w/${workspaceSlug}/p/${projectSlug}/token/colors`,
-        icon: PencilRuler,
+        icon: Palette,
       },
     ];
   }, [workspaceSlug, projectSlug]);

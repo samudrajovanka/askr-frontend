@@ -1,9 +1,8 @@
-export enum RoleWorkspace {
-  ADMIN = "admin",
-  DESIGNER = "designer",
-  ENGINEER = "engineer",
-  MANAGER = "manager",
-}
+import type z from "zod";
+import type { roleWorkspace } from "@/constants/workspace";
+import type { createWorkspaceSchema } from "@/endpoints/workspace/validator";
+
+export type RoleWorkspace = keyof typeof roleWorkspace;
 
 export type Workspace = {
   id: string;
@@ -16,7 +15,4 @@ export type Workspace = {
   updatedAt: string;
 };
 
-export type CreateWorkspacePayload = {
-  name: string;
-  slug: string;
-};
+export type CreateWorkspacePayload = z.infer<typeof createWorkspaceSchema>;

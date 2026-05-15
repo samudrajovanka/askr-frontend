@@ -1,12 +1,13 @@
+import TokenColorPage from "@/components/pages/token/TokenColorPage";
 import generateMetadata from "@/lib/helpers/metadata";
 
 export const metadata = generateMetadata(
-  { title: "Token Color" },
+  { title: "Color Tokens" },
   { withSuffix: true },
 );
 
-const TokenColorPage = async () => {
-  return <p>Token Color Page</p>;
+const TokenColorRoute = async () => {
+  return <TokenColorPage />;
 };
 
-export default TokenColorPage;
+export default TokenColorRoute;

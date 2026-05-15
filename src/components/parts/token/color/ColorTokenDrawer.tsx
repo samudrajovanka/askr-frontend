@@ -1,0 +1,442 @@
+"use client";
+
+import { useForm } from "@tanstack/react-form";
+import { Check } from "lucide-react";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { ColorPicker } from "@/components/ui/color-picker";
+import ColorSwatch from "@/components/ui/color-swatch";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroupTextarea,
+} from "@/components/ui/input-group";
+import { hexColorRegex } from "@/constants/regex";
+import {
+  tokenLayerOptions,
+  tokenLayers,
+  tokenStatuses,
+  tokenStatusOptions,
+} from "@/constants/token";
+import { createTokenSchema } from "@/endpoints/token/validator";
+import { isInvalidField } from "@/lib/helpers/field";
+import {
+  useCreateTokenColor,
+  useTokenColors,
+  useUpdateTokenColor,
+} from "@/query/token";
+import type {
+  CreateTokenPayload,
+  Token,
+  TokenLayer,
+  TokenStatus,
+} from "@/types/token";
+import QueryHandling from "../../query/QueryHandling";
+
+type Props = {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  workspaceSlug: string;
+  projectSlug: string;
+  editToken?: Token | null;
+  defaultLayer?: TokenLayer;
+};
+
+const defaultValues = {
+  name: "",
+  layer: tokenLayers.PRIMITIVE,
+  value: "#000000",
+  referenceId: undefined,
+  status: tokenStatuses.STABLE,
+  description: "",
+} as CreateTokenPayload;
+
+const ColorTokenDrawer = ({
+  open,
+  onOpenChange,
+  workspaceSlug,
+  projectSlug,
+  editToken,
+  defaultLayer = tokenLayers.PRIMITIVE,
+}: Props) => {
+  const isEditing = !!editToken;
+  const createMutation = useCreateTokenColor(workspaceSlug, projectSlug);
+  const updateMutation = useUpdateTokenColor(workspaceSlug, projectSlug);
+  const primitiveTokensQuery = useTokenColors(
+    workspaceSlug,
+    projectSlug,
+    tokenLayers.PRIMITIVE,
+    {
+      enabled: open,
+    },
+  );
+
+  const form = useForm({
+    defaultValues: {
+      ...defaultValues,
+      layer: defaultLayer,
+    } as CreateTokenPayload,
+    validators: {
+      onChange: createTokenSchema,
+      onSubmit: createTokenSchema,
+    },
+    onSubmit: async ({ value }) => {
+      const payload = {
+        name: value.name.trim(),
+        layer: value.layer,
+        value: value.value,
+        referenceId:
+          value.layer === tokenLayers.SEMANTIC ? value.referenceId : undefined,
+        status: value.status,
+        description: value.description?.trim(),
+      };
+
+      if (isEditing) {
+        await updateMutation.mutateAsync({ tokenId: editToken.id, payload });
+        toast.success("Token updated");
+      } else {
+        await createMutation.mutateAsync(payload);
+        toast.success("Token created");
+      }
+
+      onOpenChange(false);
+    },
+  });
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: reset form only when drawer opens
+  useEffect(() => {
+    if (open) {
+      if (editToken) {
+        form.setFieldValue("name", editToken.name);
+        form.setFieldValue("layer", editToken.layer);
+        form.setFieldValue("value", editToken.value);
+        form.setFieldValue(
+          "referenceId",
+          editToken.referenceTokenId ?? undefined,
+        );
+        form.setFieldValue("status", editToken.status);
+        form.setFieldValue("description", editToken.description ?? "");
+      } else {
+        form.reset();
+      }
+      createMutation.reset();
+      updateMutation.reset();
+    }
+  }, [open]);
+
+  return (
+    <Drawer open={open} onOpenChange={onOpenChange} direction="right">
+      <DrawerContent className="sm:max-w-md">
+        <DrawerHeader>
+          <DrawerTitle>
+            {isEditing ? "Edit Color Token" : "New Color Token"}
+          </DrawerTitle>
+        </DrawerHeader>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
+          className="flex flex-col gap-5 no-scrollbar overflow-y-auto px-4"
+        >
+          <form.Field name="name">
+            {(field) => {
+              const isInvalid = isInvalidField(field);
+              return (
+                <Field data-invalid={isInvalid} data-required>
+                  <FieldLabel htmlFor={field.name}>Token Name</FieldLabel>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    type="text"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="brand.primary"
+                    autoFocus
+                    className="font-mono"
+                  />
+                  {isInvalid ? (
+                    <FieldError errors={field.state.meta.errors} />
+                  ) : (
+                    <FieldDescription>
+                      Lowercase letters, numbers, and dots — e.g.{" "}
+                      <span className="font-mono">green</span> or{" "}
+                      <span className="font-mono">brand.primary</span>
+                    </FieldDescription>
+                  )}
+                </Field>
+              );
+            }}
+          </form.Field>
+
+          <form.Field name="layer">
+            {(field) => (
+              <Field data-required>
+                <FieldLabel>Layer</FieldLabel>
+                <div className="flex gap-2">
+                  {tokenLayerOptions.map((opt) => (
+                    <Button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => field.handleChange(opt.value)}
+                      variant={
+                        field.state.value === opt.value
+                          ? "outline-primary"
+                          : "outline"
+                      }
+                      className="flex-1"
+                    >
+                      {opt.label}
+                    </Button>
+                  ))}
+                </div>
+              </Field>
+            )}
+          </form.Field>
+
+          <form.Subscribe selector={(s) => s.values.layer}>
+            {(layer) => (
+              <>
+                {layer === tokenLayers.PRIMITIVE && (
+                  <form.Field name="value">
+                    {(field) => {
+                      const isInvalid = isInvalidField(field);
+                      const isValidHex = hexColorRegex.test(
+                        field.state.value ?? "",
+                      );
+
+                      return (
+                        <Field data-invalid={isInvalid} data-required>
+                          <FieldLabel htmlFor={field.name}>
+                            Color Value
+                          </FieldLabel>
+                          <div className="flex gap-2">
+                            <ColorPicker
+                              id={field.name}
+                              name={field.name}
+                              value={
+                                isValidHex
+                                  ? field.state.value
+                                  : defaultValues.value
+                              }
+                              onChange={(e) =>
+                                field.handleChange(e.target.value)
+                              }
+                              aria-label="Pick color"
+                            />
+                            <Input
+                              id={field.name}
+                              name={field.name}
+                              type="text"
+                              value={field.state.value}
+                              onBlur={field.handleBlur}
+                              onChange={(e) =>
+                                field.handleChange(e.target.value)
+                              }
+                              placeholder="#000000"
+                              className="font-mono"
+                            />
+                          </div>
+                          {isInvalid && (
+                            <FieldError errors={field.state.meta.errors} />
+                          )}
+                        </Field>
+                      );
+                    }}
+                  </form.Field>
+                )}
+
+                {layer === "semantic" && (
+                  <form.Field name="referenceId">
+                    {(field) => {
+                      const isInvalid = isInvalidField(field);
+                      return (
+                        <Field data-invalid={isInvalid} data-required>
+                          <FieldLabel>Reference Token</FieldLabel>
+
+                          <QueryHandling
+                            queryResult={primitiveTokensQuery}
+                            checkEmpty={({
+                              data: {
+                                data: { groups },
+                              },
+                            }) => !groups.length}
+                            renderEmpty={
+                              <div className="rounded-md border border-input px-3 py-2 text-sm text-muted-foreground">
+                                No primitive tokens available
+                              </div>
+                            }
+                            render={({
+                              data: {
+                                data: { groups },
+                              },
+                            }) => {
+                              const primitiveTokens = groups.flatMap(
+                                (g) => g.tokens,
+                              );
+                              return (
+                                <div
+                                  className={`max-h-48 overflow-y-auto rounded-md border ${isInvalid ? "border-destructive" : "border-input"}`}
+                                >
+                                  {primitiveTokens.map((token) => {
+                                    const isSelected =
+                                      field.state.value === token.id;
+                                    return (
+                                      <Button
+                                        key={token.id}
+                                        title={token.value}
+                                        onClick={() =>
+                                          field.handleChange(token.id)
+                                        }
+                                        className="w-full justify-between"
+                                        variant={
+                                          isSelected ? "ghost-primary" : "ghost"
+                                        }
+                                      >
+                                        <div className="flex items-center gap-2">
+                                          <ColorSwatch
+                                            size="sm"
+                                            color={token.value}
+                                          />
+                                          <span>{token.name}</span>
+                                        </div>
+                                        {isSelected && (
+                                          <Check className="size-3.5" />
+                                        )}
+                                      </Button>
+                                    );
+                                  })}
+                                </div>
+                              );
+                            }}
+                          />
+
+                          {isInvalid ? (
+                            <FieldError errors={field.state.meta.errors} />
+                          ) : (
+                            <p className="typography-xsmall text-muted-foreground">
+                              Select the primitive token to reference
+                            </p>
+                          )}
+                        </Field>
+                      );
+                    }}
+                  </form.Field>
+                )}
+              </>
+            )}
+          </form.Subscribe>
+
+          <form.Field name="status">
+            {(field) => (
+              <Field data-required>
+                <FieldLabel>Status</FieldLabel>
+                <div className="flex gap-2 flex-wrap">
+                  {tokenStatusOptions.map((opt) => (
+                    <Button
+                      key={opt.value}
+                      onClick={() =>
+                        field.handleChange(opt.value as TokenStatus)
+                      }
+                      variant={
+                        field.state.value === opt.value
+                          ? "outline-primary"
+                          : "outline"
+                      }
+                    >
+                      {opt.label}
+                    </Button>
+                  ))}
+                </div>
+              </Field>
+            )}
+          </form.Field>
+
+          <form.Field name="description">
+            {(field) => {
+              const isInvalid = isInvalidField(field);
+              return (
+                <Field data-invalid={isInvalid}>
+                  <FieldLabel htmlFor={field.name}>
+                    Description{" "}
+                    <span className="text-muted-foreground font-normal">
+                      (optional)
+                    </span>
+                  </FieldLabel>
+                  <InputGroup>
+                    <InputGroupTextarea
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="Briefly describe what this project is for"
+                      rows={3}
+                    />
+                    <InputGroupAddon align="block-end" className="justify-end">
+                      <InputGroupText className="typography-xsmall">
+                        {(field.state.value || "").length}/
+                      </InputGroupText>
+                    </InputGroupAddon>
+                  </InputGroup>
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              );
+            }}
+          </form.Field>
+        </form>
+
+        <DrawerFooter>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Cancel
+          </Button>
+          <form.Subscribe
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
+          >
+            {([canSubmit, isSubmitting]) => (
+              <Button
+                type="button"
+                disabled={
+                  !canSubmit ||
+                  isSubmitting ||
+                  createMutation.isPending ||
+                  updateMutation.isPending
+                }
+                onClick={() => form.handleSubmit()}
+              >
+                {createMutation.isPending || updateMutation.isPending
+                  ? isEditing
+                    ? "Saving..."
+                    : "Creating..."
+                  : isEditing
+                    ? "Save Changes"
+                    : "Create Token"}
+              </Button>
+            )}
+          </form.Subscribe>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  );
+};
+
+export default ColorTokenDrawer;

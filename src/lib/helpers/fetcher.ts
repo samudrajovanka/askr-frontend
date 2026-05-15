@@ -1,9 +1,11 @@
+import type { ErrorGeneralResponse } from "@/types/response";
+
 type FetcherOptions = RequestInit & {
   baseUrl?: string;
   params?: Record<string, string | number | boolean | undefined | null>;
 };
 
-class FetchError<ErrorResponse = unknown> extends Error {
+class FetchError<ErrorResponse = ErrorGeneralResponse> extends Error {
   status: number;
   data: ErrorResponse;
 
@@ -35,7 +37,10 @@ const buildUrl = (
   return url.toString();
 };
 
-export const fetcher = async <SuccessResponse, ErrorResponse = unknown>(
+export const fetcher = async <
+  SuccessResponse,
+  ErrorResponse = ErrorGeneralResponse,
+>(
   path: string,
   options?: FetcherOptions,
 ) => {

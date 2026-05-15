@@ -21,10 +21,8 @@ import {
   InputGroupTextarea,
 } from "@/components/ui/input-group";
 import app from "@/config/app";
-import {
-  createProjectSchema,
-  DESCRIPTION_MAX_LENGTH,
-} from "@/endpoints/project/validator";
+import { descriptionMaxLength } from "@/constants/string";
+import { createProjectSchema } from "@/endpoints/project/validator";
 import { isInvalidField } from "@/lib/helpers/field";
 import { generateSlug } from "@/lib/helpers/string";
 import { useCreateProject } from "@/query/project";
@@ -53,7 +51,7 @@ const CreateProjectDialog = ({ open, onOpenChange, workspaceSlug }: Props) => {
       await createMutation.mutateAsync({
         name: value.name.trim(),
         slug: value.slug.trim(),
-        description: value.description?.trim() || undefined,
+        description: value.description?.trim(),
       });
       toast.success("Project created successfully");
       onOpenChange(false);
@@ -171,12 +169,12 @@ const CreateProjectDialog = ({ open, onOpenChange, workspaceSlug }: Props) => {
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="Briefly describe what this project is for"
                       rows={3}
-                      maxLength={DESCRIPTION_MAX_LENGTH}
+                      maxLength={descriptionMaxLength}
                     />
                     <InputGroupAddon align="block-end" className="justify-end">
                       <InputGroupText className="typography-xsmall">
                         {(field.state.value || "").length}/
-                        {DESCRIPTION_MAX_LENGTH}
+                        {descriptionMaxLength}
                       </InputGroupText>
                     </InputGroupAddon>
                   </InputGroup>

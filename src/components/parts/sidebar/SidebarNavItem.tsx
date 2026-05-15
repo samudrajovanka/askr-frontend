@@ -24,7 +24,7 @@ const SidebarNavItem = ({ item }: SidebarNavItemProps) => {
       <Button
         key={item.href}
         onClick={item.action}
-        variant={isActive ? "default" : "ghost"}
+        variant={isActive ? "ghost-primary" : "ghost"}
         className="justify-start"
       >
         <item.icon className="size-4" />
@@ -38,7 +38,7 @@ const SidebarNavItem = ({ item }: SidebarNavItemProps) => {
       key={item.href}
       href={item.href}
       className={buttonVariants({
-        variant: isActive ? "default" : "ghost",
+        variant: isActive ? "ghost-primary" : "ghost",
         className: "justify-start",
       })}
     >

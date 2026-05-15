@@ -26,6 +26,8 @@ const QueryHandling = <T,>({
       );
     }
 
+    console.log("error", error);
+
     return props.renderError ? props.renderError : <p>Error</p>;
   }
 
