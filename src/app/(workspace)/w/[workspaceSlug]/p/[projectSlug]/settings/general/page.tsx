@@ -12,7 +12,7 @@ export const metadata = generateMetadata(
   { withSuffix: true },
 );
 
-const GeneralSettingsPage = () => {
+const GeneralSettingsRoute = () => {
   return (
     <Card>
       <CardHeader>
@@ -26,4 +26,4 @@ const GeneralSettingsPage = () => {
   );
 };
 
-export default GeneralSettingsPage;
+export default GeneralSettingsRoute;

@@ -2,7 +2,7 @@
 
 import { ArrowLeft, Settings, Users } from "lucide-react";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useMemo } from "react";
 import Logo from "@/components/parts/logo/Logo";
 import { buttonVariants } from "@/components/ui/button";

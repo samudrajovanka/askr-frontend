@@ -1,20 +1,18 @@
 import type z from "zod";
 import type {
+  tokenCategories,
+  tokenLayers,
+  tokenStatuses,
+} from "@/constants/token";
+import type {
   createTokenSchema,
   updateTokenSchema,
 } from "@/endpoints/token/validator";
 
 export type TokenCategory =
-  | "color"
-  | "spacing"
-  | "typography"
-  | "radius"
-  | "shadow"
-  | "border";
-
-export type TokenLayer = "primitive" | "semantic";
-
-export type TokenStatus = "stable" | "deprecated" | "experimental";
+  (typeof tokenCategories)[keyof typeof tokenCategories];
+export type TokenLayer = (typeof tokenLayers)[keyof typeof tokenLayers];
+export type TokenStatus = (typeof tokenStatuses)[keyof typeof tokenStatuses];
 
 export type Token = {
   id: string;

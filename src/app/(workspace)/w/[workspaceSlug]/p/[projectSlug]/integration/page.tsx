@@ -4,10 +4,12 @@ type Props = {
   params: Promise<{ workspaceSlug: string; projectSlug: string }>;
 };
 
-export default async function Page({ params }: Props) {
+const IntegrationRoute = async ({ params }: Props) => {
   const { workspaceSlug, projectSlug } = await params;
 
   return (
     <IntegrationPage workspaceSlug={workspaceSlug} projectSlug={projectSlug} />
   );
-}
+};
+
+export default IntegrationRoute;

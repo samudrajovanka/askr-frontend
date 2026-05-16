@@ -5,8 +5,8 @@ export const metadata = generateMetadata(
   { withSuffix: true },
 );
 
-const ProjectDashboardPage = async () => {
+const ProjectDashboardRoute = async () => {
   return <p>Project Page</p>;
 };
 
-export default ProjectDashboardPage;
+export default ProjectDashboardRoute;

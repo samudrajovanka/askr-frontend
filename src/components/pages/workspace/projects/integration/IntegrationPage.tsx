@@ -60,7 +60,7 @@ const IntegrationPage = ({ workspaceSlug, projectSlug }: Props) => {
             </h2>
           </div>
           <pre className="bg-muted overflow-x-auto rounded-md p-4 text-sm">
-            <code>{`//${registryHost}:_authToken="YOUR_AUTH_TOKEN"\n@${config.scope}:registry=${config.registryUrl}`}</code>
+            <code>{`//${registryHost}/:_authToken="YOUR_AUTH_TOKEN"\n@${config.scope}:registry=${config.registryUrl}/`}</code>
           </pre>
         </section>
 

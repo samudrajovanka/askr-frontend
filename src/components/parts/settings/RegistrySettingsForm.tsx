@@ -30,7 +30,11 @@ const registryFormSchema = z.object({
     .string()
     .url("Must be a valid URL")
     .max(500, "URL is too long"),
-  scope: z.string().min(1, "Scope is required").max(100, "Scope is too long"),
+  scope: z
+    .string()
+    .min(1, "Scope is required")
+    .max(100, "Scope is too long")
+    .transform((value) => value.trim().replace(/^@+/, "")),
   authToken: z.string().max(500, "Auth token is too long"),
 });
 
@@ -59,8 +63,8 @@ const RegistrySettingsForm = ({
     },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync({
-        registryUrl: value.registryUrl.trim(),
-        scope: value.scope.trim(),
+        registryUrl: value.registryUrl.trim().replace(/\/$/, ""),
+        scope: value.scope,
         authToken: value.authToken.trim() || undefined,
       });
       toast.success("Registry configuration saved");
