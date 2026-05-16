@@ -389,12 +389,12 @@ const ColorTokenDrawer = ({
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="Briefly describe what this project is for"
+                      placeholder="Briefly describe what this color is for"
                       rows={3}
                     />
                     <InputGroupAddon align="block-end" className="justify-end">
                       <InputGroupText className="typography-xsmall">
-                        {(field.state.value || "").length}/
+                        {(field.state.value || "").length}/200
                       </InputGroupText>
                     </InputGroupAddon>
                   </InputGroup>

@@ -1,27 +1,25 @@
 "use client";
 
 import { Rocket } from "lucide-react";
-import { useParams } from "next/navigation";
-import { toast } from "sonner";
+import { useParams, useRouter } from "next/navigation";
 import QueryHandling from "@/components/parts/query/QueryHandling";
 import ReleaseEmptyState from "@/components/parts/release/ReleaseEmptyState";
 import ReleaseItem from "@/components/parts/release/ReleaseItem";
 import HeaderSection from "@/components/parts/section/HeaderSection";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useCreateRelease, useReleases } from "@/query/release";
+import { useReleases } from "@/query/release";
 
 const ReleasePage = () => {
   const params = useParams();
+  const router = useRouter();
   const workspaceSlug = params.workspaceSlug as string;
   const projectSlug = params.projectSlug as string;
 
   const releasesQuery = useReleases(workspaceSlug, projectSlug);
-  const createReleaseMutation = useCreateRelease(workspaceSlug, projectSlug);
 
-  const handlePublish = async () => {
-    await createReleaseMutation.mutateAsync();
-    toast.success("Release published successfully");
+  const openWizard = () => {
+    router.push(`/w/${workspaceSlug}/p/${projectSlug}/release/new`);
   };
 
   return (
@@ -31,10 +29,7 @@ const ReleasePage = () => {
         description="Publish your design tokens as an npm package"
         rightComponent={
           releasesQuery.data?.data.data.releases.length ? (
-            <Button
-              disabled={createReleaseMutation.isPending}
-              onClick={handlePublish}
-            >
+            <Button onClick={openWizard}>
               <Rocket className="size-4" />
               Publish
             </Button>
@@ -56,7 +51,7 @@ const ReleasePage = () => {
             data: { releases },
           },
         }) => !releases.length}
-        renderEmpty={<ReleaseEmptyState onCreateClick={handlePublish} />}
+        renderEmpty={<ReleaseEmptyState onCreateClick={openWizard} />}
         render={({
           data: {
             data: { releases },
