@@ -1,20 +1,6 @@
-export type ColorFormat = "hex" | "rgba" | "hsl";
+import type { RgbaColor } from "@/types/color";
 
-const hexToRgb = (hex: string): [number, number, number] | null => {
-  let clean = hex.replace("#", "");
-  if (clean.length === 3) {
-    clean = clean
-      .split("")
-      .map((c) => c + c)
-      .join("");
-  }
-  if (clean.length !== 6) return null;
-  const r = parseInt(clean.slice(0, 2), 16);
-  const g = parseInt(clean.slice(2, 4), 16);
-  const b = parseInt(clean.slice(4, 6), 16);
-  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) return null;
-  return [r, g, b];
-};
+export type ColorFormat = "hex" | "rgba" | "hsl";
 
 const rgbToHsl = (
   r: number,
@@ -48,7 +34,35 @@ const rgbToHsl = (
   return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
 };
 
-export const convertColor = (
+export const hexToRgba = (hex: string): RgbaColor => {
+  let h = hex.replace(/^#/, "");
+
+  if (h.length === 3) {
+    h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+  } else if (h.length === 4) {
+    h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2] + h[3] + h[3];
+  }
+
+  let r = 0;
+  let g = 0;
+  let b = 0;
+  let a = 1;
+
+  if (h.length === 6) {
+    r = parseInt(h.substring(0, 2), 16);
+    g = parseInt(h.substring(2, 4), 16);
+    b = parseInt(h.substring(4, 6), 16);
+  } else if (h.length === 8) {
+    r = parseInt(h.substring(0, 2), 16);
+    g = parseInt(h.substring(2, 4), 16);
+    b = parseInt(h.substring(4, 6), 16);
+    a = Math.round((parseInt(h.substring(6, 8), 16) / 255) * 100) / 100;
+  }
+
+  return { r, g, b, a };
+};
+
+export const hexColorConverterPreview = (
   hex: string | null,
   format: ColorFormat,
 ): string => {
@@ -56,12 +70,22 @@ export const convertColor = (
 
   if (format === "hex") return hex.toUpperCase();
 
-  const rgb = hexToRgb(hex);
-  if (!rgb) throw new Error("Invalid color hex");
+  const { r, g, b, a } = hexToRgba(hex);
 
-  const [r, g, b] = rgb;
-  if (format === "rgba") return `rgba(${r}, ${g}, ${b}, 1)`;
+  if (format === "rgba") return `rgba(${r}, ${g}, ${b}, ${a})`;
 
   const [h, s, lv] = rgbToHsl(r, g, b);
   return `hsl(${h}, ${s}%, ${lv}%)`;
+};
+
+export const rgbaToHex = ({ r, g, b, a }: RgbaColor): string => {
+  const toHexVal = (val: number) => {
+    const hex = Math.round(val).toString(16);
+    return hex.length === 1 ? `0${hex}` : hex;
+  };
+
+  let alphaHex = toHexVal(a * 255);
+  if (alphaHex.toLowerCase() === "ff") alphaHex = "";
+
+  return `#${toHexVal(r)}${toHexVal(g)}${toHexVal(b)}${alphaHex}`.toLowerCase();
 };

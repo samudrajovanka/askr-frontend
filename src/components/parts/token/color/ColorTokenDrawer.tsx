@@ -1,10 +1,9 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { Check } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import QueryHandling from "@/components/parts/query/QueryHandling";
+import TokenReferenceSelector from "@/components/parts/token/TokenReferenceSelector";
 import { Button } from "@/components/ui/button";
 import { ColorPicker } from "@/components/ui/color-picker";
 import ColorSwatch from "@/components/ui/color-swatch";
@@ -21,7 +20,7 @@ import {
   FieldError,
   FieldLabel,
 } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+
 import {
   InputGroup,
   InputGroupAddon,
@@ -29,7 +28,7 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "@/components/ui/input-group";
-import { HEX_COLOR_REGEX } from "@/constants/regex";
+
 import {
   TOKEN_LAYERS,
   TOKEN_STATUSES,
@@ -228,42 +227,20 @@ const ColorTokenDrawer = ({
                   <form.Field name="value">
                     {(field) => {
                       const isInvalid = isInvalidField(field);
-                      const isValidHex = HEX_COLOR_REGEX.test(
-                        field.state.value ?? "",
-                      );
 
                       return (
                         <Field data-invalid={isInvalid} data-required>
                           <FieldLabel htmlFor={field.name}>
                             Color Value
                           </FieldLabel>
-                          <div className="flex gap-2">
-                            <ColorPicker
-                              id={field.name}
-                              name={field.name}
-                              value={
-                                isValidHex
-                                  ? field.state.value
-                                  : defaultValues.value
-                              }
-                              onChange={(e) =>
-                                field.handleChange(e.target.value)
-                              }
-                              aria-label="Pick color"
-                            />
-                            <Input
-                              id={field.name}
-                              name={field.name}
-                              type="text"
-                              value={field.state.value}
-                              onBlur={field.handleBlur}
-                              onChange={(e) =>
-                                field.handleChange(e.target.value)
-                              }
-                              placeholder="#000000"
-                              className="font-mono"
-                            />
-                          </div>
+                          <ColorPicker
+                            id={field.name}
+                            name={field.name}
+                            value={field.state.value}
+                            onBlur={field.handleBlur}
+                            onChange={(e) => field.handleChange(e.target.value)}
+                            placeholder="#000000"
+                          />
                           {isInvalid && (
                             <FieldError errors={field.state.meta.errors} />
                           )}
@@ -281,69 +258,23 @@ const ColorTokenDrawer = ({
                         <Field data-invalid={isInvalid} data-required>
                           <FieldLabel>Reference Token</FieldLabel>
 
-                          <QueryHandling
+                          <TokenReferenceSelector
                             queryResult={primitiveTokensQuery}
-                            checkEmpty={({
-                              data: {
-                                data: { groups },
-                              },
-                            }) => !groups.length}
-                            renderEmpty={
-                              <div className="rounded-md border border-input px-3 py-2 text-sm text-muted-foreground">
-                                No primitive tokens available
-                              </div>
-                            }
-                            render={({
-                              data: {
-                                data: { groups },
-                              },
-                            }) => {
-                              const primitiveTokens = groups.flatMap(
-                                (g) => g.tokens,
-                              );
-                              return (
-                                <div
-                                  className={`max-h-48 overflow-y-auto rounded-md border ${isInvalid ? "border-destructive" : "border-input"}`}
-                                >
-                                  {primitiveTokens.map((token) => {
-                                    const isSelected =
-                                      field.state.value === token.id;
-                                    return (
-                                      <Button
-                                        key={token.id}
-                                        title={token.value}
-                                        onClick={() =>
-                                          field.handleChange(token.id)
-                                        }
-                                        className="w-full justify-between"
-                                        variant={
-                                          isSelected ? "ghost-primary" : "ghost"
-                                        }
-                                      >
-                                        <div className="flex items-center gap-2">
-                                          <ColorSwatch
-                                            size="sm"
-                                            color={token.value}
-                                          />
-                                          <span>{token.name}</span>
-                                        </div>
-                                        {isSelected && (
-                                          <Check className="size-3.5" />
-                                        )}
-                                      </Button>
-                                    );
-                                  })}
-                                </div>
-                              );
-                            }}
+                            value={field.state.value}
+                            onChange={(val) => field.handleChange(val)}
+                            isInvalid={isInvalid}
+                            renderLeftAddon={(token) => (
+                              <ColorSwatch size="sm" color={token.value} />
+                            )}
+                            hideValue
                           />
 
                           {isInvalid ? (
                             <FieldError errors={field.state.meta.errors} />
                           ) : (
-                            <p className="typography-xsmall text-muted-foreground">
+                            <FieldDescription>
                               Select the primitive token to reference
-                            </p>
+                            </FieldDescription>
                           )}
                         </Field>
                       );

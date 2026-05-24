@@ -11,7 +11,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { type ColorFormat, convertColor } from "@/lib/helpers/color";
+import {
+  type ColorFormat,
+  hexColorConverterPreview,
+} from "@/lib/helpers/color";
 import type { Token } from "@/types/token";
 import ColorSwatch from "../../../ui/color-swatch";
 
@@ -30,7 +33,7 @@ const TokenColorRow = ({
 }: Props) => {
   const [copied, setCopied] = useState(false);
   const colorValue = useMemo(
-    () => convertColor(token.value, colorFormat),
+    () => hexColorConverterPreview(token.value, colorFormat),
     [colorFormat, token.value],
   );
 

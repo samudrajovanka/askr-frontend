@@ -148,7 +148,8 @@ const colorSchema = {
   value: z
     .string()
     .regex(HEX_COLOR_REGEX, "Must be a valid hex color")
-    .optional(),
+    .optional()
+    .or(z.literal("")),
 };
 
 export const createColorTokenSchema = baseTokenSchema
@@ -203,7 +204,8 @@ const fontSchema = {
   value: z
     .string()
     .min(1, "Value must be at least 1 character long")
-    .optional(),
+    .optional()
+    .or(z.literal("")),
 };
 
 export const createFontTokenSchema = baseTokenSchema
@@ -230,7 +232,7 @@ const isValidFontWeightValue = (value?: number | string) => {
 };
 
 const fontWeightSchema = {
-  value: z.union([z.number(), z.string().min(1)]).optional(),
+  value: z.union([z.number(), z.string().min(1), z.literal("")]).optional(),
 };
 
 const fontWeightTokenRefinement = (
@@ -277,11 +279,11 @@ const leadingSchema = {
 
 export const createLeadingTokenSchema = baseTokenSchema
   .extend(leadingSchema)
-  .superRefine(primitiveTokenUnitRefinement);
+  .superRefine(primitiveTokenRefinement);
 
 export const updateLeadingTokenSchema = baseUpdateTokenSchema
   .extend(leadingSchema)
-  .superRefine(primitiveTokenUnitRefinement);
+  .superRefine(primitiveTokenRefinement);
 
 // ========= Tracking Token (letter-spacing) =========
 const trackingSchema = {

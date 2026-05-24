@@ -17,7 +17,9 @@ const isSidebarNavItemButton = (navItem: TypeSidebarNavItem) => {
 const SidebarNavItem = ({ item }: SidebarNavItemProps) => {
   const pathname = usePathname();
 
-  const isActive = pathname.startsWith(item.href || "");
+  const isActive = item.href
+    ? pathname === item.href || pathname.startsWith(`${item.href}/`)
+    : false;
 
   if (isSidebarNavItemButton(item)) {
     return (

@@ -1,10 +1,9 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { Check } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import QueryHandling from "@/components/parts/query/QueryHandling";
+import TokenReferenceSelector from "@/components/parts/token/TokenReferenceSelector";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -263,19 +262,26 @@ const RadiusTokenDrawer = ({
                           <div className="flex gap-2">
                             {(
                               [
-                                { value: "custom", label: "Custom" },
+                                { value: undefined, label: "Custom" },
                                 { value: "full", label: "Full" },
                                 { value: "none", label: "None" },
                               ] as const
                             ).map((opt) => (
                               <Button
-                                key={opt.value}
+                                key={opt.value ?? opt.label}
                                 type="button"
-                                onClick={() =>
+                                onClick={() => {
                                   field.handleChange(
                                     opt.value as CreateRadiusTokenPayload["special"],
-                                  )
-                                }
+                                  );
+                                  if (opt.value) {
+                                    form.setFieldValue("value", undefined);
+                                    form.setFieldValue("unit", undefined);
+                                  } else {
+                                    form.setFieldValue("value", 0);
+                                    form.setFieldValue("unit", "px");
+                                  }
+                                }}
                                 variant={
                                   field.state.value === opt.value
                                     ? "outline-primary"
@@ -287,14 +293,20 @@ const RadiusTokenDrawer = ({
                               </Button>
                             ))}
                           </div>
-                          <p className="typography-xsmall text-muted-foreground">
-                            Full = fully rounded (
-                            <span className="font-mono">
-                              calc(infinity * 1px)
-                            </span>
-                            ) · None = no radius (
-                            <span className="font-mono">0px</span>)
-                          </p>
+                          {field.state.value === "full" && (
+                            <FieldDescription>
+                              Fully rounded (
+                              <span className="font-mono">
+                                calc(infinity * 1px)
+                              </span>
+                              )
+                            </FieldDescription>
+                          )}
+                          {field.state.value === "none" && (
+                            <FieldDescription>
+                              No radius (<span className="font-mono">0px</span>)
+                            </FieldDescription>
+                          )}
                         </Field>
                       )}
                     </form.Field>
@@ -380,69 +392,18 @@ const RadiusTokenDrawer = ({
                       return (
                         <Field data-invalid={isInvalid} data-required>
                           <FieldLabel>Reference Token</FieldLabel>
-                          <QueryHandling
+                          <TokenReferenceSelector
                             queryResult={primitiveTokensQuery}
-                            checkEmpty={({
-                              data: {
-                                data: { groups },
-                              },
-                            }) => !groups.length}
-                            renderEmpty={
-                              <div className="rounded-md border border-input px-3 py-2 text-sm text-muted-foreground">
-                                No primitive tokens available
-                              </div>
-                            }
-                            render={({
-                              data: {
-                                data: { groups },
-                              },
-                            }) => {
-                              const primitiveTokens = groups.flatMap(
-                                (g) => g.tokens,
-                              );
-                              return (
-                                <div
-                                  className={`max-h-48 overflow-y-auto rounded-md border ${isInvalid ? "border-destructive" : "border-input"}`}
-                                >
-                                  {primitiveTokens.map((token) => {
-                                    const isSelected =
-                                      field.state.value === token.id;
-                                    return (
-                                      <Button
-                                        key={token.id}
-                                        title={token.value}
-                                        onClick={() =>
-                                          field.handleChange(token.id)
-                                        }
-                                        className="w-full justify-between"
-                                        variant={
-                                          isSelected ? "ghost-primary" : "ghost"
-                                        }
-                                      >
-                                        <span className="font-mono">
-                                          {token.name}
-                                        </span>
-                                        <div className="flex items-center gap-2">
-                                          <span className="typography-xsmall text-muted-foreground font-mono">
-                                            {token.value}
-                                          </span>
-                                          {isSelected && (
-                                            <Check className="size-3.5" />
-                                          )}
-                                        </div>
-                                      </Button>
-                                    );
-                                  })}
-                                </div>
-                              );
-                            }}
+                            value={field.state.value}
+                            onChange={(val) => field.handleChange(val)}
+                            isInvalid={isInvalid}
                           />
                           {isInvalid ? (
                             <FieldError errors={field.state.meta.errors} />
                           ) : (
-                            <p className="typography-xsmall text-muted-foreground">
+                            <FieldDescription>
                               Select the primitive token to reference
-                            </p>
+                            </FieldDescription>
                           )}
                         </Field>
                       );

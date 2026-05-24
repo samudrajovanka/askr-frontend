@@ -1,10 +1,13 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { Check, Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import TokenReferenceSelector from "@/components/parts/token/TokenReferenceSelector";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { ColorPicker } from "@/components/ui/color-picker";
 import {
   Drawer,
   DrawerContent,
@@ -49,7 +52,6 @@ import type {
   TokenLayer,
   TokenStatus,
 } from "@/types/token";
-import QueryHandling from "../../query/QueryHandling";
 
 type Props = {
   open: boolean;
@@ -269,11 +271,10 @@ const ShadowTokenDrawer = ({
                             <FieldLabel>Shadow Layers</FieldLabel>
                             <Button
                               type="button"
-                              variant="ghost"
-                              size="sm"
+                              variant="outline"
+                              size="xs"
                               onClick={addLayer}
                               disabled={layers.length >= 10}
-                              className="h-7 gap-1 text-xs"
                             >
                               <Plus className="size-3" />
                               Add Layer
@@ -281,15 +282,17 @@ const ShadowTokenDrawer = ({
                           </div>
 
                           {isEditing && (
-                            <p className="typography-xsmall text-muted-foreground rounded-md border border-input bg-muted/40 px-3 py-2">
-                              Stored value:{" "}
-                              <span className="font-mono">
-                                {editToken?.value}
-                              </span>
-                              <br />
-                              Edit below to replace with a new structured
-                              definition.
-                            </p>
+                            <Alert variant="info">
+                              <AlertDescription className="typography-xsmall">
+                                Stored value:{" "}
+                                <span className="font-mono">
+                                  {editToken?.value}
+                                </span>
+                                <br />
+                                Edit below to replace with a new structured
+                                definition.
+                              </AlertDescription>
+                            </Alert>
                           )}
 
                           <div className="flex flex-col gap-3">
@@ -308,9 +311,8 @@ const ShadowTokenDrawer = ({
                                   {layers.length > 1 && (
                                     <Button
                                       type="button"
-                                      variant="ghost"
+                                      variant="ghost-desctructive"
                                       size="icon"
-                                      className="size-7 text-destructive hover:text-destructive"
                                       onClick={() => removeLayer(idx)}
                                     >
                                       <Trash2 className="size-3.5" />
@@ -318,7 +320,6 @@ const ShadowTokenDrawer = ({
                                   )}
                                 </div>
 
-                                {/* offsetX / offsetY */}
                                 <div className="grid grid-cols-2 gap-2">
                                   <Field>
                                     <FieldLabel className="text-xs">
@@ -354,7 +355,6 @@ const ShadowTokenDrawer = ({
                                   </Field>
                                 </div>
 
-                                {/* blur / spread */}
                                 <div className="grid grid-cols-2 gap-2">
                                   <Field>
                                     <FieldLabel className="text-xs">
@@ -397,44 +397,21 @@ const ShadowTokenDrawer = ({
                                   </Field>
                                 </div>
 
-                                {/* color */}
                                 <Field>
                                   <FieldLabel className="text-xs">
                                     Color
                                   </FieldLabel>
-                                  <div className="flex gap-2">
-                                    <input
-                                      type="color"
-                                      value={
-                                        shadowLayer.color.startsWith("#")
-                                          ? shadowLayer.color
-                                          : "#000000"
-                                      }
-                                      onChange={(e) =>
-                                        updateLayer(idx, {
-                                          color: e.target.value,
-                                        })
-                                      }
-                                      className="h-9 w-10 shrink-0 cursor-pointer rounded-md border border-input p-1"
-                                    />
-                                    <Input
-                                      type="text"
-                                      value={shadowLayer.color}
-                                      onChange={(e) =>
-                                        updateLayer(idx, {
-                                          color: e.target.value,
-                                        })
-                                      }
-                                      placeholder="#000000 or rgba(0,0,0,0.1)"
-                                      className="font-mono text-sm flex-1"
-                                    />
-                                  </div>
-                                  <p className="typography-xsmall text-muted-foreground">
-                                    Hex, rgb(), or rgba() only
-                                  </p>
+                                  <ColorPicker
+                                    value={shadowLayer.color}
+                                    onChange={(e) =>
+                                      updateLayer(idx, {
+                                        color: e.target.value,
+                                      })
+                                    }
+                                    placeholder="#000000"
+                                  />
                                 </Field>
 
-                                {/* inset */}
                                 <Field>
                                   <FieldLabel className="text-xs">
                                     Inset
@@ -490,69 +467,18 @@ const ShadowTokenDrawer = ({
                       return (
                         <Field data-invalid={isInvalid} data-required>
                           <FieldLabel>Reference Token</FieldLabel>
-                          <QueryHandling
+                          <TokenReferenceSelector
                             queryResult={primitiveTokensQuery}
-                            checkEmpty={({
-                              data: {
-                                data: { groups },
-                              },
-                            }) => !groups.length}
-                            renderEmpty={
-                              <div className="rounded-md border border-input px-3 py-2 text-sm text-muted-foreground">
-                                No primitive tokens available
-                              </div>
-                            }
-                            render={({
-                              data: {
-                                data: { groups },
-                              },
-                            }) => {
-                              const primitiveTokens = groups.flatMap(
-                                (g) => g.tokens,
-                              );
-                              return (
-                                <div
-                                  className={`max-h-48 overflow-y-auto rounded-md border ${isInvalid ? "border-destructive" : "border-input"}`}
-                                >
-                                  {primitiveTokens.map((token) => {
-                                    const isSelected =
-                                      field.state.value === token.id;
-                                    return (
-                                      <Button
-                                        key={token.id}
-                                        title={token.value}
-                                        onClick={() =>
-                                          field.handleChange(token.id)
-                                        }
-                                        className="w-full justify-between"
-                                        variant={
-                                          isSelected ? "ghost-primary" : "ghost"
-                                        }
-                                      >
-                                        <span className="font-mono">
-                                          {token.name}
-                                        </span>
-                                        <div className="flex items-center gap-2">
-                                          <span className="typography-xsmall text-muted-foreground font-mono">
-                                            {token.value}
-                                          </span>
-                                          {isSelected && (
-                                            <Check className="size-3.5" />
-                                          )}
-                                        </div>
-                                      </Button>
-                                    );
-                                  })}
-                                </div>
-                              );
-                            }}
+                            value={field.state.value}
+                            onChange={(val) => field.handleChange(val)}
+                            isInvalid={isInvalid}
                           />
                           {isInvalid ? (
                             <FieldError errors={field.state.meta.errors} />
                           ) : (
-                            <p className="typography-xsmall text-muted-foreground">
+                            <FieldDescription className="typography-xsmall text-muted-foreground">
                               Select the primitive token to reference
-                            </p>
+                            </FieldDescription>
                           )}
                         </Field>
                       );

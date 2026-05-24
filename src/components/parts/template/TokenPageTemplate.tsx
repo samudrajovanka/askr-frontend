@@ -176,6 +176,8 @@ const TokenPageTemplate = ({
                   .filter((group) => group.tokens.length > 0)
               : groups;
 
+            console.log("filteredGroups", filteredGroups);
+
             if (filteredGroups.length === 0) {
               return (
                 <div className="rounded-xl border border-dashed p-8 text-center">
@@ -190,19 +192,30 @@ const TokenPageTemplate = ({
             }
 
             return (
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-4">
                 {filteredGroups.map((group) => {
-                  const isOpen = !collapsed.has(group.group);
+                  if (group.tokens.length > 1) {
+                    const isOpen = !collapsed.has(group.group);
+
+                    return (
+                      <SimpleCollapsible
+                        key={group.group}
+                        open={isOpen}
+                        onOpenChange={(open) => toggleGroup(group.group, open)}
+                        title={group.group}
+                      >
+                        {group.tokens.map((token) => renderRow(token))}
+                      </SimpleCollapsible>
+                    );
+                  }
 
                   return (
-                    <SimpleCollapsible
+                    <div
                       key={group.group}
-                      open={isOpen}
-                      onOpenChange={(open) => toggleGroup(group.group, open)}
-                      title={group.group}
+                      className="rounded-xl border border-border overflow-hidden"
                     >
-                      {group.tokens.map((token) => renderRow(token))}
-                    </SimpleCollapsible>
+                      {renderRow(group.tokens[0])}
+                    </div>
                   );
                 })}
               </div>

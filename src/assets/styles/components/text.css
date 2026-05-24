@@ -24,6 +24,6 @@
   }
 
   .typography-xsmall {
-    @apply text-[10px] md:text-xs leading-none;
+    @apply text-[10px] md:text-xs leading-[1.3];
   }
 }
