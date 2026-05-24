@@ -3,10 +3,10 @@
 import { Rocket } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import QueryHandling from "@/components/parts/query/QueryHandling";
-import ReleaseEmptyState from "@/components/parts/release/ReleaseEmptyState";
 import ReleaseItem from "@/components/parts/release/ReleaseItem";
-import HeaderSection from "@/components/parts/section/HeaderSection";
+import HeaderSection from "@/components/parts/template/HeaderSectionTemplate";
 import { Button } from "@/components/ui/button";
+import { BasicEmptyState } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useReleases } from "@/query/release";
 
@@ -51,7 +51,17 @@ const ReleasePage = () => {
             data: { releases },
           },
         }) => !releases.length}
-        renderEmpty={<ReleaseEmptyState onCreateClick={openWizard} />}
+        renderEmpty={
+          <BasicEmptyState
+            Icon={Rocket}
+            title="No releases yet"
+            message="Publish your first release to start versioning your design tokens."
+            actionPlus={{
+              title: "Create your first release",
+              onClick: openWizard,
+            }}
+          />
+        }
         render={({
           data: {
             data: { releases },

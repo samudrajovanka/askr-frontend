@@ -1,3 +1,3 @@
-export const descriptionMaxLength = 200;
-export const nameMaxLength = 50;
-export const slugMaxLength = 50;
+export const DESCRIPTION_MAX_LENGTH = 200;
+export const NAME_MAX_LENGTH = 50;
+export const SLUG_MAX_LENGTH = 50;

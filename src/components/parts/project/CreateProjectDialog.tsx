@@ -21,7 +21,7 @@ import {
   InputGroupTextarea,
 } from "@/components/ui/input-group";
 import app from "@/config/app";
-import { descriptionMaxLength } from "@/constants/string";
+import { DESCRIPTION_MAX_LENGTH } from "@/constants/string";
 import { createProjectSchema } from "@/endpoints/project/validator";
 import { isInvalidField } from "@/lib/helpers/field";
 import { generateSlug } from "@/lib/helpers/string";
@@ -169,12 +169,12 @@ const CreateProjectDialog = ({ open, onOpenChange, workspaceSlug }: Props) => {
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="Briefly describe what this project is for"
                       rows={3}
-                      maxLength={descriptionMaxLength}
+                      maxLength={DESCRIPTION_MAX_LENGTH}
                     />
                     <InputGroupAddon align="block-end" className="justify-end">
                       <InputGroupText className="typography-xsmall">
                         {(field.state.value || "").length}/
-                        {descriptionMaxLength}
+                        {DESCRIPTION_MAX_LENGTH}
                       </InputGroupText>
                     </InputGroupAddon>
                   </InputGroup>

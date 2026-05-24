@@ -1,19 +1,19 @@
-export const versionBumpTypes = {
+export const VERSION_BUMP_TYPES = {
   MAJOR: "major",
   MINOR: "minor",
   PATCH: "patch",
 } as const;
 
 export const versionBumpTypeLabels = {
-  [versionBumpTypes.MAJOR]: "Major",
-  [versionBumpTypes.MINOR]: "Minor",
-  [versionBumpTypes.PATCH]: "Patch",
+  [VERSION_BUMP_TYPES.MAJOR]: "Major",
+  [VERSION_BUMP_TYPES.MINOR]: "Minor",
+  [VERSION_BUMP_TYPES.PATCH]: "Patch",
 } as const;
 
 export const versionBumpTypeDescriptions = {
-  [versionBumpTypes.MAJOR]: "Breaking — tokens deleted or renamed",
-  [versionBumpTypes.MINOR]: "Additive — new tokens added",
-  [versionBumpTypes.PATCH]: "Preserving — only values changed",
+  [VERSION_BUMP_TYPES.MAJOR]: "Breaking — tokens deleted or renamed",
+  [VERSION_BUMP_TYPES.MINOR]: "Additive — new tokens added",
+  [VERSION_BUMP_TYPES.PATCH]: "Preserving — only values changed",
 } as const;
 
-export const defaultVersion = "1.0.0";
+export const DEFAULT_VERSION = "1.0.0";

@@ -6,7 +6,7 @@ import { useParams, usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import Logo from "@/components/parts/logo/Logo";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { projectSidebarType } from "@/constants/sidebar";
+import { PROJECT_SIDEBAR_TYPE } from "@/constants/sidebar";
 import useSidebarProject from "@/hooks/sidebar/useSidebarProject";
 import useSidebarProjectSetting from "@/hooks/sidebar/useSidebarProjectSetting";
 import useSidebarToken from "@/hooks/sidebar/useSidebarToken";
@@ -21,7 +21,7 @@ const SidebarProject = () => {
     projectSlug: string;
   };
   const [activeNavbar, setActiveNavbar] = useState<ProjectSidebarType>(
-    projectSidebarType.PROJECT,
+    PROJECT_SIDEBAR_TYPE.PROJECT,
   );
   const { navItems: sidebarProjectNavs, header: headerProjectNavs } =
     useSidebarProject({
@@ -33,13 +33,13 @@ const SidebarProject = () => {
     useSidebarToken({
       workspaceSlug,
       projectSlug,
-      headerAction: () => setActiveNavbar(projectSidebarType.PROJECT),
+      headerAction: () => setActiveNavbar(PROJECT_SIDEBAR_TYPE.PROJECT),
     });
   const { navItems: sidebarSettingNavs, header: headerSettingNavs } =
     useSidebarProjectSetting({
       workspaceSlug,
       projectSlug,
-      headerAction: () => setActiveNavbar(projectSidebarType.PROJECT),
+      headerAction: () => setActiveNavbar(PROJECT_SIDEBAR_TYPE.PROJECT),
     });
 
   useEffect(() => {
@@ -50,23 +50,24 @@ const SidebarProject = () => {
       `/w/${workspaceSlug}/p/${projectSlug}/settings`,
     );
     if (isTokenPath) {
-      setActiveNavbar(projectSidebarType.TOKEN);
+      setActiveNavbar(PROJECT_SIDEBAR_TYPE.TOKEN);
     } else if (isSettingPath) {
-      setActiveNavbar(projectSidebarType.SETTING);
+      setActiveNavbar(PROJECT_SIDEBAR_TYPE.SETTING);
     } else {
-      setActiveNavbar(projectSidebarType.PROJECT);
+      setActiveNavbar(PROJECT_SIDEBAR_TYPE.PROJECT);
     }
   }, [pathname, workspaceSlug, projectSlug]);
 
   const activeNavItems = useMemo(() => {
-    if (activeNavbar === projectSidebarType.TOKEN) return sidebarTokenNavs;
-    if (activeNavbar === projectSidebarType.SETTING) return sidebarSettingNavs;
+    if (activeNavbar === PROJECT_SIDEBAR_TYPE.TOKEN) return sidebarTokenNavs;
+    if (activeNavbar === PROJECT_SIDEBAR_TYPE.SETTING)
+      return sidebarSettingNavs;
     return sidebarProjectNavs;
   }, [activeNavbar, sidebarProjectNavs, sidebarTokenNavs, sidebarSettingNavs]);
 
   const activeHeader = useMemo(() => {
-    if (activeNavbar === projectSidebarType.TOKEN) return headerTokenNavs;
-    if (activeNavbar === projectSidebarType.SETTING) return headerSettingNavs;
+    if (activeNavbar === PROJECT_SIDEBAR_TYPE.TOKEN) return headerTokenNavs;
+    if (activeNavbar === PROJECT_SIDEBAR_TYPE.SETTING) return headerSettingNavs;
     return headerProjectNavs;
   }, [activeNavbar, headerProjectNavs, headerTokenNavs, headerSettingNavs]);
 

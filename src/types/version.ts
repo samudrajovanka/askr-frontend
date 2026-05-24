@@ -1,4 +1,4 @@
-import type { versionBumpTypes } from "@/constants/version";
+import type { VERSION_BUMP_TYPES } from "@/constants/version";
 
 export type VersionBumpType =
-  (typeof versionBumpTypes)[keyof typeof versionBumpTypes];
+  (typeof VERSION_BUMP_TYPES)[keyof typeof VERSION_BUMP_TYPES];

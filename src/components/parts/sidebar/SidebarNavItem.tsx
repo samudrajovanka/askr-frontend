@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { sidebarNavType } from "@/constants/sidebar";
+import { SIDEBAR_NAV_TYPE } from "@/constants/sidebar";
 import type { SidebarNavItem as TypeSidebarNavItem } from "@/types/sidebar";
 
 type SidebarNavItemProps = {
@@ -11,7 +11,7 @@ type SidebarNavItemProps = {
 };
 
 const isSidebarNavItemButton = (navItem: TypeSidebarNavItem) => {
-  return navItem.type === sidebarNavType.BUTTON;
+  return navItem.type === SIDEBAR_NAV_TYPE.BUTTON;
 };
 
 const SidebarNavItem = ({ item }: SidebarNavItemProps) => {

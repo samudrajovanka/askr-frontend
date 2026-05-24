@@ -1,4 +1,4 @@
-export const roleWorkspace = {
+export const ROLE_WORKSPACE = {
   ADMIN: "admin",
   DESIGNER: "designer",
   ENGINEER: "engineer",
@@ -6,8 +6,8 @@ export const roleWorkspace = {
 } as const;
 
 export const roleWorkspaceLabels = {
-  [roleWorkspace.ADMIN]: "Admin",
-  [roleWorkspace.DESIGNER]: "Designer",
-  [roleWorkspace.ENGINEER]: "Engineer",
-  [roleWorkspace.MANAGER]: "Manager",
+  [ROLE_WORKSPACE.ADMIN]: "Admin",
+  [ROLE_WORKSPACE.DESIGNER]: "Designer",
+  [ROLE_WORKSPACE.ENGINEER]: "Engineer",
+  [ROLE_WORKSPACE.MANAGER]: "Manager",
 } as const;

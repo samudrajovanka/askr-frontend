@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
-import { projectSidebarType, sidebarNavType } from "@/constants/sidebar";
+import { PROJECT_SIDEBAR_TYPE, SIDEBAR_NAV_TYPE } from "@/constants/sidebar";
 import type { ProjectSidebarType, SidebarNavItem } from "@/types/sidebar";
 
 type UseSidebarProjectProps = {
@@ -45,47 +45,47 @@ const useSidebarProject = ({
   const navItems = useMemo<SidebarNavItem[]>(() => {
     return [
       {
-        type: sidebarNavType.LINK,
+        type: SIDEBAR_NAV_TYPE.LINK,
         title: "Dashboard",
         href: generateHref("dashboard"),
         icon: LayoutDashboard,
       },
       {
-        type: sidebarNavType.BUTTON,
+        type: SIDEBAR_NAV_TYPE.BUTTON,
         title: "Tokens",
         href: generateHref("token/colors"),
         icon: PencilRuler,
         action: () =>
           handleChangeUrl(generateHref("token/colors"), () =>
-            onTypeChange(projectSidebarType.TOKEN),
+            onTypeChange(PROJECT_SIDEBAR_TYPE.TOKEN),
           ),
       },
       {
-        type: sidebarNavType.LINK,
+        type: SIDEBAR_NAV_TYPE.LINK,
         title: "Release",
         href: generateHref("release"),
         icon: Rocket,
       },
       {
-        type: sidebarNavType.LINK,
+        type: SIDEBAR_NAV_TYPE.LINK,
         title: "Integration",
         href: generateHref("integration"),
         icon: Workflow,
       },
       {
-        type: sidebarNavType.LINK,
+        type: SIDEBAR_NAV_TYPE.LINK,
         title: "Activity",
         href: generateHref("activity"),
         icon: SquareStack,
       },
       {
-        type: sidebarNavType.BUTTON,
+        type: SIDEBAR_NAV_TYPE.BUTTON,
         title: "Settings",
         href: generateHref("settings/general"),
         icon: Settings,
         action: () =>
           handleChangeUrl(generateHref("settings/general"), () =>
-            onTypeChange(projectSidebarType.SETTING),
+            onTypeChange(PROJECT_SIDEBAR_TYPE.SETTING),
           ),
       },
     ];

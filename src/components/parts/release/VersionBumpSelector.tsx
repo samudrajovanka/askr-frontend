@@ -1,7 +1,7 @@
 import {
+  VERSION_BUMP_TYPES,
   versionBumpTypeDescriptions,
   versionBumpTypeLabels,
-  versionBumpTypes,
 } from "@/constants/version";
 import { bumpVersion } from "@/lib/helpers/version";
 import { cn } from "@/lib/utils";
@@ -22,7 +22,7 @@ const VersionBumpSelector = ({
 }: VersionBumpSelectorProps) => {
   return (
     <div className={cn("grid grid-cols-3 gap-3", className)}>
-      {Object.values(versionBumpTypes).map((type) => {
+      {Object.values(VERSION_BUMP_TYPES).map((type) => {
         const isSelected = activeBumpType === type;
         const preview = bumpVersion(currentVersion, type);
 

@@ -9,7 +9,7 @@ import ReleaseConfigureStep from "@/components/parts/release/new/ReleaseConfigur
 import ReleasePublishStep from "@/components/parts/release/new/ReleasePublishStep";
 import ReleaseReviewStep from "@/components/parts/release/new/ReleaseReviewStep";
 import { Button } from "@/components/ui/button";
-import { defaultVersion, versionBumpTypes } from "@/constants/version";
+import { DEFAULT_VERSION, VERSION_BUMP_TYPES } from "@/constants/version";
 import { bumpVersion } from "@/lib/helpers/version";
 import { useCreateRelease, useReleaseDiff } from "@/query/release";
 import type { VersionBumpType } from "@/types/version";
@@ -50,10 +50,10 @@ const NewReleasePage = () => {
   }, [diff?.suggestedBumpType, bumpType]);
 
   const activeBumpType: VersionBumpType =
-    bumpType ?? diff?.suggestedBumpType ?? versionBumpTypes.PATCH;
+    bumpType ?? diff?.suggestedBumpType ?? VERSION_BUMP_TYPES.PATCH;
   const computedVersion = diff
     ? bumpVersion(diff.currentVersion, activeBumpType)
-    : defaultVersion;
+    : DEFAULT_VERSION;
 
   const isInitialRelease = diff?.currentVersion === null;
 

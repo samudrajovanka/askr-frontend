@@ -5,7 +5,7 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "@/components/ui/input-group";
-import { defaultVersion } from "@/constants/version";
+import { DEFAULT_VERSION } from "@/constants/version";
 import type { VersionBumpType } from "@/types/version";
 import VersionBumpSelector from "../VersionBumpSelector";
 
@@ -50,10 +50,10 @@ const ReleaseConfigureStep = ({
             <div className="rounded-lg border bg-muted/50 px-4 py-3">
               <p className="typography-small font-medium">Initial release</p>
               <p className="mt-0.5 font-mono typography-large font-semibold">
-                v{defaultVersion}
+                v{DEFAULT_VERSION}
               </p>
               <p className="typography-small text-muted-foreground">
-                First release always starts at v{defaultVersion}.
+                First release always starts at v{DEFAULT_VERSION}.
               </p>
             </div>
           ) : (

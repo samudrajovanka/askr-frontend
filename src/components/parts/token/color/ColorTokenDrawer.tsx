@@ -4,6 +4,7 @@ import { useForm } from "@tanstack/react-form";
 import { Check } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import QueryHandling from "@/components/parts/query/QueryHandling";
 import { Button } from "@/components/ui/button";
 import { ColorPicker } from "@/components/ui/color-picker";
 import ColorSwatch from "@/components/ui/color-swatch";
@@ -24,17 +25,18 @@ import { Input } from "@/components/ui/input";
 import {
   InputGroup,
   InputGroupAddon,
+  InputGroupInput,
   InputGroupText,
   InputGroupTextarea,
 } from "@/components/ui/input-group";
-import { hexColorRegex } from "@/constants/regex";
+import { HEX_COLOR_REGEX } from "@/constants/regex";
 import {
+  TOKEN_LAYERS,
+  TOKEN_STATUSES,
   tokenLayerOptions,
-  tokenLayers,
-  tokenStatuses,
   tokenStatusOptions,
 } from "@/constants/token";
-import { createTokenSchema } from "@/endpoints/token/validator";
+import { createColorTokenSchema } from "@/endpoints/token/validator";
 import { isInvalidField } from "@/lib/helpers/field";
 import {
   useCreateTokenColor,
@@ -42,12 +44,11 @@ import {
   useUpdateTokenColor,
 } from "@/query/token";
 import type {
-  CreateTokenPayload,
+  CreateColorTokenPayload,
   Token,
   TokenLayer,
   TokenStatus,
 } from "@/types/token";
-import QueryHandling from "../../query/QueryHandling";
 
 type Props = {
   open: boolean;
@@ -60,12 +61,12 @@ type Props = {
 
 const defaultValues = {
   name: "",
-  layer: tokenLayers.PRIMITIVE,
+  layer: TOKEN_LAYERS.PRIMITIVE,
   value: "#000000",
   referenceId: undefined,
-  status: tokenStatuses.STABLE,
+  status: TOKEN_STATUSES.STABLE,
   description: "",
-} as CreateTokenPayload;
+} as CreateColorTokenPayload;
 
 const ColorTokenDrawer = ({
   open,
@@ -73,7 +74,7 @@ const ColorTokenDrawer = ({
   workspaceSlug,
   projectSlug,
   editToken,
-  defaultLayer = tokenLayers.PRIMITIVE,
+  defaultLayer = TOKEN_LAYERS.PRIMITIVE,
 }: Props) => {
   const isEditing = !!editToken;
   const createMutation = useCreateTokenColor(workspaceSlug, projectSlug);
@@ -81,7 +82,7 @@ const ColorTokenDrawer = ({
   const primitiveTokensQuery = useTokenColors(
     workspaceSlug,
     projectSlug,
-    tokenLayers.PRIMITIVE,
+    TOKEN_LAYERS.PRIMITIVE,
     {
       enabled: open,
     },
@@ -91,10 +92,10 @@ const ColorTokenDrawer = ({
     defaultValues: {
       ...defaultValues,
       layer: defaultLayer,
-    } as CreateTokenPayload,
+    } as CreateColorTokenPayload,
     validators: {
-      onChange: createTokenSchema,
-      onSubmit: createTokenSchema,
+      onChange: createColorTokenSchema,
+      onSubmit: createColorTokenSchema,
     },
     onSubmit: async ({ value }) => {
       const payload = {
@@ -102,7 +103,7 @@ const ColorTokenDrawer = ({
         layer: value.layer,
         value: value.value,
         referenceId:
-          value.layer === tokenLayers.SEMANTIC ? value.referenceId : undefined,
+          value.layer === TOKEN_LAYERS.SEMANTIC ? value.referenceId : undefined,
         status: value.status,
         description: value.description?.trim(),
       };
@@ -141,8 +142,8 @@ const ColorTokenDrawer = ({
   }, [open]);
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange} direction="right">
-      <DrawerContent className="sm:max-w-md">
+    <Drawer open={open} onOpenChange={onOpenChange} swipeDirection="right">
+      <DrawerContent side="right" className="sm:max-w-md">
         <DrawerHeader>
           <DrawerTitle>
             {isEditing ? "Edit Color Token" : "New Color Token"}
@@ -163,24 +164,31 @@ const ColorTokenDrawer = ({
               return (
                 <Field data-invalid={isInvalid} data-required>
                   <FieldLabel htmlFor={field.name}>Token Name</FieldLabel>
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    type="text"
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    placeholder="brand.primary"
-                    autoFocus
-                    className="font-mono"
-                  />
+                  <InputGroup>
+                    <InputGroupAddon>
+                      <InputGroupText className="font-mono">
+                        color.
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <InputGroupInput
+                      id={field.name}
+                      name={field.name}
+                      type="text"
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="primary"
+                      autoFocus
+                      className="font-mono"
+                    />
+                  </InputGroup>
                   {isInvalid ? (
                     <FieldError errors={field.state.meta.errors} />
                   ) : (
                     <FieldDescription>
                       Lowercase letters, numbers, and dots — e.g.{" "}
                       <span className="font-mono">green</span> or{" "}
-                      <span className="font-mono">brand.primary</span>
+                      <span className="font-mono">primary</span>
                     </FieldDescription>
                   )}
                 </Field>
@@ -216,11 +224,11 @@ const ColorTokenDrawer = ({
           <form.Subscribe selector={(s) => s.values.layer}>
             {(layer) => (
               <>
-                {layer === tokenLayers.PRIMITIVE && (
+                {layer === TOKEN_LAYERS.PRIMITIVE && (
                   <form.Field name="value">
                     {(field) => {
                       const isInvalid = isInvalidField(field);
-                      const isValidHex = hexColorRegex.test(
+                      const isValidHex = HEX_COLOR_REGEX.test(
                         field.state.value ?? "",
                       );
 
@@ -394,7 +402,7 @@ const ColorTokenDrawer = ({
                     />
                     <InputGroupAddon align="block-end" className="justify-end">
                       <InputGroupText className="typography-xsmall">
-                        {(field.state.value || "").length}/200
+                        {(field.state.value || "").length}/500
                       </InputGroupText>
                     </InputGroupAddon>
                   </InputGroup>

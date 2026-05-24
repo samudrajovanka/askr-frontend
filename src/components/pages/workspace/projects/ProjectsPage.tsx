@@ -1,17 +1,17 @@
 "use client";
 
-import { Plus, Settings } from "lucide-react";
+import { FolderGit2, Plus, Settings } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import AddProjectCard from "@/components/parts/project/AddProjectCard";
 import CreateProjectDialog from "@/components/parts/project/CreateProjectDialog";
 import ProjectCard from "@/components/parts/project/ProjectCard";
-import ProjectEmptyState from "@/components/parts/project/ProjectEmptyState";
 import ProjectSkeletonCard from "@/components/parts/project/ProjectSkeletonCard";
 import QueryHandling from "@/components/parts/query/QueryHandling";
-import HeaderSection from "@/components/parts/section/HeaderSection";
+import HeaderSection from "@/components/parts/template/HeaderSectionTemplate";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { BasicEmptyState } from "@/components/ui/empty";
 import { useProjects } from "@/query/project";
 
 const ProjectsPage = () => {
@@ -53,7 +53,15 @@ const ProjectsPage = () => {
           </div>
         }
         renderEmpty={
-          <ProjectEmptyState onCreateClick={() => setDialogOpen(true)} />
+          <BasicEmptyState
+            Icon={FolderGit2}
+            title="No projects yet"
+            message="Create your first project to start managing design tokens for your team."
+            actionPlus={{
+              title: "Create your first Project",
+              onClick: () => setDialogOpen(true),
+            }}
+          />
         }
         checkEmpty={({
           data: {

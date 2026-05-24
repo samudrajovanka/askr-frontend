@@ -1,13 +1,13 @@
 import { z } from "zod";
-import { slugRegex } from "@/constants/regex";
-import { slugMaxLength } from "@/constants/string";
+import { SLUG_REGEX } from "@/constants/regex";
+import { SLUG_MAX_LENGTH } from "@/constants/string";
 
 export const slugValidator = (fieldName: string = "Slug") =>
   z
     .string()
     .min(3, `${fieldName} must be at least 3 characters long`)
-    .max(slugMaxLength, `${fieldName} is too long`)
+    .max(SLUG_MAX_LENGTH, `${fieldName} is too long`)
     .regex(
-      slugRegex,
+      SLUG_REGEX,
       `${fieldName} must start with a letter and contain only lowercase letters, numbers, and hyphens`,
     );

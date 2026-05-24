@@ -1,21 +1,24 @@
 import type { LucideProps } from "lucide-react";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
-import type { projectSidebarType, sidebarNavType } from "@/constants/sidebar";
+import type {
+  PROJECT_SIDEBAR_TYPE,
+  SIDEBAR_NAV_TYPE,
+} from "@/constants/sidebar";
 
 export type ProjectSidebarType =
-  (typeof projectSidebarType)[keyof typeof projectSidebarType];
+  (typeof PROJECT_SIDEBAR_TYPE)[keyof typeof PROJECT_SIDEBAR_TYPE];
 
 export type SidebarNavType =
-  (typeof sidebarNavType)[keyof typeof sidebarNavType];
+  (typeof SIDEBAR_NAV_TYPE)[keyof typeof SIDEBAR_NAV_TYPE];
 
 export type SidebarNavItemButton = {
-  type: typeof sidebarNavType.BUTTON;
+  type: typeof SIDEBAR_NAV_TYPE.BUTTON;
   href?: string;
   action: () => void;
 };
 
 export type SidebarNavItemLink = {
-  type: typeof sidebarNavType.LINK;
+  type: typeof SIDEBAR_NAV_TYPE.LINK;
   href: string;
 };
 

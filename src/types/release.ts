@@ -1,9 +1,9 @@
-import type { releaseStatuses } from "@/constants/release";
+import type { RELEASE_STATUSES } from "@/constants/release";
 import type { Token } from "./token";
 import type { VersionBumpType } from "./version";
 
 export type ReleaseStatus =
-  (typeof releaseStatuses)[keyof typeof releaseStatuses];
+  (typeof RELEASE_STATUSES)[keyof typeof RELEASE_STATUSES];
 
 export type SafeRelease = {
   id: string;

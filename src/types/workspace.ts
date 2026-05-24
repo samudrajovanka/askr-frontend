@@ -1,8 +1,8 @@
 import type z from "zod";
-import type { roleWorkspace } from "@/constants/workspace";
+import type { ROLE_WORKSPACE } from "@/constants/workspace";
 import type { createWorkspaceSchema } from "@/endpoints/workspace/validator";
 
-export type RoleWorkspace = keyof typeof roleWorkspace;
+export type RoleWorkspace = keyof typeof ROLE_WORKSPACE;
 
 export type Workspace = {
   id: string;

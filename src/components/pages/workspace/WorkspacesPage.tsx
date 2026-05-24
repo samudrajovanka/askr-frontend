@@ -1,15 +1,15 @@
 "use client";
 
-import { Plus } from "lucide-react";
+import { Network, Plus } from "lucide-react";
 import { useState } from "react";
 import QueryHandling from "@/components/parts/query/QueryHandling";
-import HeaderSection from "@/components/parts/section/HeaderSection";
+import HeaderSection from "@/components/parts/template/HeaderSectionTemplate";
 import AddWorkspaceCard from "@/components/parts/workspace/AddWorkspaceCard";
 import CreateWorkspaceDialog from "@/components/parts/workspace/CreateWorkspaceDialog";
 import WorkspaceCard from "@/components/parts/workspace/WorkspaceCard";
-import WorkspaceEmptyState from "@/components/parts/workspace/WorkspaceEmptyState";
 import WorkspaceSkeletonCard from "@/components/parts/workspace/WorkspaceSkeletonCard";
 import { Button } from "@/components/ui/button";
+import { BasicEmptyState } from "@/components/ui/empty";
 import { useWorkspaces } from "@/query/workspace";
 
 const WorkspacesPage = () => {
@@ -41,7 +41,15 @@ const WorkspacesPage = () => {
           </div>
         }
         renderEmpty={
-          <WorkspaceEmptyState onCreateClick={() => setDialogOpen(true)} />
+          <BasicEmptyState
+            Icon={Network}
+            title="No workspaces yet"
+            message="Create your first workspace to start managing design tokens across your team and projects."
+            actionPlus={{
+              title: "Create your first Workspace",
+              onClick: () => setDialogOpen(true),
+            }}
+          />
         }
         checkEmpty={({
           data: {

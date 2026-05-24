@@ -1,6 +1,6 @@
 import { Package, Settings } from "lucide-react";
 import { useMemo } from "react";
-import { sidebarNavType } from "@/constants/sidebar";
+import { SIDEBAR_NAV_TYPE } from "@/constants/sidebar";
 import type { SidebarNavItem } from "@/types/sidebar";
 
 type UseSidebarProjectSettingProps = {
@@ -17,13 +17,13 @@ const useSidebarProjectSetting = ({
   const navItems = useMemo<SidebarNavItem[]>(
     () => [
       {
-        type: sidebarNavType.LINK,
+        type: SIDEBAR_NAV_TYPE.LINK,
         title: "General",
         href: `/w/${workspaceSlug}/p/${projectSlug}/settings/general`,
         icon: Settings,
       },
       {
-        type: sidebarNavType.LINK,
+        type: SIDEBAR_NAV_TYPE.LINK,
         title: "Registry",
         href: `/w/${workspaceSlug}/p/${projectSlug}/settings/registry`,
         icon: Package,

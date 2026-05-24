@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
-
+import { type LucideIcon, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "./button";
 
 function Empty({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -91,6 +92,46 @@ function EmptyContent({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
+type BasicEmptyStateProps = {
+  title: string;
+  message: string;
+  Icon: LucideIcon;
+  renderContent?: React.ReactNode;
+  actionPlus?: {
+    onClick: () => void;
+    title: string;
+  };
+};
+
+function BasicEmptyState({
+  Icon,
+  message,
+  renderContent,
+  title,
+  actionPlus,
+}: BasicEmptyStateProps) {
+  return (
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <Icon className="text-primary" />
+        </EmptyMedia>
+        <EmptyTitle>{title}</EmptyTitle>
+        <EmptyDescription>{message}</EmptyDescription>
+      </EmptyHeader>
+      {renderContent && <EmptyContent>{renderContent}</EmptyContent>}
+      {!renderContent && actionPlus && (
+        <EmptyContent>
+          <Button onClick={actionPlus.onClick}>
+            <Plus className="h-4 w-4" />
+            {actionPlus.title}
+          </Button>
+        </EmptyContent>
+      )}
+    </Empty>
+  );
+}
+
 export {
   Empty,
   EmptyHeader,
@@ -98,4 +139,5 @@ export {
   EmptyDescription,
   EmptyContent,
   EmptyMedia,
+  BasicEmptyState,
 };
