@@ -97,6 +97,7 @@ type BasicEmptyStateProps = {
   message: string;
   Icon: LucideIcon;
   renderContent?: React.ReactNode;
+  className?: string;
   actionPlus?: {
     onClick: () => void;
     title: string;
@@ -109,11 +110,12 @@ function BasicEmptyState({
   renderContent,
   title,
   actionPlus,
+  className,
 }: BasicEmptyStateProps) {
   return (
-    <Empty>
+    <Empty className={className}>
       <EmptyHeader>
-        <EmptyMedia variant="icon">
+        <EmptyMedia variant="icon" className="rounded-3xl">
           <Icon className="text-primary" />
         </EmptyMedia>
         <EmptyTitle>{title}</EmptyTitle>

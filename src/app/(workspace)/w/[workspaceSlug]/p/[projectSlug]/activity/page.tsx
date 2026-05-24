@@ -2,12 +2,12 @@ import ComingSoon from "@/components/parts/template/ComingSoon";
 import generateMetadata from "@/lib/helpers/metadata";
 
 export const metadata = generateMetadata(
-  { title: "Project" },
+  { title: "Activity" },
   { withSuffix: true },
 );
 
-const ProjectDashboardRoute = async () => {
+const ProjectActivityRoute = async () => {
   return <ComingSoon />;
 };
 
-export default ProjectDashboardRoute;
+export default ProjectActivityRoute;

@@ -11,7 +11,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
   InputGroup,
@@ -134,9 +139,10 @@ const RegistrySettingsForm = ({
                   {isInvalid ? (
                     <FieldError errors={field.state.meta.errors} />
                   ) : (
-                    <p className="typography-xsmall text-muted-foreground">
-                      Package will be published as @{field.state.value}/tokens
-                    </p>
+                    <FieldDescription>
+                      Package will be published as @{field.state.value}/
+                      {projectSlug}/tokens
+                    </FieldDescription>
                   )}
                 </Field>
               );

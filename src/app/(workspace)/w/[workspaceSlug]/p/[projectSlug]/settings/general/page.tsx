@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import ComingSoon from "@/components/parts/template/ComingSoon";
 import generateMetadata from "@/lib/helpers/metadata";
 
 export const metadata = generateMetadata(
@@ -13,17 +7,7 @@ export const metadata = generateMetadata(
 );
 
 const GeneralSettingsRoute = () => {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>General Settings</CardTitle>
-        <CardDescription>Manage your project settings.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm text-muted-foreground">Coming soon.</p>
-      </CardContent>
-    </Card>
-  );
+  return <ComingSoon />;
 };
 
 export default GeneralSettingsRoute;

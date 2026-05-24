@@ -4,7 +4,6 @@ import {
   Rocket,
   Settings,
   SquareStack,
-  Workflow,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
@@ -65,12 +64,6 @@ const useSidebarProject = ({
         title: "Release",
         href: generateHref("release"),
         icon: Rocket,
-      },
-      {
-        type: SIDEBAR_NAV_TYPE.LINK,
-        title: "Integration",
-        href: generateHref("integration"),
-        icon: Workflow,
       },
       {
         type: SIDEBAR_NAV_TYPE.LINK,
