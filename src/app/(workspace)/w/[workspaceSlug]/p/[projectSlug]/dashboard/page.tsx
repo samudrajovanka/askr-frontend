@@ -1,13 +1,13 @@
-import ComingSoon from "@/components/parts/template/ComingSoon";
+import ProjectDashboardPage from "@/components/pages/workspace/projects/dashboard/ProjectDashboardPage";
 import generateMetadata from "@/lib/helpers/metadata";
 
 export const metadata = generateMetadata(
-  { title: "Project" },
+  { title: "Dashboard" },
   { withSuffix: true },
 );
 
 const ProjectDashboardRoute = async () => {
-  return <ComingSoon />;
+  return <ProjectDashboardPage />;
 };
 
 export default ProjectDashboardRoute;

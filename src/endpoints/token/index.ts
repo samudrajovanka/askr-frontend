@@ -14,6 +14,7 @@ import type {
   Token,
   TokenGroup,
   TokenLayer,
+  TokenSummary,
   UpdateBorderTokenPayload,
   UpdateColorTokenPayload,
   UpdateFontTokenPayload,
@@ -735,6 +736,19 @@ export const deleteTokenBorder = async (
     baseUrl(workspaceSlug, projectSlug, `border/${tokenId}`),
     {
       method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
+
+// ========= Summary =========
+export const getTokenSummary = async (
+  token: string,
+  workspaceSlug: string,
+  projectSlug: string,
+) =>
+  fetcher<SuccessResponseData<{ summary: TokenSummary }>>(
+    `/workspaces/${workspaceSlug}/projects/${projectSlug}/tokens/summary`,
+    {
       headers: { Authorization: `Bearer ${token}` },
     },
   );

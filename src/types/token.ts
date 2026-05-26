@@ -135,3 +135,9 @@ export type UpdateShadowTokenPayload = z.infer<typeof updateShadowTokenSchema>;
 
 export type CreateBorderTokenPayload = z.infer<typeof createBorderTokenSchema>;
 export type UpdateBorderTokenPayload = z.infer<typeof updateBorderTokenSchema>;
+
+export type TokenSummary = {
+  total: number;
+  byCategory: Record<string, number>;
+  byLayer: Record<string, number>;
+};

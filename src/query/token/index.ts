@@ -28,6 +28,7 @@ import {
   getTokenRadii,
   getTokenShadows,
   getTokenSpacings,
+  getTokenSummary,
   getTokenTexts,
   getTokenTrackings,
   updateTokenBorder as updateBorderFn,
@@ -999,5 +1000,22 @@ export const useDeleteTokenBorder = (
         queryKey: getTokenBordersBaseKey(workspaceSlug, projectSlug),
       });
     },
+  });
+};
+
+// ========= Summary =========
+
+export const getTokenSummaryKey = (
+  workspaceSlug: string,
+  projectSlug: string,
+) => [...getTokenBaseKey(workspaceSlug, projectSlug), "summary"];
+
+export const useTokenSummary = (workspaceSlug: string, projectSlug: string) => {
+  const { execute, isSignedIn } = useFetchAuth(getTokenSummary);
+
+  return useQuery({
+    queryKey: getTokenSummaryKey(workspaceSlug, projectSlug),
+    enabled: isSignedIn && !!workspaceSlug && !!projectSlug,
+    queryFn: () => execute(workspaceSlug, projectSlug),
   });
 };

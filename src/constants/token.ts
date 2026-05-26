@@ -1,3 +1,17 @@
+import type { LucideIcon } from "lucide-react";
+import {
+  AlignJustify,
+  Bold,
+  CaseSensitive,
+  CornerUpLeft,
+  Layers,
+  Palette,
+  Ruler,
+  Space,
+  Square,
+  Type,
+} from "lucide-react";
+
 export const TOKEN_LAYERS = {
   PRIMITIVE: "primitive",
   SEMANTIC: "semantic",
@@ -31,6 +45,42 @@ export const TOKEN_CATEGORIES = {
   RADIUS: "radius",
   SHADOW: "shadow",
   BORDER: "border",
+} as const;
+
+export const tokenCategoryLabels = {
+  [TOKEN_CATEGORIES.COLOR]: "Color",
+  [TOKEN_CATEGORIES.SPACING]: "Spacing",
+  [TOKEN_CATEGORIES.TEXT]: "Text",
+  [TOKEN_CATEGORIES.FONT]: "Font",
+  [TOKEN_CATEGORIES.FONT_WEIGHT]: "Font Weight",
+  [TOKEN_CATEGORIES.LEADING]: "Leading",
+  [TOKEN_CATEGORIES.TRACKING]: "Tracking",
+  [TOKEN_CATEGORIES.RADIUS]: "Radius",
+  [TOKEN_CATEGORIES.SHADOW]: "Shadow",
+  [TOKEN_CATEGORIES.BORDER]: "Border",
+} as const;
+
+export const tokenCategoryColors = {
+  [TOKEN_CATEGORIES.COLOR]:
+    "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+  [TOKEN_CATEGORIES.SPACING]:
+    "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+  [TOKEN_CATEGORIES.TEXT]:
+    "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+  [TOKEN_CATEGORIES.FONT]:
+    "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
+  [TOKEN_CATEGORIES.FONT_WEIGHT]:
+    "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+  [TOKEN_CATEGORIES.LEADING]:
+    "bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400",
+  [TOKEN_CATEGORIES.TRACKING]:
+    "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400",
+  [TOKEN_CATEGORIES.RADIUS]:
+    "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400",
+  [TOKEN_CATEGORIES.SHADOW]:
+    "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
+  [TOKEN_CATEGORIES.BORDER]:
+    "bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-400",
 } as const;
 
 const UNIT = {
@@ -135,3 +185,16 @@ export const tokenStatusOptions = [
 export const fontWeightOptions = [
   100, 200, 300, 400, 500, 600, 700, 800, 900,
 ] as const;
+
+export const tokenCategoryIcons: Record<string, LucideIcon> = {
+  [TOKEN_CATEGORIES.COLOR]: Palette,
+  [TOKEN_CATEGORIES.SPACING]: Ruler,
+  [TOKEN_CATEGORIES.TEXT]: Type,
+  [TOKEN_CATEGORIES.FONT]: CaseSensitive,
+  [TOKEN_CATEGORIES.FONT_WEIGHT]: Bold,
+  [TOKEN_CATEGORIES.LEADING]: AlignJustify,
+  [TOKEN_CATEGORIES.TRACKING]: Space,
+  [TOKEN_CATEGORIES.RADIUS]: CornerUpLeft,
+  [TOKEN_CATEGORIES.SHADOW]: Layers,
+  [TOKEN_CATEGORIES.BORDER]: Square,
+};
