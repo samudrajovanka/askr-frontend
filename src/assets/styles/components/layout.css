@@ -2,4 +2,8 @@
   .container-layout {
     @apply container mx-auto px-4;
   }
+
+  .navbar-wrapper {
+    @apply border-b border-border bg-background/80 backdrop-blur-xl;
+  }
 }
