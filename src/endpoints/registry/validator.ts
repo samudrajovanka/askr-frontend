@@ -9,5 +9,3 @@ export const upsertRegistrySchema = z.object({
     .transform((value) => value.trim().replace(/^@+/, "")),
   authToken: z.string().max(500, "Auth token is too long").optional(),
 });
-
-export type UpsertRegistryPayload = z.infer<typeof upsertRegistrySchema>;

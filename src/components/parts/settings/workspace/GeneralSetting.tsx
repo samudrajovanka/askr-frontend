@@ -22,7 +22,7 @@ import {
   InputGroupText,
 } from "@/components/ui/input-group";
 import app from "@/config/app";
-import { updateWorkspaceSchema } from "@/endpoints/workspace/validator";
+import { createWorkspaceSchema } from "@/endpoints/workspace/validator";
 import { isInvalidField } from "@/lib/helpers/field";
 import { generateSlug } from "@/lib/helpers/string";
 import { useUpdateWorkspace } from "@/query/workspace";
@@ -32,7 +32,7 @@ type WorkspaceSettingProps = {
   workspace: Workspace;
 };
 
-const WorkspaceSetting = ({ workspace }: WorkspaceSettingProps) => {
+const GeneralSetting = ({ workspace }: WorkspaceSettingProps) => {
   const [slugTouched, setSlugTouched] = useState(true);
   const updateMutation = useUpdateWorkspace();
   const router = useRouter();
@@ -43,8 +43,8 @@ const WorkspaceSetting = ({ workspace }: WorkspaceSettingProps) => {
       slug: workspace.slug,
     },
     validators: {
-      onChange: updateWorkspaceSchema,
-      onSubmit: updateWorkspaceSchema,
+      onChange: createWorkspaceSchema,
+      onSubmit: createWorkspaceSchema,
     },
     onSubmit: async ({ value }) => {
       await updateMutation.mutateAsync({
@@ -163,4 +163,4 @@ const WorkspaceSetting = ({ workspace }: WorkspaceSettingProps) => {
   );
 };
 
-export default WorkspaceSetting;
+export default GeneralSetting;

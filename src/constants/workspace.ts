@@ -5,6 +5,8 @@ export const ROLE_WORKSPACE = {
   MANAGER: "manager",
 } as const;
 
+export const workspaceRoles = Object.values(ROLE_WORKSPACE);
+
 export const roleWorkspaceLabels = {
   [ROLE_WORKSPACE.ADMIN]: "Admin",
   [ROLE_WORKSPACE.DESIGNER]: "Designer",

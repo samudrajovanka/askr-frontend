@@ -2,8 +2,9 @@
 
 import { useParams } from "next/navigation";
 import QueryHandling from "@/components/parts/query/QueryHandling";
-import GeneralSettingsForm from "@/components/parts/settings/GeneralSettingsForm";
-import GeneralSettingsLoading from "@/components/parts/settings/GeneralSettingsLoading";
+import DangerZoneSetting from "@/components/parts/settings/workspace/DangerZoneSetting";
+import GeneralSetting from "@/components/parts/settings/workspace/GeneralSetting";
+import GeneralSettingsLoading from "@/components/parts/settings/workspace/GeneralSettingsLoading";
 import { useWorkspace } from "@/query/workspace";
 
 const GeneralSettingsPage = () => {
@@ -18,7 +19,12 @@ const GeneralSettingsPage = () => {
         data: {
           data: { workspace },
         },
-      }) => <GeneralSettingsForm workspace={workspace} />}
+      }) => (
+        <div className="flex flex-col gap-6">
+          <GeneralSetting workspace={workspace} />
+          <DangerZoneSetting />
+        </div>
+      )}
     />
   );
 };

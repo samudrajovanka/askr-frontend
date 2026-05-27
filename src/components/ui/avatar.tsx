@@ -2,7 +2,7 @@
 
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar";
 import type * as React from "react";
-
+import { getInitialsName } from "@/lib/helpers/string";
 import { cn } from "@/lib/utils";
 
 function Avatar({
@@ -99,6 +99,23 @@ function AvatarGroupCount({
   );
 }
 
+type BasicAvatarProps = {
+  avatarUrl?: string | null;
+  name: string;
+};
+
+function BasicAvatar({ avatarUrl, name }: BasicAvatarProps) {
+  return (
+    <Avatar>
+      {avatarUrl ? (
+        <AvatarImage src={avatarUrl} alt={name} />
+      ) : (
+        <AvatarFallback>{getInitialsName(name)}</AvatarFallback>
+      )}
+    </Avatar>
+  );
+}
+
 export {
   Avatar,
   AvatarImage,
@@ -106,4 +123,5 @@ export {
   AvatarGroup,
   AvatarGroupCount,
   AvatarBadge,
+  BasicAvatar,
 };

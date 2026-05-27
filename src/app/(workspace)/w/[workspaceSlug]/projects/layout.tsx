@@ -27,7 +27,7 @@ export default async function Layout({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <WorkspaceLayout>{children}</WorkspaceLayout>
+      <WorkspaceLayout showWorkspaceSwitcher>{children}</WorkspaceLayout>
     </HydrationBoundary>
   );
 }

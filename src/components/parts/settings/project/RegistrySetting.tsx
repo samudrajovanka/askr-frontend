@@ -2,7 +2,6 @@
 
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -24,36 +23,23 @@ import {
   InputGroupInput,
   InputGroupText,
 } from "@/components/ui/input-group";
+import type { UpsertRegistryPayload } from "@/endpoints/registry/type";
+import { upsertRegistrySchema } from "@/endpoints/registry/validator";
 import { isInvalidField } from "@/lib/helpers/field";
 import { useUpsertRegistryConfig } from "@/query/registry";
 import type { SafeRegistryConfig } from "@/types/registry";
 
-// Form schema uses required string for authToken (empty = no change).
-// The mutation payload converts "" to undefined.
-const registryFormSchema = z.object({
-  registryUrl: z
-    .string()
-    .url("Must be a valid URL")
-    .max(500, "URL is too long"),
-  scope: z
-    .string()
-    .min(1, "Scope is required")
-    .max(100, "Scope is too long")
-    .transform((value) => value.trim().replace(/^@+/, "")),
-  authToken: z.string().max(500, "Auth token is too long"),
-});
-
-type RegistrySettingsFormProps = {
+type RegistrySettingProps = {
   workspaceSlug: string;
   projectSlug: string;
   config: SafeRegistryConfig | null;
 };
 
-const RegistrySettingsForm = ({
+const RegistrySetting = ({
   workspaceSlug,
   projectSlug,
   config,
-}: RegistrySettingsFormProps) => {
+}: RegistrySettingProps) => {
   const mutation = useUpsertRegistryConfig(workspaceSlug, projectSlug);
 
   const form = useForm({
@@ -61,16 +47,16 @@ const RegistrySettingsForm = ({
       registryUrl: config?.registryUrl ?? "",
       scope: config?.scope ?? "",
       authToken: "",
-    },
+    } as UpsertRegistryPayload,
     validators: {
-      onChange: registryFormSchema,
-      onSubmit: registryFormSchema,
+      onChange: upsertRegistrySchema,
+      onSubmit: upsertRegistrySchema,
     },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync({
         registryUrl: value.registryUrl.trim().replace(/\/$/, ""),
         scope: value.scope,
-        authToken: value.authToken.trim() || undefined,
+        authToken: value.authToken?.trim() || undefined,
       });
       toast.success("Registry configuration saved");
     },
@@ -197,4 +183,4 @@ const RegistrySettingsForm = ({
   );
 };
 
-export default RegistrySettingsForm;
+export default RegistrySetting;

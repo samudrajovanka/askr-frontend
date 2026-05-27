@@ -2,7 +2,7 @@
 
 import { AlertDialog as AlertDialogPrimitive } from "@base-ui/react/alert-dialog";
 import type * as React from "react";
-import { Button } from "@/components/ui/button";
+import { Button, type ButtonProps } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 function AlertDialog({ ...props }: AlertDialogPrimitive.Root.Props) {
@@ -170,6 +170,43 @@ function AlertDialogCancel({
   );
 }
 
+type BasicAlertDialogProps = AlertDialogPrimitive.Root.Props & {
+  trigger?: ButtonProps;
+  title: string;
+  description: string | React.ReactNode;
+  cancelButton?: ButtonProps;
+  actionButton?: ButtonProps;
+};
+
+function BasicAlertDialog({
+  trigger,
+  title = "Are you absolutely sure?",
+  description = "This description",
+  cancelButton,
+  actionButton,
+  ...props
+}: BasicAlertDialogProps) {
+  return (
+    <AlertDialog {...props}>
+      {trigger && <AlertDialogTrigger render={<Button {...trigger} />} />}
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogDescription>{description}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel variant="outline" {...cancelButton}>
+            {cancelButton?.children ?? "Cancel"}
+          </AlertDialogCancel>
+          <AlertDialogAction variant="default" {...actionButton}>
+            {actionButton?.children ?? "Sure"}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
 export {
   AlertDialog,
   AlertDialogAction,
@@ -183,4 +220,5 @@ export {
   AlertDialogPortal,
   AlertDialogTitle,
   AlertDialogTrigger,
+  BasicAlertDialog,
 };
