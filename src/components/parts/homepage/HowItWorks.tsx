@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import { FolderPlus, Layers, Rocket } from "lucide-react";
 import SectionHeaderHomepageTemplate from "@/components/parts/template/SectionHeaderHomepageTemplate";
+import { Badge } from "@/components/ui/badge";
 
 type Step = {
   step: number;
@@ -54,9 +55,7 @@ const HowItWorks = () => {
               <div className="flex size-16 items-center justify-center rounded-2xl bg-primary/10">
                 <item.icon className="size-7 text-primary" />
               </div>
-              <span className="absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                {item.step}
-              </span>
+              <Badge className="absolute -top-2 -right-2">{item.step}</Badge>
             </div>
 
             <h3 className="typography-subheading-2">{item.title}</h3>
