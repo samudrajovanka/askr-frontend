@@ -5,7 +5,7 @@ import {
   getReleases,
 } from "@/endpoints/release";
 import { useFetchAuth } from "@/hooks/useFetchAuth";
-import type { BumpType } from "@/types/release";
+import type { VersionBumpType } from "@/types/version";
 
 export const getReleasesKey = (workspaceSlug: string, projectSlug: string) => [
   workspaceSlug,
@@ -51,7 +51,7 @@ export const useCreateRelease = (
   const { execute } = useFetchAuth(createReleaseFn);
 
   return useMutation({
-    mutationFn: (body: { bumpType: BumpType; notes: string }) =>
+    mutationFn: (body: { bumpType: VersionBumpType; notes: string }) =>
       execute(workspaceSlug, projectSlug, body),
     onSuccess: () => {
       queryClient.invalidateQueries({

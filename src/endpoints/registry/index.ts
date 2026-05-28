@@ -1,7 +1,7 @@
 import { fetcher } from "@/lib/helpers/fetcher";
 import type { SafeRegistryConfig } from "@/types/registry";
 import type { SuccessResponseData } from "@/types/response";
-import type { UpsertRegistryPayload } from "./validator";
+import type { UpsertRegistryPayload } from "./type";
 
 export const getRegistryConfig = async (
   token: string,

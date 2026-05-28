@@ -3,7 +3,7 @@ import {
   getRegistryConfig,
   upsertRegistryConfig as upsertRegistryConfigFn,
 } from "@/endpoints/registry";
-import type { UpsertRegistryPayload } from "@/endpoints/registry/validator";
+import type { UpsertRegistryPayload } from "@/endpoints/registry/type";
 import { useFetchAuth } from "@/hooks/useFetchAuth";
 
 export const getRegistryConfigKey = (

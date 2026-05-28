@@ -1,8 +1,8 @@
-import type { BumpType } from "@/types/release";
+import type { VersionBumpType } from "@/types/version";
 
 export const bumpVersion = (
   currentVersion: string | null,
-  type: BumpType,
+  type: VersionBumpType,
 ): string => {
   if (!currentVersion) return "1.0.0";
   const parts = currentVersion.split(".").map(Number);
