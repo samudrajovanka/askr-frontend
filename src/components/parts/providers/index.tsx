@@ -7,11 +7,15 @@ import { useState } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { queryClientConfig } from "@/lib/helpers/queryClient";
 
-const Providers = ({ children }: React.PropsWithChildren) => {
+interface ProvidersProps extends React.PropsWithChildren {
+  publishableKey?: string;
+}
+
+const Providers = ({ children, publishableKey }: ProvidersProps) => {
   const [queryClient] = useState(() => new QueryClient(queryClientConfig));
 
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={publishableKey}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>{children}</TooltipProvider>
 
