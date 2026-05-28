@@ -1,14 +1,14 @@
-name: Deploy to Cloud Run
+name: Deploy to Cloud Run (Dev)
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
 
 env:
   REGION: asia-southeast2 
   SERVICE_NAME: askr-frontend
-  IMAGE: asia-southeast2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/askr-repo/askr-frontend:${{ github.ref_name }}
+  IMAGE: asia-southeast2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID_DEV }}/askr-repo/askr-frontend:${{ github.sha }}
 
 jobs:
   deploy:
@@ -26,8 +26,8 @@ jobs:
         id: auth
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: '${{ secrets.WIF_PROVIDER }}'
-          service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}'
+          workload_identity_provider: '${{ secrets.WIF_PROVIDER_DEV }}'
+          service_account: '${{ secrets.WIF_SERVICE_ACCOUNT_DEV }}'
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
@@ -48,4 +48,3 @@ jobs:
           region: ${{ env.REGION }}
           image: ${{ env.IMAGE }}
           flags: --allow-unauthenticated
-
