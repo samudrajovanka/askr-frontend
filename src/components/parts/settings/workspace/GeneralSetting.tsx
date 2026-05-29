@@ -114,7 +114,7 @@ const GeneralSetting = ({ workspace }: WorkspaceSettingProps) => {
                   <FieldLabel htmlFor={field.name}>URL Slug</FieldLabel>
                   <InputGroup>
                     <InputGroupAddon>
-                      <InputGroupText>{app.url}/w/</InputGroupText>
+                      <InputGroupText>w/</InputGroupText>
                     </InputGroupAddon>
                     <InputGroupInput
                       id={field.name}

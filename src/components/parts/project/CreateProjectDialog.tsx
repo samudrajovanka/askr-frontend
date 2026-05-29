@@ -120,9 +120,7 @@ const CreateProjectDialog = ({ open, onOpenChange, workspaceSlug }: Props) => {
                   <FieldLabel htmlFor={field.name}>URL Slug</FieldLabel>
                   <InputGroup>
                     <InputGroupAddon>
-                      <InputGroupText>
-                        {app.url}/w/{workspaceSlug}/p/
-                      </InputGroupText>
+                      <InputGroupText>p/</InputGroupText>
                     </InputGroupAddon>
                     <InputGroupInput
                       id={field.name}
