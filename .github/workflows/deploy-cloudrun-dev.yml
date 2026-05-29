@@ -42,8 +42,10 @@ jobs:
             --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY_DEV }}" \
             --build-arg NEXT_PUBLIC_CLERK_SIGN_IN_URL="/auth/sign-in" \
             --build-arg NEXT_PUBLIC_CLERK_SIGN_UP_URL="/auth/sign-up" \
-            --build-arg NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL="/workspaces" \
-            --build-arg NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL="/workspaces" \
+            --build-arg NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL="/workspaces" \
+            --build-arg NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL="/workspaces" \
+            --build-arg NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL="/workspaces" \
+            --build-arg NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL="/workspaces" \
             -t ${{ env.IMAGE }} .
 
       - name: Push Docker image

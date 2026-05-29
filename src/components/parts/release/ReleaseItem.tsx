@@ -13,23 +13,13 @@ const ReleaseItem = ({ release }: { release: SafeRelease }) => {
             v{release.version}
           </span>
           {release.status === RELEASE_STATUSES.SUCCESS && (
-            <Badge
-              variant="outline"
-              className="border-green-200 bg-green-50 text-green-600"
-            >
-              {release.status}
-            </Badge>
+            <Badge variant="outline-success">{release.status}</Badge>
           )}
           {release.status === RELEASE_STATUSES.FAILED && (
-            <Badge variant="destructive">{release.status}</Badge>
+            <Badge variant="outline-destructive">{release.status}</Badge>
           )}
           {release.status === RELEASE_STATUSES.PENDING && (
-            <Badge
-              variant="outline"
-              className="border-yellow-200 bg-yellow-50 text-yellow-600"
-            >
-              {release.status}
-            </Badge>
+            <Badge variant="outline-warning">{release.status}</Badge>
           )}
           <span className="text-sm text-muted-foreground">
             {release.tokenCount ?? 0} tokens

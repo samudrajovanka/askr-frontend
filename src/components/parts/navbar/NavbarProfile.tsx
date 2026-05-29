@@ -18,6 +18,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMe } from "@/query/auth";
 import { useMyInvitations } from "@/query/invitation";
+import packageJson from "../../../../package.json";
 import MyInvitationsDialog from "./MyInvitationsDialog";
 
 const NavbarProfile = () => {
@@ -58,10 +59,7 @@ const NavbarProfile = () => {
                   </DropdownMenuLabel>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => setInvitationsOpen(true)}
-                  className="cursor-pointer "
-                >
+                <DropdownMenuItem onClick={() => setInvitationsOpen(true)}>
                   <Mail className="size-4" />
                   <span>My Invitations</span>
                   {pendingCount > 0 && (
@@ -78,6 +76,10 @@ const NavbarProfile = () => {
                 >
                   Log out
                 </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <div className="px-2 py-1 typography-xsmall text-muted-foreground/70 font-mono text-center">
+                  v{packageJson.version}
+                </div>
               </DropdownMenuContent>
             </DropdownMenu>
           );

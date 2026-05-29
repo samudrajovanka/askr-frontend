@@ -127,8 +127,15 @@ const InvitationsSetting = () => {
                   <TableCell>
                     <BadgeWorkspaceRole role={invitation.role} />
                   </TableCell>
-                  <TableCell className="typography-small text-muted-foreground">
-                    {invitation.invitedByName}
+                  <TableCell className="typography-small">
+                    <div className="flex flex-col">
+                      <p className="typography-small font-medium">
+                        {invitation.invitedByName}
+                      </p>
+                      <p className="typography-xsmall text-muted-foreground">
+                        {invitation.invitedByEmail}
+                      </p>
+                    </div>
                   </TableCell>
                   <TableCell className="text-muted-foreground typography-xsmall">
                     {format(new Date(invitation.createdAt), "dd MMM yyyy")}

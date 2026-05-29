@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useClerk } from "@clerk/nextjs";
 import { ArrowRight, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -15,38 +15,49 @@ const navLinks = [
 
 const NavbarHomepage = () => {
   const { isSignedIn } = useAuth();
+  const { signOut } = useClerk();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <header className="navbar-wrapper sticky top-0 z-50">
       <div className="flex h-16 w-full justify-between items-center px-6">
-        <Logo className="w-5/12" />
+        <div className="flex jus items-center gap-6">
+          <Logo />
 
-        <nav className="w-full hidden md:flex justify-center items-center gap-3">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="rounded-lg p-2 typography-small text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
+          <nav className="hidden md:flex justify-center items-center gap-2">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="rounded-lg px-2 typography-small text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
 
-        <div className="w-5/12 flex justify-end">
+        <div className="flex justify-end">
           <div className="hidden items-center gap-2 md:flex">
             {isSignedIn ? (
-              <Link
-                href="/workspaces"
-                className={buttonVariants({
-                  variant: "default",
-                  size: "default",
-                })}
-              >
-                Dashboard
-                <ArrowRight className="size-4" />
-              </Link>
+              <>
+                <Button
+                  variant="ghost"
+                  onClick={() => signOut({ redirectUrl: "/" })}
+                >
+                  Sign Out
+                </Button>
+                <Link
+                  href="/workspaces"
+                  className={buttonVariants({
+                    variant: "default",
+                    size: "default",
+                  })}
+                >
+                  Dashboard
+                  <ArrowRight className="size-4" />
+                </Link>
+              </>
             ) : (
               <>
                 <Link
@@ -103,16 +114,24 @@ const NavbarHomepage = () => {
           </nav>
           <div className="mt-4 flex flex-col gap-2">
             {isSignedIn ? (
-              <Link
-                href="/workspaces"
-                className={buttonVariants({
-                  variant: "default",
-                  size: "default",
-                })}
-              >
-                Dashboard
-                <ArrowRight className="size-4" />
-              </Link>
+              <>
+                <Link
+                  href="/workspaces"
+                  className={buttonVariants({
+                    variant: "default",
+                    size: "default",
+                  })}
+                >
+                  Dashboard
+                  <ArrowRight className="size-4" />
+                </Link>
+                <Button
+                  variant="outline"
+                  onClick={() => signOut({ redirectUrl: "/" })}
+                >
+                  Sign Out
+                </Button>
+              </>
             ) : (
               <>
                 <Link
