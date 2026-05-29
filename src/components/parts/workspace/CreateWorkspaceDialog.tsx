@@ -19,7 +19,6 @@ import {
   InputGroupInput,
   InputGroupText,
 } from "@/components/ui/input-group";
-import app from "@/config/app";
 import { createWorkspaceSchema } from "@/endpoints/workspace/validator";
 import { isInvalidField } from "@/lib/helpers/field";
 import { generateSlug } from "@/lib/helpers/string";

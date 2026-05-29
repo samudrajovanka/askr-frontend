@@ -20,7 +20,6 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "@/components/ui/input-group";
-import app from "@/config/app";
 import { DESCRIPTION_MAX_LENGTH } from "@/constants/string";
 import { createProjectSchema } from "@/endpoints/project/validator";
 import { isInvalidField } from "@/lib/helpers/field";
