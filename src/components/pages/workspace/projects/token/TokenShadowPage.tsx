@@ -7,7 +7,9 @@ import { toast } from "sonner";
 import TokenPageTemplate from "@/components/parts/template/TokenPageTemplate";
 import ShadowTokenDrawer from "@/components/parts/token/shadow/ShadowTokenDrawer";
 import TokenShadowRow from "@/components/parts/token/shadow/TokenShadowRow";
+import { hasPermission } from "@/lib/permissions";
 import { useDeleteTokenShadow, useTokenShadows } from "@/query/token";
+import { useWorkspace } from "@/query/workspace";
 import type { Token } from "@/types/token";
 
 const TokenShadowPage = () => {
@@ -19,6 +21,20 @@ const TokenShadowPage = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editToken, setEditToken] = useState<Token | null>(null);
   const deleteMutation = useDeleteTokenShadow(workspaceSlug, projectSlug);
+  const workspaceQuery = useWorkspace(workspaceSlug);
+
+  const canCreate = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:create",
+  );
+  const canEdit = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:edit",
+  );
+  const canDelete = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:delete",
+  );
 
   const primitiveQuery = useTokenShadows(
     workspaceSlug,
@@ -58,9 +74,11 @@ const TokenShadowPage = () => {
         semantic: semanticQuery,
       }}
       handleCreate={handleCreate}
+      canCreate={canCreate}
       emptyState={{
         title: "No shadow tokens yet",
-        message: "Build your elevation system by adding shadow tokens.",
+        message:
+          "Start building your shadow system by adding primitive and semantic shadow tokens.",
       }}
       renderRow={(token) => (
         <TokenShadowRow
@@ -68,6 +86,8 @@ const TokenShadowPage = () => {
           token={token}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          canEdit={canEdit}
+          canDelete={canDelete}
         />
       )}
       renderDrawer={(activeTab) => (

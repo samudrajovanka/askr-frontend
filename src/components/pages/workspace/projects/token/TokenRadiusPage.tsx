@@ -7,7 +7,9 @@ import { toast } from "sonner";
 import TokenPageTemplate from "@/components/parts/template/TokenPageTemplate";
 import RadiusTokenDrawer from "@/components/parts/token/radius/RadiusTokenDrawer";
 import TokenRadiusRow from "@/components/parts/token/radius/TokenRadiusRow";
+import { hasPermission } from "@/lib/permissions";
 import { useDeleteTokenRadius, useTokenRadii } from "@/query/token";
+import { useWorkspace } from "@/query/workspace";
 import type { Token } from "@/types/token";
 
 const TokenRadiusPage = () => {
@@ -19,6 +21,20 @@ const TokenRadiusPage = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editToken, setEditToken] = useState<Token | null>(null);
   const deleteMutation = useDeleteTokenRadius(workspaceSlug, projectSlug);
+  const workspaceQuery = useWorkspace(workspaceSlug);
+
+  const canCreate = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:create",
+  );
+  const canEdit = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:edit",
+  );
+  const canDelete = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:delete",
+  );
 
   const primitiveQuery = useTokenRadii(workspaceSlug, projectSlug, "primitive");
   const semanticQuery = useTokenRadii(workspaceSlug, projectSlug, "semantic");
@@ -54,10 +70,11 @@ const TokenRadiusPage = () => {
         semantic: semanticQuery,
       }}
       handleCreate={handleCreate}
+      canCreate={canCreate}
       emptyState={{
         title: "No radius tokens yet",
         message:
-          "Define your border radius scale with primitive and semantic tokens.",
+          "Start building your radius system by adding primitive and semantic radius tokens.",
       }}
       renderRow={(token) => (
         <TokenRadiusRow
@@ -65,6 +82,8 @@ const TokenRadiusPage = () => {
           token={token}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          canEdit={canEdit}
+          canDelete={canDelete}
         />
       )}
       renderDrawer={(activeTab) => (

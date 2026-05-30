@@ -7,7 +7,9 @@ import { toast } from "sonner";
 import TokenPageTemplate from "@/components/parts/template/TokenPageTemplate";
 import TextTokenDrawer from "@/components/parts/token/text/TextTokenDrawer";
 import TokenTextRow from "@/components/parts/token/text/TokenTextRow";
+import { hasPermission } from "@/lib/permissions";
 import { useDeleteTokenText, useTokenTexts } from "@/query/token";
+import { useWorkspace } from "@/query/workspace";
 import type { Token } from "@/types/token";
 
 const TokenTextPage = () => {
@@ -19,6 +21,20 @@ const TokenTextPage = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editToken, setEditToken] = useState<Token | null>(null);
   const deleteMutation = useDeleteTokenText(workspaceSlug, projectSlug);
+  const workspaceQuery = useWorkspace(workspaceSlug);
+
+  const canCreate = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:create",
+  );
+  const canEdit = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:edit",
+  );
+  const canDelete = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:delete",
+  );
 
   const primitiveQuery = useTokenTexts(workspaceSlug, projectSlug, "primitive");
   const semanticQuery = useTokenTexts(workspaceSlug, projectSlug, "semantic");
@@ -54,6 +70,7 @@ const TokenTextPage = () => {
         semantic: semanticQuery,
       }}
       handleCreate={handleCreate}
+      canCreate={canCreate}
       emptyState={{
         title: "No text tokens yet",
         message:
@@ -65,6 +82,8 @@ const TokenTextPage = () => {
           token={token}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          canEdit={canEdit}
+          canDelete={canDelete}
         />
       )}
       renderDrawer={(activeTab) => (

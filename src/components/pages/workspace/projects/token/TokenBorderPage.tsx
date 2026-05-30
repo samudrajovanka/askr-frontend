@@ -7,7 +7,9 @@ import { toast } from "sonner";
 import TokenPageTemplate from "@/components/parts/template/TokenPageTemplate";
 import BorderTokenDrawer from "@/components/parts/token/border/BorderTokenDrawer";
 import TokenBorderRow from "@/components/parts/token/border/TokenBorderRow";
+import { hasPermission } from "@/lib/permissions";
 import { useDeleteTokenBorder, useTokenBorders } from "@/query/token";
+import { useWorkspace } from "@/query/workspace";
 import type { Token } from "@/types/token";
 
 const TokenBorderPage = () => {
@@ -19,6 +21,20 @@ const TokenBorderPage = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editToken, setEditToken] = useState<Token | null>(null);
   const deleteMutation = useDeleteTokenBorder(workspaceSlug, projectSlug);
+  const workspaceQuery = useWorkspace(workspaceSlug);
+
+  const canCreate = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:create",
+  );
+  const canEdit = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:edit",
+  );
+  const canDelete = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:delete",
+  );
 
   const primitiveQuery = useTokenBorders(
     workspaceSlug,
@@ -58,10 +74,11 @@ const TokenBorderPage = () => {
         semantic: semanticQuery,
       }}
       handleCreate={handleCreate}
+      canCreate={canCreate}
       emptyState={{
         title: "No border tokens yet",
         message:
-          "Define your border styles with primitive and semantic tokens.",
+          "Start building your border system by adding primitive and semantic border tokens.",
       }}
       renderRow={(token) => (
         <TokenBorderRow
@@ -69,6 +86,8 @@ const TokenBorderPage = () => {
           token={token}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          canEdit={canEdit}
+          canDelete={canDelete}
         />
       )}
       renderDrawer={(activeTab) => (

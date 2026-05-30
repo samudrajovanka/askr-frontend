@@ -9,7 +9,9 @@ import ColorTokenDrawer from "@/components/parts/token/color/ColorTokenDrawer";
 import TokenColorFormatSelector from "@/components/parts/token/color/TokenColorFormatSelector";
 import TokenColorRow from "@/components/parts/token/color/TokenColorRow";
 import type { ColorFormat } from "@/lib/helpers/color";
+import { hasPermission } from "@/lib/permissions";
 import { useDeleteTokenColor, useTokenColors } from "@/query/token";
+import { useWorkspace } from "@/query/workspace";
 import type { Token } from "@/types/token";
 
 const TokenColorPage = () => {
@@ -22,6 +24,20 @@ const TokenColorPage = () => {
   const [editToken, setEditToken] = useState<Token | null>(null);
   const [colorFormat, setColorFormat] = useState<ColorFormat>("hex");
   const deleteMutation = useDeleteTokenColor(workspaceSlug, projectSlug);
+  const workspaceQuery = useWorkspace(workspaceSlug);
+
+  const canCreate = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:create",
+  );
+  const canEdit = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:edit",
+  );
+  const canDelete = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:delete",
+  );
 
   const primitiveQuery = useTokenColors(
     workspaceSlug,
@@ -61,6 +77,7 @@ const TokenColorPage = () => {
         semantic: semanticQuery,
       }}
       handleCreate={handleCreate}
+      canCreate={canCreate}
       skeletonPreviewClassName="h-8 w-8 rounded-md"
       extraControls={
         <TokenColorFormatSelector
@@ -80,6 +97,8 @@ const TokenColorPage = () => {
           onEdit={handleEdit}
           onDelete={handleDelete}
           colorFormat={colorFormat}
+          canEdit={canEdit}
+          canDelete={canDelete}
         />
       )}
       renderDrawer={(activeTab) => (

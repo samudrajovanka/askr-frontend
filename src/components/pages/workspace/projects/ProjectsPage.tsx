@@ -12,12 +12,20 @@ import QueryHandling from "@/components/parts/query/QueryHandling";
 import HeaderSection from "@/components/parts/template/HeaderSectionTemplate";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { BasicEmptyState } from "@/components/ui/empty";
+import { hasPermission } from "@/lib/permissions";
 import { useProjects } from "@/query/project";
+import { useWorkspace } from "@/query/workspace";
 
 const ProjectsPage = () => {
   const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
   const [dialogOpen, setDialogOpen] = useState(false);
   const projectsQuery = useProjects(workspaceSlug);
+  const workspaceQuery = useWorkspace(workspaceSlug);
+
+  const canCreate = hasPermission(
+    workspaceQuery.data?.data?.data.workspace.role,
+    "project:create",
+  );
 
   return (
     <>
@@ -33,7 +41,7 @@ const ProjectsPage = () => {
               <Settings className="size-4" />
               Settings
             </Link>
-            {projectsQuery.data?.data.data.projects.length ? (
+            {projectsQuery.data?.data.data.projects.length && canCreate ? (
               <Button onClick={() => setDialogOpen(true)}>
                 <Plus className="size-4" />
                 New Project
@@ -57,10 +65,14 @@ const ProjectsPage = () => {
             Icon={FolderGit2}
             title="No projects yet"
             message="Create your first project to start managing design tokens for your team."
-            actionPlus={{
-              title: "Create your first Project",
-              onClick: () => setDialogOpen(true),
-            }}
+            actionPlus={
+              canCreate
+                ? {
+                    title: "Create your first Project",
+                    onClick: () => setDialogOpen(true),
+                  }
+                : undefined
+            }
           />
         }
         checkEmpty={({
@@ -81,7 +93,9 @@ const ProjectsPage = () => {
                 workspaceSlug={workspaceSlug}
               />
             ))}
-            <AddProjectCard onClick={() => setDialogOpen(true)} />
+            {canCreate && (
+              <AddProjectCard onClick={() => setDialogOpen(true)} />
+            )}
           </div>
         )}
       />

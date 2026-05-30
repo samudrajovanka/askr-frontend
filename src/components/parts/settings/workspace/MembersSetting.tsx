@@ -30,10 +30,12 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { roleWorkspaceLabels } from "@/constants/workspace";
+import { hasPermission } from "@/lib/permissions";
 import { useMe } from "@/query/auth";
 import {
   useRemoveMember,
   useUpdateWorkspaceMember,
+  useWorkspace,
   useWorkspaceMembers,
 } from "@/query/workspace";
 import type { RoleWorkspace } from "@/types/workspace";
@@ -48,9 +50,19 @@ const HEADERS: TableHeaderItem[] = [
 const MembersSetting = () => {
   const { data } = useMe();
   const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
+  const workspaceQuery = useWorkspace(workspaceSlug);
   const membersQuery = useWorkspaceMembers(workspaceSlug);
   const updateRoleMutation = useUpdateWorkspaceMember(workspaceSlug);
   const removeMemberMutation = useRemoveMember(workspaceSlug);
+
+  const canManage = hasPermission(
+    workspaceQuery.data?.data?.data?.workspace?.role,
+    "workspace:update-member",
+  );
+  const canRemove = hasPermission(
+    workspaceQuery.data?.data?.data?.workspace?.role,
+    "workspace:remove-member",
+  );
 
   const [pendingRoleChange, setPendingRoleChange] = useState<{
     memberId: string;
@@ -132,7 +144,7 @@ const MembersSetting = () => {
                       </TableCell>
                       <TableCell>
                         <Select
-                          disabled={isSelf}
+                          disabled={isSelf || !canManage}
                           value={member.role}
                           onValueChange={(value) => {
                             const newRole = value as RoleWorkspace;
@@ -146,7 +158,9 @@ const MembersSetting = () => {
                           }}
                         >
                           <SelectTrigger className="w-fit min-w-28">
-                            <SelectValue />
+                            <SelectValue>
+                              {roleWorkspaceLabels[member.role]}
+                            </SelectValue>
                           </SelectTrigger>
                           <SelectContent>
                             {Object.entries(roleWorkspaceLabels).map(
@@ -167,7 +181,7 @@ const MembersSetting = () => {
                           trigger={{
                             variant: "ghost-desctructive",
                             size: "icon-sm",
-                            disabled: isSelf,
+                            disabled: isSelf || !canRemove,
                             children: <Trash2 className="size-4" />,
                           }}
                           title={`Remove ${member.name}?`}

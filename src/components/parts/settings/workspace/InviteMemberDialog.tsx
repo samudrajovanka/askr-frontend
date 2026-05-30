@@ -27,12 +27,19 @@ import {
 import { roleWorkspaceLabels } from "@/constants/workspace";
 import { createInvitationSchema } from "@/endpoints/workspace/validator";
 import { isInvalidField } from "@/lib/helpers/field";
-import { useCreateInvitation } from "@/query/workspace";
+import { hasPermission } from "@/lib/permissions";
+import { useCreateInvitation, useWorkspace } from "@/query/workspace";
 import type { RoleWorkspace } from "@/types/workspace";
 
 const InviteMemberDialog = () => {
   const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
   const [open, setOpen] = useState(false);
+  const workspaceQuery = useWorkspace(workspaceSlug);
+
+  const canInvite = hasPermission(
+    workspaceQuery.data?.data?.data?.workspace?.role,
+    "workspace:invite",
+  );
   const createInvitation = useCreateInvitation(workspaceSlug);
 
   const form = useForm({
@@ -55,6 +62,8 @@ const InviteMemberDialog = () => {
       form.reset();
     },
   });
+
+  if (!canInvite) return null;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -110,7 +119,9 @@ const InviteMemberDialog = () => {
                   }
                 >
                   <SelectTrigger id={field.name} className="w-full">
-                    <SelectValue />
+                    <SelectValue>
+                      {roleWorkspaceLabels[field.state.value]}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {Object.entries(roleWorkspaceLabels).map(

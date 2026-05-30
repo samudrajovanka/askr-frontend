@@ -1,16 +1,10 @@
 "use client";
 
-import { Check, Copy, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { Check, Copy } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
+import TokenActions from "@/components/parts/token/TokenActions";
 import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   type ColorFormat,
   hexColorConverterPreview,
@@ -23,6 +17,8 @@ type Props = {
   onEdit: (token: Token) => void;
   onDelete: (token: Token) => void;
   colorFormat?: ColorFormat;
+  canEdit?: boolean;
+  canDelete?: boolean;
 };
 
 const TokenColorRow = ({
@@ -30,6 +26,8 @@ const TokenColorRow = ({
   onEdit,
   onDelete,
   colorFormat = "hex",
+  canEdit = true,
+  canDelete = true,
 }: Props) => {
   const [copied, setCopied] = useState(false);
   const colorValue = useMemo(
@@ -94,25 +92,13 @@ const TokenColorRow = ({
         </button>
       </div>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger className="p-1.5 rounded-md hover:bg-muted transition-colors">
-          <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => onEdit(token)}>
-            <Pencil />
-            Edit
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            variant="destructive"
-            onClick={() => onDelete(token)}
-          >
-            <Trash2 />
-            Delete
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <TokenActions
+        token={token}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        canEdit={canEdit}
+        canDelete={canDelete}
+      />
     </div>
   );
 };

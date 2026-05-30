@@ -7,7 +7,9 @@ import { toast } from "sonner";
 import TokenPageTemplate from "@/components/parts/template/TokenPageTemplate";
 import TokenTrackingRow from "@/components/parts/token/tracking/TokenTrackingRow";
 import TrackingTokenDrawer from "@/components/parts/token/tracking/TrackingTokenDrawer";
+import { hasPermission } from "@/lib/permissions";
 import { useDeleteTokenTracking, useTokenTrackings } from "@/query/token";
+import { useWorkspace } from "@/query/workspace";
 import type { Token } from "@/types/token";
 
 const TokenTrackingPage = () => {
@@ -19,6 +21,20 @@ const TokenTrackingPage = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editToken, setEditToken] = useState<Token | null>(null);
   const deleteMutation = useDeleteTokenTracking(workspaceSlug, projectSlug);
+  const workspaceQuery = useWorkspace(workspaceSlug);
+
+  const canCreate = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:create",
+  );
+  const canEdit = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:edit",
+  );
+  const canDelete = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:delete",
+  );
 
   const primitiveQuery = useTokenTrackings(
     workspaceSlug,
@@ -62,10 +78,11 @@ const TokenTrackingPage = () => {
         semantic: semanticQuery,
       }}
       handleCreate={handleCreate}
+      canCreate={canCreate}
       emptyState={{
         title: "No tracking tokens yet",
         message:
-          "Start building your letter spacing system by adding primitive and semantic tracking tokens.",
+          "Start building your tracking system by adding primitive and semantic tracking tokens.",
       }}
       renderRow={(token) => (
         <TokenTrackingRow
@@ -73,6 +90,8 @@ const TokenTrackingPage = () => {
           token={token}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          canEdit={canEdit}
+          canDelete={canDelete}
         />
       )}
       renderDrawer={(activeTab) => (

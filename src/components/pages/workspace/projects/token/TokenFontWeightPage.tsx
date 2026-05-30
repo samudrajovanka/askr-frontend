@@ -7,7 +7,9 @@ import { toast } from "sonner";
 import TokenPageTemplate from "@/components/parts/template/TokenPageTemplate";
 import FontWeightTokenDrawer from "@/components/parts/token/font-weight/FontWeightTokenDrawer";
 import TokenFontWeightRow from "@/components/parts/token/font-weight/TokenFontWeightRow";
+import { hasPermission } from "@/lib/permissions";
 import { useDeleteTokenFontWeight, useTokenFontWeights } from "@/query/token";
+import { useWorkspace } from "@/query/workspace";
 import type { Token } from "@/types/token";
 
 const TokenFontWeightPage = () => {
@@ -19,6 +21,20 @@ const TokenFontWeightPage = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editToken, setEditToken] = useState<Token | null>(null);
   const deleteMutation = useDeleteTokenFontWeight(workspaceSlug, projectSlug);
+  const workspaceQuery = useWorkspace(workspaceSlug);
+
+  const canCreate = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:create",
+  );
+  const canEdit = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:edit",
+  );
+  const canDelete = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:delete",
+  );
 
   const primitiveQuery = useTokenFontWeights(
     workspaceSlug,
@@ -62,10 +78,11 @@ const TokenFontWeightPage = () => {
         semantic: semanticQuery,
       }}
       handleCreate={handleCreate}
+      canCreate={canCreate}
       emptyState={{
         title: "No font weight tokens yet",
         message:
-          "Start building your weight scale by adding primitive and semantic font weight tokens.",
+          "Start building your font weight system by adding primitive and semantic font weight tokens.",
       }}
       renderRow={(token) => (
         <TokenFontWeightRow
@@ -73,6 +90,8 @@ const TokenFontWeightPage = () => {
           token={token}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          canEdit={canEdit}
+          canDelete={canDelete}
         />
       )}
       renderDrawer={(activeTab) => (

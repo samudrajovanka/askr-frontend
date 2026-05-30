@@ -32,6 +32,7 @@ type TokenPageTemplateProps = {
     }>;
   };
   handleCreate: () => void;
+  canCreate?: boolean;
   SkeletonRow?: React.ComponentType;
   skeletonPreviewClassName?: string;
   renderRow: (token: Token) => ReactNode;
@@ -50,6 +51,7 @@ const TokenPageTemplate = ({
   icon,
   queries,
   handleCreate,
+  canCreate = true,
   SkeletonRow,
   skeletonPreviewClassName,
   renderRow,
@@ -82,7 +84,7 @@ const TokenPageTemplate = ({
         title={title}
         description={description}
         rightComponent={
-          hasTokens ? (
+          hasTokens && canCreate ? (
             <Button onClick={handleCreate}>
               <Plus className="size-4" />
               New Token
@@ -147,10 +149,14 @@ const TokenPageTemplate = ({
                 emptyState?.message ||
                 `Start building your system by adding primitive and semantic ${tokenTypeLabel}s.`
               }
-              actionPlus={{
-                title: `Add your first ${tokenTypeLabel}`,
-                onClick: handleCreate,
-              }}
+              actionPlus={
+                canCreate
+                  ? {
+                      title: `Add your first ${tokenTypeLabel}`,
+                      onClick: handleCreate,
+                    }
+                  : undefined
+              }
             />
           }
           checkEmpty={({

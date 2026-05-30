@@ -2,7 +2,7 @@
 
 import { ChevronLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import StepperLayout from "@/components/layout/StepperLayout";
 import ReleaseConfigureStep from "@/components/parts/release/new/ReleaseConfigureStep";
@@ -11,7 +11,9 @@ import ReleaseReviewStep from "@/components/parts/release/new/ReleaseReviewStep"
 import { Button } from "@/components/ui/button";
 import { DEFAULT_VERSION, VERSION_BUMP_TYPES } from "@/constants/version";
 import { bumpVersion } from "@/lib/helpers/version";
+import { hasPermission } from "@/lib/permissions";
 import { useCreateRelease, useReleaseDiff } from "@/query/release";
+import { useWorkspace } from "@/query/workspace";
 import type { VersionBumpType } from "@/types/version";
 
 const NOTES_MAX_LENGTH = 200;
@@ -41,6 +43,12 @@ const NewReleasePage = () => {
   } = useReleaseDiff(workspaceSlug, projectSlug, true);
   const diff = diffData?.data.data.diff;
 
+  const workspaceQuery = useWorkspace(workspaceSlug);
+  const canPublish = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "release:publish",
+  );
+
   const createReleaseMutation = useCreateRelease(workspaceSlug, projectSlug);
 
   useEffect(() => {
@@ -57,9 +65,16 @@ const NewReleasePage = () => {
 
   const isInitialRelease = diff?.currentVersion === null;
 
-  const goToReleases = () => {
+  const goToReleases = useCallback(() => {
     router.push(`/w/${workspaceSlug}/p/${projectSlug}/release`);
-  };
+  }, [router, workspaceSlug, projectSlug]);
+
+  useEffect(() => {
+    if (workspaceQuery.isFetched && !canPublish) {
+      toast.error("You don't have permission to publish releases");
+      goToReleases();
+    }
+  }, [workspaceQuery.isFetched, canPublish, goToReleases]);
 
   const handleNext = () => {
     if (step === 1) {

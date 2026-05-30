@@ -24,6 +24,7 @@ import {
 import { createWorkspaceSchema } from "@/endpoints/workspace/validator";
 import { isInvalidField } from "@/lib/helpers/field";
 import { generateSlug } from "@/lib/helpers/string";
+import { hasPermission } from "@/lib/permissions";
 import { useUpdateWorkspace } from "@/query/workspace";
 import type { Workspace } from "@/types/workspace";
 
@@ -35,6 +36,7 @@ const GeneralSetting = ({ workspace }: WorkspaceSettingProps) => {
   const [slugTouched, setSlugTouched] = useState(true);
   const updateMutation = useUpdateWorkspace();
   const router = useRouter();
+  const canManage = hasPermission(workspace.role, "workspace:update");
 
   const form = useForm({
     defaultValues: {
@@ -148,7 +150,10 @@ const GeneralSetting = ({ workspace }: WorkspaceSettingProps) => {
                 <Button
                   type="submit"
                   disabled={
-                    !canSubmit || isSubmitting || updateMutation.isPending
+                    !canSubmit ||
+                    isSubmitting ||
+                    updateMutation.isPending ||
+                    !canManage
                   }
                 >
                   {updateMutation.isPending ? "Saving..." : "Save Changes"}

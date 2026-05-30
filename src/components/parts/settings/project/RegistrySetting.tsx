@@ -26,7 +26,9 @@ import {
 import type { UpsertRegistryPayload } from "@/endpoints/registry/type";
 import { upsertRegistrySchema } from "@/endpoints/registry/validator";
 import { isInvalidField } from "@/lib/helpers/field";
+import { hasPermission } from "@/lib/permissions";
 import { useUpsertRegistryConfig } from "@/query/registry";
+import { useWorkspace } from "@/query/workspace";
 import type { SafeRegistryConfig } from "@/types/registry";
 
 type RegistrySettingProps = {
@@ -41,6 +43,11 @@ const RegistrySetting = ({
   config,
 }: RegistrySettingProps) => {
   const mutation = useUpsertRegistryConfig(workspaceSlug, projectSlug);
+  const workspaceQuery = useWorkspace(workspaceSlug);
+  const canManage = hasPermission(
+    workspaceQuery.data?.data?.data?.workspace?.role,
+    "registry:manage",
+  );
 
   const form = useForm({
     defaultValues: {
@@ -170,7 +177,12 @@ const RegistrySetting = ({
               <div className="flex justify-end pt-4">
                 <Button
                   type="submit"
-                  disabled={!canSubmit || isSubmitting || mutation.isPending}
+                  disabled={
+                    !canSubmit ||
+                    isSubmitting ||
+                    mutation.isPending ||
+                    !canManage
+                  }
                 >
                   {mutation.isPending ? "Saving..." : "Save Changes"}
                 </Button>

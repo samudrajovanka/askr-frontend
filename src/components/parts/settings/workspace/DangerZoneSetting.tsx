@@ -21,12 +21,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useDeleteWorkspace } from "@/query/workspace";
+import { hasPermission } from "@/lib/permissions";
+import { useDeleteWorkspace, useWorkspace } from "@/query/workspace";
 
 const DangerZoneSetting = () => {
   const router = useRouter();
   const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
   const deleteMutation = useDeleteWorkspace();
+  const workspaceQuery = useWorkspace(workspaceSlug);
+  const canDelete = hasPermission(
+    workspaceQuery.data?.data?.data?.workspace?.role,
+    "workspace:delete",
+  );
+
+  if (!canDelete) return null;
 
   return (
     <Card className="ring-destructive/50">

@@ -8,7 +8,9 @@ import HeaderSection from "@/components/parts/template/HeaderSectionTemplate";
 import { Button } from "@/components/ui/button";
 import { BasicEmptyState } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
+import { hasPermission } from "@/lib/permissions";
 import { useReleases } from "@/query/release";
+import { useWorkspace } from "@/query/workspace";
 
 const ReleasePage = () => {
   const params = useParams();
@@ -17,6 +19,11 @@ const ReleasePage = () => {
   const projectSlug = params.projectSlug as string;
 
   const releasesQuery = useReleases(workspaceSlug, projectSlug);
+  const workspaceQuery = useWorkspace(workspaceSlug);
+  const canPublish = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "release:publish",
+  );
 
   const openWizard = () => {
     router.push(`/w/${workspaceSlug}/p/${projectSlug}/release/new`);
@@ -28,7 +35,7 @@ const ReleasePage = () => {
         title="Release"
         description="Publish your design tokens as an npm package"
         rightComponent={
-          releasesQuery.data?.data.data.releases.length ? (
+          releasesQuery.data?.data.data.releases.length && canPublish ? (
             <Button onClick={openWizard}>
               <Rocket className="size-4" />
               Publish
@@ -56,10 +63,14 @@ const ReleasePage = () => {
             Icon={Rocket}
             title="No releases yet"
             message="Publish your first release to start versioning your design tokens."
-            actionPlus={{
-              title: "Create your first release",
-              onClick: openWizard,
-            }}
+            actionPlus={
+              canPublish
+                ? {
+                    title: "Create your first release",
+                    onClick: openWizard,
+                  }
+                : undefined
+            }
           />
         }
         render={({

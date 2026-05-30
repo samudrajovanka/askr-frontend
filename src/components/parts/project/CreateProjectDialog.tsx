@@ -24,7 +24,9 @@ import { DESCRIPTION_MAX_LENGTH } from "@/constants/string";
 import { createProjectSchema } from "@/endpoints/project/validator";
 import { isInvalidField } from "@/lib/helpers/field";
 import { generateSlug } from "@/lib/helpers/string";
+import { hasPermission } from "@/lib/permissions";
 import { useCreateProject } from "@/query/project";
+import { useWorkspace } from "@/query/workspace";
 
 type Props = {
   open: boolean;
@@ -35,6 +37,11 @@ type Props = {
 const CreateProjectDialog = ({ open, onOpenChange, workspaceSlug }: Props) => {
   const [slugTouched, setSlugTouched] = useState(false);
   const createMutation = useCreateProject(workspaceSlug);
+  const workspaceQuery = useWorkspace(workspaceSlug);
+  const canCreate = hasPermission(
+    workspaceQuery.data?.data?.data?.workspace?.role,
+    "project:create",
+  );
 
   const form = useForm({
     defaultValues: {
@@ -64,6 +71,8 @@ const CreateProjectDialog = ({ open, onOpenChange, workspaceSlug }: Props) => {
       createMutation.reset();
     }
   }, [open, createMutation.reset, form.reset]);
+
+  if (!canCreate) return null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

@@ -1,25 +1,27 @@
 "use client";
 
-import { Check, Copy, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import TokenActions from "@/components/parts/token/TokenActions";
 import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import type { Token } from "@/types/token";
 
 type Props = {
   token: Token;
   onEdit: (token: Token) => void;
   onDelete: (token: Token) => void;
+  canEdit?: boolean;
+  canDelete?: boolean;
 };
 
-const TokenBorderRow = ({ token, onEdit, onDelete }: Props) => {
+const TokenBorderRow = ({
+  token,
+  onEdit,
+  onDelete,
+  canEdit = true,
+  canDelete = true,
+}: Props) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -86,25 +88,13 @@ const TokenBorderRow = ({ token, onEdit, onDelete }: Props) => {
         </button>
       </div>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger className="p-1.5 rounded-md hover:bg-muted transition-colors">
-          <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => onEdit(token)}>
-            <Pencil />
-            Edit
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            variant="destructive"
-            onClick={() => onDelete(token)}
-          >
-            <Trash2 />
-            Delete
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <TokenActions
+        token={token}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        canEdit={canEdit}
+        canDelete={canDelete}
+      />
     </div>
   );
 };

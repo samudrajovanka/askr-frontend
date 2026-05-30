@@ -7,7 +7,9 @@ import { toast } from "sonner";
 import TokenPageTemplate from "@/components/parts/template/TokenPageTemplate";
 import LeadingTokenDrawer from "@/components/parts/token/leading/LeadingTokenDrawer";
 import TokenLeadingRow from "@/components/parts/token/leading/TokenLeadingRow";
+import { hasPermission } from "@/lib/permissions";
 import { useDeleteTokenLeading, useTokenLeadings } from "@/query/token";
+import { useWorkspace } from "@/query/workspace";
 import type { Token } from "@/types/token";
 
 const TokenLeadingPage = () => {
@@ -19,6 +21,20 @@ const TokenLeadingPage = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editToken, setEditToken] = useState<Token | null>(null);
   const deleteMutation = useDeleteTokenLeading(workspaceSlug, projectSlug);
+  const workspaceQuery = useWorkspace(workspaceSlug);
+
+  const canCreate = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:create",
+  );
+  const canEdit = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:edit",
+  );
+  const canDelete = hasPermission(
+    workspaceQuery.data?.data.data.workspace.role,
+    "token:delete",
+  );
 
   const primitiveQuery = useTokenLeadings(
     workspaceSlug,
@@ -62,10 +78,11 @@ const TokenLeadingPage = () => {
         semantic: semanticQuery,
       }}
       handleCreate={handleCreate}
+      canCreate={canCreate}
       emptyState={{
         title: "No leading tokens yet",
         message:
-          "Start building your line height system by adding primitive and semantic leading tokens.",
+          "Start building your leading system by adding primitive and semantic leading tokens.",
       }}
       renderRow={(token) => (
         <TokenLeadingRow
@@ -73,6 +90,8 @@ const TokenLeadingPage = () => {
           token={token}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          canEdit={canEdit}
+          canDelete={canDelete}
         />
       )}
       renderDrawer={(activeTab) => (
