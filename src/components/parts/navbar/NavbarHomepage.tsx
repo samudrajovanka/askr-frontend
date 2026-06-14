@@ -7,6 +7,7 @@ import { useState } from "react";
 
 import Logo from "@/components/parts/logo/Logo";
 import { Button, buttonVariants } from "@/components/ui/button";
+import NavLink from "./NavLink";
 
 const navLinks = [
   { label: "Features", href: "#features" },
@@ -26,13 +27,9 @@ const NavbarHomepage = () => {
 
           <nav className="hidden md:flex justify-center items-center gap-2">
             {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="rounded-lg px-2 typography-small text-muted-foreground transition-colors hover:text-foreground"
-              >
+              <NavLink key={link.href} href={link.href}>
                 {link.label}
-              </a>
+              </NavLink>
             ))}
           </nav>
         </div>
@@ -102,14 +99,14 @@ const NavbarHomepage = () => {
         <div className="absolute inset-x-0 bottom-0 translate-y-full w-full border-t border-border/50 bg-background p-4 shadow-md md:hidden">
           <nav className="flex flex-col gap-1">
             {navLinks.map((link) => (
-              <a
+              <NavLink
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className="rounded-lg p-2 typography-regular text-muted-foreground transition-colors hover:text-foreground"
               >
                 {link.label}
-              </a>
+              </NavLink>
             ))}
           </nav>
           <div className="mt-4 flex flex-col gap-2">

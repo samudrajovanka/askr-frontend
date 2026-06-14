@@ -5,13 +5,11 @@ import type * as React from "react";
 import { getInitialsName } from "@/lib/helpers/string";
 import { cn } from "@/lib/utils";
 
-function Avatar({
-  className,
-  size = "default",
-  ...props
-}: AvatarPrimitive.Root.Props & {
+type AvatarProps = AvatarPrimitive.Root.Props & {
   size?: "default" | "sm" | "lg";
-}) {
+};
+
+function Avatar({ className, size = "default", ...props }: AvatarProps) {
   return (
     <AvatarPrimitive.Root
       data-slot="avatar"
@@ -99,14 +97,14 @@ function AvatarGroupCount({
   );
 }
 
-type BasicAvatarProps = {
+type BasicAvatarProps = AvatarProps & {
   avatarUrl?: string | null;
   name: string;
 };
 
-function BasicAvatar({ avatarUrl, name }: BasicAvatarProps) {
+function BasicAvatar({ avatarUrl, name, ...props }: BasicAvatarProps) {
   return (
-    <Avatar>
+    <Avatar {...props}>
       {avatarUrl ? (
         <AvatarImage src={avatarUrl} alt={name} />
       ) : (

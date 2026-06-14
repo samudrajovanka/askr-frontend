@@ -2,17 +2,20 @@ import Logo from "@/components/parts/logo/Logo";
 import WorkspaceSwitcher from "@/components/parts/switcher/WorkspaceSwitcher";
 import ProjectSwitcher from "../switcher/ProjectSwitcher";
 import NavbarProfile from "./NavbarProfile";
+import NavLink from "./NavLink";
 
 type NavbarProps = {
   withoutLogo?: boolean;
   showWorkspaceSwitcher?: boolean;
   showProjectSwitcher?: boolean;
+  workspaceSlug?: string;
 };
 
 const Navbar = ({
   withoutLogo = false,
   showWorkspaceSwitcher = false,
   showProjectSwitcher = false,
+  workspaceSlug,
 }: NavbarProps) => {
   return (
     <header className="navbar-wrapper sticky top-0 z-50">
@@ -31,6 +34,13 @@ const Navbar = ({
               </>
             )}
           </div>
+
+          {showWorkspaceSwitcher && workspaceSlug && (
+            <nav className="flex justify-center items-center gap-2">
+              <NavLink href={`/w/${workspaceSlug}/projects`}>Projects</NavLink>
+              <NavLink href={`/w/${workspaceSlug}/activity`}>Activity</NavLink>
+            </nav>
+          )}
         </div>
 
         <div className="flex items-center gap-3 ml-auto">

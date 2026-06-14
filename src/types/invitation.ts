@@ -8,7 +8,7 @@ export type MyPendingInvitation = {
   workspaceId: string;
   email: string;
   role: RoleWorkspace;
-  status: string;
+  status: InvitationStatus;
   token: string;
   createdAt: string;
   expiresAt: string;

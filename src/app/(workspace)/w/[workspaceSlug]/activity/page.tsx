@@ -1,4 +1,4 @@
-import ProjectActivityPage from "@/components/pages/workspace/projects/activity/ProjectActivityPage";
+import WorkspaceActivityPage from "@/components/pages/workspace/activity/WorkspaceActivityPage";
 import generateMetadata from "@/lib/helpers/metadata";
 
 export const metadata = generateMetadata(
@@ -7,7 +7,7 @@ export const metadata = generateMetadata(
 );
 
 const ActivityRoute = async () => {
-  return <ProjectActivityPage />;
+  return <WorkspaceActivityPage />;
 };
 
 export default ActivityRoute;
