@@ -61,11 +61,5 @@ export const useCreateRelease = (
         queryKey: getReleaseDiffKey(workspaceSlug, projectSlug),
       });
     },
-    onError: () => {
-      // Invalidate releases so the failed record appears in the list
-      queryClient.invalidateQueries({
-        queryKey: getReleasesKey(workspaceSlug, projectSlug),
-      });
-    },
   });
 };
