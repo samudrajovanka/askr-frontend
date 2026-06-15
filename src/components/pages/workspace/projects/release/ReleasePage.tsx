@@ -3,10 +3,10 @@
 import { Rocket } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import QueryHandling from "@/components/parts/query/QueryHandling";
+import ReleaseSetupGuide from "@/components/parts/release/new/ReleaseSetupGuide";
 import ReleaseItem from "@/components/parts/release/ReleaseItem";
 import HeaderSection from "@/components/parts/template/HeaderSectionTemplate";
 import { Button } from "@/components/ui/button";
-import { BasicEmptyState } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
 import { hasPermission } from "@/lib/permissions";
 import { useReleases } from "@/query/release";
@@ -25,7 +25,7 @@ const ReleasePage = () => {
     "release:publish",
   );
 
-  const openWizard = () => {
+  const redirectToCreate = () => {
     router.push(`/w/${workspaceSlug}/p/${projectSlug}/release/new`);
   };
 
@@ -36,7 +36,7 @@ const ReleasePage = () => {
         description="Publish your design tokens as an npm package"
         rightComponent={
           releasesQuery.data?.data.data.releases.length && canPublish ? (
-            <Button onClick={openWizard}>
+            <Button onClick={redirectToCreate}>
               <Rocket className="size-4" />
               Publish
             </Button>
@@ -59,18 +59,10 @@ const ReleasePage = () => {
           },
         }) => !releases.length}
         renderEmpty={
-          <BasicEmptyState
-            Icon={Rocket}
-            title="No releases yet"
-            message="Publish your first release to start versioning your design tokens."
-            actionPlus={
-              canPublish
-                ? {
-                    title: "Create your first release",
-                    onClick: openWizard,
-                  }
-                : undefined
-            }
+          <ReleaseSetupGuide
+            workspaceSlug={workspaceSlug}
+            projectSlug={projectSlug}
+            onCreateRelease={redirectToCreate}
           />
         }
         render={({

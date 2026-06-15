@@ -48,7 +48,6 @@ const NewReleasePage = () => {
     workspaceQuery.data?.data.data.workspace.role,
     "release:publish",
   );
-
   const createReleaseMutation = useCreateRelease(workspaceSlug, projectSlug);
 
   useEffect(() => {
