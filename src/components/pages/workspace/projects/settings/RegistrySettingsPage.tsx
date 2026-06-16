@@ -7,11 +7,10 @@ import GeneralSettingsLoading from "@/components/parts/settings/workspace/Genera
 import { useRegistryConfig } from "@/query/registry";
 
 const RegistrySettingsPage = () => {
-  const params = useParams();
-  const { workspaceSlug, projectSlug } = params as {
+  const { workspaceSlug, projectSlug } = useParams<{
     workspaceSlug: string;
     projectSlug: string;
-  };
+  }>();
   const registryQuery = useRegistryConfig(workspaceSlug, projectSlug);
 
   return (

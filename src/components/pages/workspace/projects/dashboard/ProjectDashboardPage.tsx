@@ -7,9 +7,10 @@ import DashboardTokenBreakdown from "@/components/parts/summary/DashboardTokenBr
 import HeaderSection from "@/components/parts/template/HeaderSectionTemplate";
 
 const ProjectDashboardPage = () => {
-  const params = useParams();
-  const workspaceSlug = params.workspaceSlug as string;
-  const projectSlug = params.projectSlug as string;
+  const { workspaceSlug, projectSlug } = useParams<{
+    workspaceSlug: string;
+    projectSlug: string;
+  }>();
 
   return (
     <div className="flex flex-col gap-6">

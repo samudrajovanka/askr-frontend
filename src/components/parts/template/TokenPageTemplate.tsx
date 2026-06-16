@@ -182,8 +182,6 @@ const TokenPageTemplate = ({
                   .filter((group) => group.tokens.length > 0)
               : groups;
 
-            console.log("filteredGroups", filteredGroups);
-
             if (filteredGroups.length === 0) {
               return (
                 <div className="rounded-xl border border-dashed p-8 text-center">

@@ -8,11 +8,10 @@ import GeneralSettingsLoading from "@/components/parts/settings/workspace/Genera
 import { useProject } from "@/query/project";
 
 const GeneralSettingsPage = () => {
-  const params = useParams();
-  const { workspaceSlug, projectSlug } = params as {
+  const { workspaceSlug, projectSlug } = useParams<{
     workspaceSlug: string;
     projectSlug: string;
-  };
+  }>();
   const projectQuery = useProject(workspaceSlug, projectSlug);
 
   return (

@@ -16,10 +16,10 @@ import SidebarWrapper from "./SidebarWrapper";
 
 const SidebarProject = () => {
   const pathname = usePathname();
-  const { workspaceSlug, projectSlug } = useParams() as {
+  const { workspaceSlug, projectSlug } = useParams<{
     workspaceSlug: string;
     projectSlug: string;
-  };
+  }>();
   const [activeNavbar, setActiveNavbar] = useState<ProjectSidebarType>(
     PROJECT_SIDEBAR_TYPE.PROJECT,
   );

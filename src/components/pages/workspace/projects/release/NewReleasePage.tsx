@@ -25,10 +25,11 @@ const STEPS: { label: string }[] = [
 ];
 
 const NewReleasePage = () => {
-  const params = useParams();
+  const { workspaceSlug, projectSlug } = useParams<{
+    workspaceSlug: string;
+    projectSlug: string;
+  }>();
   const router = useRouter();
-  const workspaceSlug = params.workspaceSlug as string;
-  const projectSlug = params.projectSlug as string;
 
   const [step, setStep] = useState(1);
   const [bumpType, setBumpType] = useState<VersionBumpType | null>(null);

@@ -13,10 +13,11 @@ import { useReleases } from "@/query/release";
 import { useWorkspace } from "@/query/workspace";
 
 const ReleasePage = () => {
-  const params = useParams();
+  const { workspaceSlug, projectSlug } = useParams<{
+    workspaceSlug: string;
+    projectSlug: string;
+  }>();
   const router = useRouter();
-  const workspaceSlug = params.workspaceSlug as string;
-  const projectSlug = params.projectSlug as string;
 
   const releasesQuery = useReleases(workspaceSlug, projectSlug);
   const workspaceQuery = useWorkspace(workspaceSlug);
