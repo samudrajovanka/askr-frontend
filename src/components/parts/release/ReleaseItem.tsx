@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { RELEASE_STATUSES } from "@/constants/release";
@@ -12,14 +13,22 @@ const ReleaseItem = ({ release }: { release: SafeRelease }) => {
           <span className="font-mono typography-small font-medium">
             v{release.version}
           </span>
+          {release.status === RELEASE_STATUSES.PENDING && (
+            <Badge variant="outline" className="gap-1 text-muted-foreground">
+              Pending
+            </Badge>
+          )}
+          {release.status === RELEASE_STATUSES.RUNNING && (
+            <Badge variant="outline-warning" className="gap-1">
+              <Loader2 className="size-3 animate-spin" />
+              Processing
+            </Badge>
+          )}
           {release.status === RELEASE_STATUSES.SUCCESS && (
-            <Badge variant="outline-success">{release.status}</Badge>
+            <Badge variant="outline-success">Success</Badge>
           )}
           {release.status === RELEASE_STATUSES.FAILED && (
-            <Badge variant="outline-destructive">{release.status}</Badge>
-          )}
-          {release.status === RELEASE_STATUSES.PENDING && (
-            <Badge variant="outline-warning">{release.status}</Badge>
+            <Badge variant="outline-destructive">Failed</Badge>
           )}
           <span className="text-sm text-muted-foreground">
             {release.tokenCount ?? 0} tokens

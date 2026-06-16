@@ -25,6 +25,14 @@ export const useReleases = (workspaceSlug: string, projectSlug: string) => {
     queryKey: getReleasesKey(workspaceSlug, projectSlug),
     enabled: isSignedIn && !!workspaceSlug && !!projectSlug,
     queryFn: () => execute(workspaceSlug, projectSlug),
+    refetchInterval: (query) => {
+      const releases = query.state.data?.data?.data?.releases;
+      if (!releases) return false;
+      const hasActive = releases.some(
+        (r) => r.status === "pending" || r.status === "running",
+      );
+      return hasActive ? 5000 : false;
+    },
   });
 };
 
