@@ -1,16 +1,17 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,78 +22,79 @@ import {
   InputGroupTextarea,
 } from "@/components/ui/input-group";
 import { DESCRIPTION_MAX_LENGTH } from "@/constants/string";
-import { createProjectSchema } from "@/endpoints/project/validator";
+import { updateProjectSchema } from "@/endpoints/project/validator";
 import { isInvalidField } from "@/lib/helpers/field";
 import { generateSlug } from "@/lib/helpers/string";
 import { hasPermission } from "@/lib/permissions";
-import { useCreateProject } from "@/query/project";
+import { useUpdateProject } from "@/query/project";
 import { useWorkspace } from "@/query/workspace";
-import type { CreateProjectPayload } from "@/types/project";
+import type { Project, UpdateProjectPayload } from "@/types/project";
 
-type Props = {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+type ProjectGeneralSettingProps = {
+  project: Project;
   workspaceSlug: string;
 };
 
-const CreateProjectDialog = ({ open, onOpenChange, workspaceSlug }: Props) => {
-  const [slugTouched, setSlugTouched] = useState(false);
-  const createMutation = useCreateProject(workspaceSlug);
+const GeneralSetting = ({
+  project,
+  workspaceSlug,
+}: ProjectGeneralSettingProps) => {
+  const [slugTouched, setSlugTouched] = useState(true);
+  const updateMutation = useUpdateProject(workspaceSlug);
   const workspaceQuery = useWorkspace(workspaceSlug);
-  const canCreate = hasPermission(
+  const router = useRouter();
+  const canManage = hasPermission(
     workspaceQuery.data?.data?.data?.workspace?.role,
-    "project:create",
+    "project:update",
   );
 
   const form = useForm({
     defaultValues: {
-      name: "",
-      slug: "",
-    } as CreateProjectPayload,
+      name: project.name,
+      slug: project.slug,
+      description: project.description,
+    } as UpdateProjectPayload,
     validators: {
-      onChange: createProjectSchema,
-      onSubmit: createProjectSchema,
+      onChange: updateProjectSchema,
+      onSubmit: updateProjectSchema,
     },
     onSubmit: async ({ value }) => {
-      await createMutation.mutateAsync({
-        name: value.name.trim(),
-        slug: value.slug.trim(),
-        description: value.description?.trim(),
+      await updateMutation.mutateAsync({
+        projectSlug: project.slug,
+        payload: {
+          name: value.name.trim(),
+          slug: value.slug.trim(),
+          description: value.description?.trim(),
+        },
       });
-      toast.success("Project created successfully");
-      onOpenChange(false);
+      toast.success("Project updated successfully");
+
+      if (value.slug.trim() !== project.slug) {
+        router.push(
+          `/w/${workspaceSlug}/p/${value.slug.trim()}/settings/general`,
+        );
+      }
     },
   });
 
-  useEffect(() => {
-    if (open) {
-      form.reset();
-      setSlugTouched(false);
-      createMutation.reset();
-    }
-  }, [open, createMutation.reset, form.reset]);
-
-  if (!canCreate) return null;
-
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create Project</DialogTitle>
-        </DialogHeader>
-
+    <Card>
+      <CardHeader>
+        <CardTitle>General Settings</CardTitle>
+        <CardDescription>Update your project details.</CardDescription>
+      </CardHeader>
+      <CardContent>
         <form
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
             form.handleSubmit();
           }}
-          className="flex flex-col gap-5 pt-2"
+          className="flex flex-col gap-5"
         >
           <form.Field name="name">
             {(field) => {
               const isInvalid = isInvalidField(field);
-
               return (
                 <Field data-invalid={isInvalid} data-required>
                   <FieldLabel htmlFor={field.name}>Project Name</FieldLabel>
@@ -111,8 +113,7 @@ const CreateProjectDialog = ({ open, onOpenChange, workspaceSlug }: Props) => {
                         );
                       }
                     }}
-                    placeholder="e.g. Web Design System"
-                    autoFocus
+                    placeholder="e.g. Design System"
                   />
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
@@ -140,7 +141,7 @@ const CreateProjectDialog = ({ open, onOpenChange, workspaceSlug }: Props) => {
                         field.handleChange(e.target.value);
                         setSlugTouched(true);
                       }}
-                      placeholder="web-design-system"
+                      placeholder="design-system"
                     />
                   </InputGroup>
                   {isInvalid ? (
@@ -185,33 +186,29 @@ const CreateProjectDialog = ({ open, onOpenChange, workspaceSlug }: Props) => {
             }}
           </form.Field>
 
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
-              Cancel
-            </Button>
-            <form.Subscribe
-              selector={(state) => [state.canSubmit, state.isSubmitting]}
-            >
-              {([canSubmit, isSubmitting]) => (
+          <form.Subscribe
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
+          >
+            {([canSubmit, isSubmitting]) => (
+              <div className="flex justify-end pt-4">
                 <Button
                   type="submit"
                   disabled={
-                    !canSubmit || isSubmitting || createMutation.isPending
+                    !canSubmit ||
+                    isSubmitting ||
+                    updateMutation.isPending ||
+                    !canManage
                   }
                 >
-                  {createMutation.isPending ? "Creating..." : "Create Project"}
+                  {updateMutation.isPending ? "Saving..." : "Save Changes"}
                 </Button>
-              )}
-            </form.Subscribe>
-          </DialogFooter>
+              </div>
+            )}
+          </form.Subscribe>
         </form>
-      </DialogContent>
-    </Dialog>
+      </CardContent>
+    </Card>
   );
 };
 
-export default CreateProjectDialog;
+export default GeneralSetting;

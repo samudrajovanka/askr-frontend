@@ -1,20 +1,27 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import DangerZoneSection from "@/components/parts/settings/DangerZoneSection";
 import DeleteAction from "@/components/parts/settings/DeleteAction";
 import { hasPermission } from "@/lib/permissions";
-import { useDeleteWorkspace, useWorkspace } from "@/query/workspace";
+import { useDeleteProject } from "@/query/project";
+import { useWorkspace } from "@/query/workspace";
+import type { Project } from "@/types/project";
 
-const DangerZoneSetting = () => {
+const DangerZoneSetting = ({
+  project,
+  workspaceSlug,
+}: {
+  project: Project;
+  workspaceSlug: string;
+}) => {
   const router = useRouter();
-  const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
-  const deleteMutation = useDeleteWorkspace();
+  const deleteMutation = useDeleteProject(workspaceSlug);
   const workspaceQuery = useWorkspace(workspaceSlug);
   const canDelete = hasPermission(
     workspaceQuery.data?.data?.data?.workspace?.role,
-    "workspace:delete",
+    "project:delete",
   );
 
   if (!canDelete) return null;
@@ -22,14 +29,14 @@ const DangerZoneSetting = () => {
   return (
     <DangerZoneSection>
       <DeleteAction
-        title="Delete this workspace"
-        buttonLabel="Delete Workspace"
-        confirmLabel="Delete Workspace"
+        title="Delete this project"
+        buttonLabel="Delete Project"
+        confirmLabel="Delete Project"
         isLoading={deleteMutation.isPending}
         onAction={async () => {
-          await deleteMutation.mutateAsync(workspaceSlug);
-          toast.success("Workspace deleted successfully");
-          router.push("/workspaces");
+          await deleteMutation.mutateAsync(project.slug);
+          toast.success("Project deleted successfully");
+          router.push(`/w/${workspaceSlug}/projects`);
         }}
       />
     </DangerZoneSection>

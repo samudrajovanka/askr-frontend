@@ -1,4 +1,4 @@
-import ComingSoon from "@/components/parts/template/ComingSoon";
+import GeneralSettingsPage from "@/components/pages/workspace/projects/settings/GeneralSettingsPage";
 import generateMetadata from "@/lib/helpers/metadata";
 
 export const metadata = generateMetadata(
@@ -7,7 +7,7 @@ export const metadata = generateMetadata(
 );
 
 const GeneralSettingsRoute = () => {
-  return <ComingSoon />;
+  return <GeneralSettingsPage />;
 };
 
 export default GeneralSettingsRoute;
