@@ -52,10 +52,10 @@ const useSidebarProject = ({
       {
         type: SIDEBAR_NAV_TYPE.BUTTON,
         title: "Tokens",
-        href: generateHref("token/colors"),
+        href: generateHref("token/"),
         icon: PencilRuler,
         action: () =>
-          handleChangeUrl(generateHref("token/colors"), () =>
+          handleChangeUrl(generateHref("token/color"), () =>
             onTypeChange(PROJECT_SIDEBAR_TYPE.TOKEN),
           ),
       },

@@ -1,30 +1,48 @@
 "use client";
 
-import { Palette } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import TokenPageTemplate from "@/components/parts/template/TokenPageTemplate";
-import ColorTokenDrawer from "@/components/parts/token/color/ColorTokenDrawer";
-import TokenColorFormatSelector from "@/components/parts/token/color/TokenColorFormatSelector";
-import TokenColorRow from "@/components/parts/token/color/TokenColorRow";
-import type { ColorFormat } from "@/lib/helpers/color";
 import { hasPermission } from "@/lib/permissions";
-import { useDeleteTokenColor, useTokenColors } from "@/query/token";
 import { useWorkspace } from "@/query/workspace";
 import type { Token } from "@/types/token";
+import { tokenConfigMap } from "./token-config";
 
-const TokenColorPage = () => {
-  const { workspaceSlug, projectSlug } = useParams<{
+const TokenPage = () => {
+  const { workspaceSlug, projectSlug, category } = useParams<{
     workspaceSlug: string;
     projectSlug: string;
+    category: string;
   }>();
+
+  const config = tokenConfigMap[category];
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editToken, setEditToken] = useState<Token | null>(null);
-  const [colorFormat, setColorFormat] = useState<ColorFormat>("hex");
-  const deleteMutation = useDeleteTokenColor(workspaceSlug, projectSlug);
+  const [extraValue, setExtraValue] = useState("hex");
+
+  const deleteMutation = config.useDeleteToken(workspaceSlug, projectSlug);
   const workspaceQuery = useWorkspace(workspaceSlug);
+
+  const primitiveQuery = config.useTokens(
+    workspaceSlug,
+    projectSlug,
+    "primitive",
+  );
+  const semanticQuery = config.useTokens(
+    workspaceSlug,
+    projectSlug,
+    "semantic",
+  );
+
+  if (!config) {
+    return (
+      <p className="p-10 text-center text-muted-foreground">
+        Unknown token category: {category}
+      </p>
+    );
+  }
 
   const canCreate = hasPermission(
     workspaceQuery.data?.data.data.workspace.role,
@@ -38,13 +56,6 @@ const TokenColorPage = () => {
     workspaceQuery.data?.data.data.workspace.role,
     "token:delete",
   );
-
-  const primitiveQuery = useTokenColors(
-    workspaceSlug,
-    projectSlug,
-    "primitive",
-  );
-  const semanticQuery = useTokenColors(workspaceSlug, projectSlug, "semantic");
 
   const handleCreate = () => {
     setEditToken(null);
@@ -66,43 +77,50 @@ const TokenColorPage = () => {
     if (!open) setEditToken(null);
   };
 
+  const {
+    Row,
+    Drawer,
+    ExtraControl,
+    skeletonPreviewClassName,
+    getRowExtraProps,
+    ...meta
+  } = config;
+
   return (
     <TokenPageTemplate
-      title="Color Tokens"
-      description="Manage your project's color design tokens"
-      tokenTypeLabel="color token"
-      icon={Palette}
+      title={meta.title}
+      description={meta.description}
+      tokenTypeLabel={meta.tokenTypeLabel}
+      icon={meta.icon}
       queries={{
         primitive: primitiveQuery,
         semantic: semanticQuery,
       }}
       handleCreate={handleCreate}
       canCreate={canCreate}
-      skeletonPreviewClassName="h-8 w-8 rounded-md"
+      skeletonPreviewClassName={skeletonPreviewClassName}
       extraControls={
-        <TokenColorFormatSelector
-          value={colorFormat}
-          onChange={setColorFormat}
-        />
+        ExtraControl ? (
+          <ExtraControl value={extraValue} onChange={setExtraValue} />
+        ) : undefined
       }
       emptyState={{
-        title: "No color tokens yet",
-        message:
-          "Start building your color system by adding primitive and semantic color tokens.",
+        title: meta.emptyTitle,
+        message: meta.emptyMessage,
       }}
       renderRow={(token) => (
-        <TokenColorRow
+        <Row
           key={token.id}
           token={token}
           onEdit={handleEdit}
           onDelete={handleDelete}
-          colorFormat={colorFormat}
           canEdit={canEdit}
           canDelete={canDelete}
+          {...getRowExtraProps?.(extraValue)}
         />
       )}
       renderDrawer={(activeTab) => (
-        <ColorTokenDrawer
+        <Drawer
           open={drawerOpen}
           onOpenChange={handleDrawerChange}
           workspaceSlug={workspaceSlug}
@@ -115,4 +133,4 @@ const TokenColorPage = () => {
   );
 };
 
-export default TokenColorPage;
+export default TokenPage;
