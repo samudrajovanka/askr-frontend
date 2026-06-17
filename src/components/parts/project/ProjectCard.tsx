@@ -1,7 +1,7 @@
 "use client";
 
+import { useRouter } from "@bprogress/next/app";
 import { ArrowRight, FolderGit2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Project } from "@/types/project";
 

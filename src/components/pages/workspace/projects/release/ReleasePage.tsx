@@ -1,7 +1,8 @@
 "use client";
 
+import { useRouter } from "@bprogress/next/app";
 import { Rocket } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useCallback, useState } from "react";
 import QueryHandling from "@/components/parts/query/QueryHandling";
 import ReleaseSetupGuide from "@/components/parts/release/new/ReleaseSetupGuide";

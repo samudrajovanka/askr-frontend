@@ -1,3 +1,4 @@
+import { useRouter } from "@bprogress/next/app";
 import {
   LayoutDashboard,
   PencilRuler,
@@ -5,7 +6,7 @@ import {
   Settings,
   SquareStack,
 } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { PROJECT_SIDEBAR_TYPE, SIDEBAR_NAV_TYPE } from "@/constants/sidebar";
 import type { ProjectSidebarType, SidebarNavItem } from "@/types/sidebar";

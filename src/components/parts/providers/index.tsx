@@ -1,5 +1,6 @@
 "use client";
 
+import { ProgressProvider } from "@bprogress/next/app";
 import { ClerkProvider } from "@clerk/nextjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -13,13 +14,20 @@ const Providers = ({ children }: ProvidersProps) => {
   const [queryClient] = useState(() => new QueryClient(queryClientConfig));
 
   return (
-    <ClerkProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>{children}</TooltipProvider>
+    <ProgressProvider
+      height="3px"
+      color="var(--color-primary)"
+      options={{ showSpinner: false }}
+      shallowRouting
+    >
+      <ClerkProvider>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>{children}</TooltipProvider>
 
-        <ReactQueryDevtools />
-      </QueryClientProvider>
-    </ClerkProvider>
+          <ReactQueryDevtools />
+        </QueryClientProvider>
+      </ClerkProvider>
+    </ProgressProvider>
   );
 };
 

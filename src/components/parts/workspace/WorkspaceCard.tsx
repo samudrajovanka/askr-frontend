@@ -1,7 +1,7 @@
 "use client";
 
+import { useRouter } from "@bprogress/next/app";
 import { ArrowRight } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Workspace } from "@/types/workspace";
 import BadgeWorkspaceRole from "./BadgeWorkspaceRole";

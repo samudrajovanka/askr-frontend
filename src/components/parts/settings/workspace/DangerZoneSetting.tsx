@@ -1,6 +1,7 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
+import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import DangerZoneSection from "@/components/parts/settings/DangerZoneSection";
 import DeleteAction from "@/components/parts/settings/DeleteAction";

@@ -1,7 +1,7 @@
 "use client";
 
+import { useRouter } from "@bprogress/next/app";
 import { Check, Mail, X } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import QueryHandling from "@/components/parts/query/QueryHandling";
 import BadgeWorkspaceRole from "@/components/parts/workspace/BadgeWorkspaceRole";

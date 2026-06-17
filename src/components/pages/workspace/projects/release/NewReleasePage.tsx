@@ -1,7 +1,8 @@
 "use client";
 
+import { useRouter } from "@bprogress/next/app";
 import { ChevronLeft } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import StepperLayout from "@/components/layout/StepperLayout";

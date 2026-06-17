@@ -1,6 +1,7 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
+import { useParams } from "next/navigation";
 import { useCallback } from "react";
 
 import QueryHandling from "@/components/parts/query/QueryHandling";
