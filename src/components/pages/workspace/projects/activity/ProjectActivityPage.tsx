@@ -26,7 +26,7 @@ const ProjectActivityPage = () => {
 
   const [filters, setFilters] = useState<AuditLogFilters>({
     page: 1,
-    limit: 20,
+    limit: 10,
   });
 
   const auditLogsQuery = useProjectAuditLogs(
@@ -57,7 +57,7 @@ const ProjectActivityPage = () => {
   const members = membersQuery.data?.data?.data?.members ?? [];
 
   return (
-    <div className="flex flex-col gap-6">
+    <div id="pagination-scroll-wrapper" className="flex flex-col gap-6">
       <HeaderSection
         title="Activity Log"
         description="Track all changes and events in this project"
@@ -97,7 +97,7 @@ const ProjectActivityPage = () => {
                 <div className="flex flex-col gap-4">
                   <ActivityTable data={auditLogs} />
 
-                  {meta?.pagination && meta.pagination.totalPages > 1 && (
+                  {meta?.pagination && (
                     <Pagination
                       page={meta.pagination.page}
                       totalPages={meta.pagination.totalPages}

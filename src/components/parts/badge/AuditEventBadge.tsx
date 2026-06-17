@@ -12,7 +12,6 @@ const EVENT_VARIANTS: Record<
   | "outline-warning"
   | "outline-destructive"
 > = {
-  [AUDIT_EVENT_TYPE.RELEASE_CREATED]: "outline-success",
   [AUDIT_EVENT_TYPE.MEMBER_INVITED]: "outline",
   [AUDIT_EVENT_TYPE.MEMBER_JOINED]: "outline-success",
   [AUDIT_EVENT_TYPE.MEMBER_UPDATED]: "outline-warning",

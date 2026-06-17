@@ -134,7 +134,7 @@ const RegistrySetting = ({
                   ) : (
                     <FieldDescription>
                       Package will be published as @{field.state.value}/
-                      {projectSlug}/tokens
+                      {projectSlug}-tokens
                     </FieldDescription>
                   )}
                 </Field>

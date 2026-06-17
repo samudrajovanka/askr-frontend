@@ -1,5 +1,4 @@
 export const AUDIT_EVENT_TYPE = {
-  RELEASE_CREATED: "release.created",
   MEMBER_INVITED: "member.invited",
   MEMBER_JOINED: "member.joined",
   MEMBER_UPDATED: "member.updated",
@@ -15,7 +14,6 @@ export const AUDIT_EVENT_TYPE = {
 export const auditEventTypes = Object.values(AUDIT_EVENT_TYPE);
 
 export const AUDIT_RESOURCE_TYPE = {
-  RELEASE: "release",
   MEMBER: "member",
   PROJECT: "project",
   REGISTRY: "registry",
@@ -26,7 +24,6 @@ export const AUDIT_RESOURCE_TYPE = {
 export const auditResourceTypes = Object.values(AUDIT_RESOURCE_TYPE);
 
 export const auditEventTypeLabel = {
-  [AUDIT_EVENT_TYPE.RELEASE_CREATED]: "Release Created",
   [AUDIT_EVENT_TYPE.MEMBER_INVITED]: "Member Invited",
   [AUDIT_EVENT_TYPE.MEMBER_JOINED]: "Member Joined",
   [AUDIT_EVENT_TYPE.MEMBER_UPDATED]: "Member Updated",

@@ -23,7 +23,7 @@ const WorkspaceActivityPage = () => {
 
   const [filters, setFilters] = useState<AuditLogFilters>({
     page: 1,
-    limit: 20,
+    limit: 10,
   });
 
   const handlePageChange = useCallback((page: number) => {
@@ -52,7 +52,7 @@ const WorkspaceActivityPage = () => {
   const projects = projectsQuery.data?.data?.data.projects ?? [];
 
   return (
-    <div className="flex flex-col gap-6">
+    <div id="pagination-scroll-wrapper" className="flex flex-col gap-6">
       <HeaderSection
         title="Activity Log"
         description="View all audit events across your workspace"
@@ -91,7 +91,7 @@ const WorkspaceActivityPage = () => {
               <div className="flex flex-col gap-4">
                 <ActivityTable data={auditLogs} showProject={true} />
 
-                {meta?.pagination && meta.pagination.totalPages > 1 && (
+                {meta?.pagination && (
                   <Pagination
                     page={meta.pagination.page}
                     totalPages={meta.pagination.totalPages}

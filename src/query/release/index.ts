@@ -1,30 +1,41 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   createRelease as createReleaseFn,
   getReleaseDiff,
   getReleases,
 } from "@/endpoints/release";
 import { useFetchAuth } from "@/hooks/useFetchAuth";
+import type { PaginationParams } from "@/types/pagination";
 import type { VersionBumpType } from "@/types/version";
 
-export const getReleasesKey = (workspaceSlug: string, projectSlug: string) => [
-  workspaceSlug,
-  projectSlug,
-  "releases",
-];
+export const getReleasesKey = (
+  workspaceSlug: string,
+  projectSlug: string,
+  pagination?: PaginationParams,
+) => [workspaceSlug, projectSlug, "releases", pagination];
 
 export const getReleaseDiffKey = (
   workspaceSlug: string,
   projectSlug: string,
 ) => [workspaceSlug, projectSlug, "releases", "diff"];
 
-export const useReleases = (workspaceSlug: string, projectSlug: string) => {
+export const useReleases = (
+  workspaceSlug: string,
+  projectSlug: string,
+  pagination?: PaginationParams,
+) => {
   const { execute, isSignedIn } = useFetchAuth(getReleases);
 
   return useQuery({
-    queryKey: getReleasesKey(workspaceSlug, projectSlug),
+    queryKey: getReleasesKey(workspaceSlug, projectSlug, pagination),
     enabled: isSignedIn && !!workspaceSlug && !!projectSlug,
-    queryFn: () => execute(workspaceSlug, projectSlug),
+    queryFn: () => execute(workspaceSlug, projectSlug, pagination),
+    placeholderData: keepPreviousData,
     refetchInterval: (query) => {
       const releases = query.state.data?.data?.data?.releases;
       if (!releases) return false;

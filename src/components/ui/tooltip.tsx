@@ -66,13 +66,15 @@ function TooltipContent({
 function SimpleTooltip({
   children,
   content,
+  className,
 }: {
   children: React.ReactNode;
   content: string;
+  className?: string;
 }) {
   return (
     <Tooltip>
-      <TooltipTrigger>{children}</TooltipTrigger>
+      <TooltipTrigger className={className}>{children}</TooltipTrigger>
       <TooltipContent>{content}</TooltipContent>
     </Tooltip>
   );

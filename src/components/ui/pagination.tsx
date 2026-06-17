@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
+import { NAVBAR_HEIGHT } from "@/constants/layout";
 import { cn } from "@/lib/utils";
 
 function PaginationRoot({ className, ...props }: React.ComponentProps<"nav">) {
@@ -125,9 +126,17 @@ type PaginationProps = {
   page: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  scrollTargetId?: string | false;
+  scrollOffset?: number;
 };
 
-function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
+function Pagination({
+  page,
+  totalPages,
+  onPageChange,
+  scrollTargetId = "pagination-scroll-wrapper",
+  scrollOffset = NAVBAR_HEIGHT + 20,
+}: PaginationProps) {
   const pages = React.useMemo(() => {
     const arr: number[] = [];
     if (totalPages <= 5) {
@@ -151,6 +160,19 @@ function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
     return arr;
   }, [page, totalPages]);
 
+  const handlePageClick = (p: number) => {
+    onPageChange(p);
+
+    if (scrollTargetId) {
+      const element = document.getElementById(scrollTargetId);
+      if (element) {
+        const y =
+          element.getBoundingClientRect().top + window.scrollY - scrollOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }
+  };
+
   if (totalPages <= 1) return null;
 
   return (
@@ -160,7 +182,7 @@ function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
           <PaginationPrevious
             onClick={(e) => {
               e.preventDefault();
-              if (page > 1) onPageChange(page - 1);
+              if (page > 1) handlePageClick(page - 1);
             }}
             aria-disabled={page <= 1}
             className={cn(page <= 1 && "pointer-events-none opacity-50")}
@@ -173,7 +195,7 @@ function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
               isActive={p === page}
               onClick={(e) => {
                 e.preventDefault();
-                onPageChange(p);
+                handlePageClick(p);
               }}
             >
               {p}
@@ -185,7 +207,7 @@ function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
           <PaginationNext
             onClick={(e) => {
               e.preventDefault();
-              if (page < totalPages) onPageChange(page + 1);
+              if (page < totalPages) handlePageClick(page + 1);
             }}
             aria-disabled={page >= totalPages}
             className={cn(

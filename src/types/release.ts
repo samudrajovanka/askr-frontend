@@ -13,9 +13,14 @@ export type SafeRelease = {
   version: string;
   status: ReleaseStatus;
   error: string | null;
-  notes: string | null;
+  notes: string;
   tokenCount: number | null;
   createdById: string;
+  creator?: {
+    email: string;
+    name: string;
+    avatarUrl: string | null;
+  };
 };
 
 export type ReleaseDiffToken = Pick<

@@ -2,15 +2,18 @@
 
 import { Rocket } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
 import QueryHandling from "@/components/parts/query/QueryHandling";
 import ReleaseSetupGuide from "@/components/parts/release/new/ReleaseSetupGuide";
 import ReleaseItem from "@/components/parts/release/ReleaseItem";
 import HeaderSection from "@/components/parts/template/HeaderSectionTemplate";
 import { Button } from "@/components/ui/button";
+import { Pagination } from "@/components/ui/pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 import { hasPermission } from "@/lib/permissions";
 import { useReleases } from "@/query/release";
 import { useWorkspace } from "@/query/workspace";
+import type { PaginationParams } from "@/types/pagination";
 
 const ReleasePage = () => {
   const { workspaceSlug, projectSlug } = useParams<{
@@ -19,12 +22,21 @@ const ReleasePage = () => {
   }>();
   const router = useRouter();
 
-  const releasesQuery = useReleases(workspaceSlug, projectSlug);
+  const [pagination, setPagination] = useState<PaginationParams>({
+    page: 1,
+    limit: 10,
+  });
+
+  const releasesQuery = useReleases(workspaceSlug, projectSlug, pagination);
   const workspaceQuery = useWorkspace(workspaceSlug);
   const canPublish = hasPermission(
     workspaceQuery.data?.data.data.workspace.role,
     "release:publish",
   );
+
+  const handlePageChange = useCallback((page: number) => {
+    setPagination((prev) => ({ ...prev, page }));
+  }, []);
 
   const redirectToCreate = () => {
     router.push(`/w/${workspaceSlug}/p/${projectSlug}/release/new`);
@@ -69,12 +81,23 @@ const ReleasePage = () => {
         render={({
           data: {
             data: { releases },
+            meta,
           },
         }) => (
-          <div className="flex flex-col gap-2">
-            {releases.map((release) => (
-              <ReleaseItem key={release.id} release={release} />
-            ))}
+          <div id="pagination-scroll-wrapper" className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              {releases.map((release) => (
+                <ReleaseItem key={release.id} release={release} />
+              ))}
+            </div>
+
+            {meta?.pagination && (
+              <Pagination
+                page={meta.pagination.page}
+                totalPages={meta.pagination.totalPages}
+                onPageChange={handlePageChange}
+              />
+            )}
           </div>
         )}
       />
