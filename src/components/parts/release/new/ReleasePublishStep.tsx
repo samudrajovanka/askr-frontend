@@ -1,4 +1,4 @@
-import { AlertCircleIcon } from "lucide-react";
+import { AlertCircleIcon, InfoIcon } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -38,6 +38,7 @@ const ReleasePublishStep = ({
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-2">
+              <span>Estimated Version</span>
               <span className="font-mono typography-small font-semibold">
                 v{computedVersion}
               </span>
@@ -50,6 +51,13 @@ const ReleasePublishStep = ({
                 <Badge variant="outline">Initial release</Badge>
               )}
             </div>
+
+            <Alert variant="info" className="mt-2">
+              <InfoIcon />
+              <AlertDescription>
+                Final version will be determined at release time
+              </AlertDescription>
+            </Alert>
           </CardContent>
         </Card>
 

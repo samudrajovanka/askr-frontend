@@ -101,11 +101,15 @@ const NewReleasePage = () => {
   };
 
   const handlePublish = async () => {
-    await createReleaseMutation.mutateAsync({
+    const {
+      data: {
+        data: { release },
+      },
+    } = await createReleaseMutation.mutateAsync({
       bumpType: activeBumpType,
       notes: notes.trim(),
     });
-    toast.success("Release published successfully");
+    toast.success(`Release v${release.version} published successfully`);
     router.push(`/w/${workspaceSlug}/p/${projectSlug}/release`);
   };
 

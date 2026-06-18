@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { Field, FieldContent, FieldLabel } from "@/components/ui/field";
 import {
   InputGroup,
@@ -44,7 +45,14 @@ const ReleaseConfigureStep = ({
 
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-3">
-          <FieldLabel>Version</FieldLabel>
+          <FieldLabel>
+            Version
+            {currentVersion && (
+              <Badge variant="secondary" className="text-xs">
+                Current: {currentVersion}
+              </Badge>
+            )}
+          </FieldLabel>
 
           {isInitialRelease ? (
             <div className="rounded-lg border bg-muted/50 px-4 py-3">
