@@ -15,6 +15,7 @@ export type SafeRelease = {
   error: string | null;
   notes: string;
   tokenCount: number | null;
+  packageName: string;
   createdById: string;
   creator?: {
     email: string;

@@ -3,6 +3,7 @@ import { CheckCircle2, Clock, Loader2, XCircle } from "lucide-react";
 import { BasicAvatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import Code from "@/components/ui/code";
 import { SimpleTooltip } from "@/components/ui/tooltip";
 import { RELEASE_STATUSES } from "@/constants/release";
 import type { SafeRelease } from "@/types/release";
@@ -45,10 +46,10 @@ const ReleaseItem = ({ release }: { release: SafeRelease }) => {
               {statusConfig.icon}
             </SimpleTooltip>
 
-            <div className="flex flex-col flex-1">
+            <div className="flex flex-col flex-1 space-y-1">
               <p className="typography-normal font-medium">{release.notes}</p>
 
-              <div className="flex items-center gap-2 mt-1">
+              <div className="flex items-center gap-2">
                 <Badge variant="outline" className="font-mono">
                   v{release.version}
                 </Badge>
@@ -57,6 +58,16 @@ const ReleaseItem = ({ release }: { release: SafeRelease }) => {
                   {release.tokenCount ?? 0} tokens
                 </span>
               </div>
+
+              <Code className="typography-xsmall">
+                {release.packageName}-tokens
+              </Code>
+
+              {release.status === RELEASE_STATUSES.FAILED && release.error && (
+                <p className="typography-xsmall text-destructive">
+                  {release.error}
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col items-end gap-1">
@@ -79,12 +90,6 @@ const ReleaseItem = ({ release }: { release: SafeRelease }) => {
               </span>
             </div>
           </div>
-
-          {release.status === RELEASE_STATUSES.FAILED && release.error && (
-            <p className="typography-xsmall text-destructive">
-              {release.error}
-            </p>
-          )}
         </div>
       </CardContent>
     </Card>

@@ -52,7 +52,7 @@ const GeneralSetting = ({
     defaultValues: {
       name: project.name,
       slug: project.slug,
-      description: project.description,
+      description: project.description ?? "",
     } as UpdateProjectPayload,
     validators: {
       onChange: updateProjectSchema,
