@@ -1,5 +1,8 @@
+"use client";
+
 import Logo from "@/components/parts/logo/Logo";
 import WorkspaceSwitcher from "@/components/parts/switcher/WorkspaceSwitcher";
+import { usePermission } from "@/hooks/usePermission";
 import ProjectSwitcher from "../switcher/ProjectSwitcher";
 import NavbarProfile from "./NavbarProfile";
 import NavLink from "./NavLink";
@@ -17,6 +20,9 @@ const Navbar = ({
   showProjectSwitcher = false,
   workspaceSlug,
 }: NavbarProps) => {
+  const { hasPermission } = usePermission(workspaceSlug ?? "");
+  const canViewActivity = hasPermission("log:read");
+
   return (
     <header className="navbar-wrapper sticky top-0 z-50">
       <div className="flex h-16 w-full items-center px-6">
@@ -38,7 +44,11 @@ const Navbar = ({
           {showWorkspaceSwitcher && workspaceSlug && (
             <nav className="flex justify-center items-center gap-2">
               <NavLink href={`/w/${workspaceSlug}/projects`}>Projects</NavLink>
-              <NavLink href={`/w/${workspaceSlug}/activity`}>Activity</NavLink>
+              {canViewActivity && (
+                <NavLink href={`/w/${workspaceSlug}/activity`}>
+                  Activity
+                </NavLink>
+              )}
             </nav>
           )}
         </div>

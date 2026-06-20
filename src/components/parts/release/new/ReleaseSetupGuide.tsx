@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { usePermission } from "@/hooks/usePermission";
 import { useRegistryConfig } from "@/query/registry";
 import { useReleases } from "@/query/release";
 
@@ -21,35 +22,46 @@ const ReleaseSetupGuide = ({
 }: ReleaseSetupGuideProps) => {
   const { data: registryData } = useRegistryConfig(workspaceSlug, projectSlug);
   const { data: releasesData } = useReleases(workspaceSlug, projectSlug);
+  const { hasPermission } = usePermission(workspaceSlug);
 
   const isRegistryConfigured = registryData?.data?.data?.config != null;
   const hasReleases = (releasesData?.data?.data?.releases?.length ?? 0) > 1;
+  const canManageRegistry = hasPermission("registry:manage");
+  const canPublish = hasPermission("release:publish");
 
   const steps = [
     {
       step: 1,
       icon: Settings,
       title: "Set up your registry",
-      description:
-        "Configure your npm registry to publish design tokens as a package.",
+      description: canManageRegistry
+        ? "Configure your npm registry to publish design tokens as a package."
+        : "Ask an admin to configure the npm registry so you can publish design tokens as a package.",
       completed: isRegistryConfigured,
-      action: (
+      action: canManageRegistry ? (
         <Link
           href={`/w/${workspaceSlug}/p/${projectSlug}/settings/registry`}
           className={buttonVariants({ variant: "outline-primary", size: "sm" })}
         >
           {isRegistryConfigured ? "View Registry" : "Configure Registry"}
         </Link>
+      ) : (
+        <p className="typography-small text-muted-foreground">
+          {isRegistryConfigured
+            ? "Registry is configured."
+            : "Waiting for admin to configure the registry."}
+        </p>
       ),
     },
     {
       step: 2,
       icon: Rocket,
       title: "Create your first release",
-      description:
-        "Package your design tokens into a versioned release ready for integration.",
+      description: canPublish
+        ? "Package your design tokens into a versioned release ready for integration."
+        : "Ask an admin or manager to create the first release for you.",
       completed: hasReleases,
-      action: (
+      action: canPublish ? (
         <Button
           size="sm"
           onClick={onCreateRelease}
@@ -57,6 +69,12 @@ const ReleaseSetupGuide = ({
         >
           Create Release
         </Button>
+      ) : (
+        <p className="typography-small text-muted-foreground">
+          {hasReleases
+            ? "Releases are available."
+            : "Waiting for admin or manager to publish."}
+        </p>
       ),
     },
   ];

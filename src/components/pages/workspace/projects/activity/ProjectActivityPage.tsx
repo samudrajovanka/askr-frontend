@@ -1,6 +1,5 @@
 "use client";
 
-import { Activity } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useCallback, useState } from "react";
 import ActivityFilters, {
@@ -8,14 +7,14 @@ import ActivityFilters, {
 } from "@/components/parts/activity/ActivityFilters";
 import ActivityTable from "@/components/parts/activity/ActivityTable";
 import QueryHandling from "@/components/parts/query/QueryHandling";
+import AccessRestrictedState from "@/components/parts/template/AccessRestrictedState";
 import HeaderSection from "@/components/parts/template/HeaderSectionTemplate";
-import { BasicEmptyState } from "@/components/ui/empty";
 import { Pagination } from "@/components/ui/pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 import { projectAuditEventTypes } from "@/constants/audit";
-import { hasPermission } from "@/lib/permissions";
+import { usePermission } from "@/hooks/usePermission";
 import { useProjectAuditLogs } from "@/query/activity";
-import { useWorkspace, useWorkspaceMembers } from "@/query/workspace";
+import { useWorkspaceMembers } from "@/query/workspace";
 import type { AuditLogFilters } from "@/types/audit";
 
 const ProjectActivityPage = () => {
@@ -34,13 +33,10 @@ const ProjectActivityPage = () => {
     projectSlug,
     filters,
   );
-  const workspaceQuery = useWorkspace(workspaceSlug);
+  const { hasPermission } = usePermission(workspaceSlug);
   const membersQuery = useWorkspaceMembers(workspaceSlug);
 
-  const canView = hasPermission(
-    workspaceQuery.data?.data?.data?.workspace?.role,
-    "audit:view",
-  );
+  const canView = hasPermission("log:read");
 
   const handlePageChange = useCallback((page: number) => {
     setFilters((prev) => ({ ...prev, page }));
@@ -64,11 +60,7 @@ const ProjectActivityPage = () => {
       />
 
       {!canView ? (
-        <BasicEmptyState
-          Icon={Activity}
-          title="Access restricted"
-          message="You don't have permission to view activity logs."
-        />
+        <AccessRestrictedState description="You don't have permission to view the activity log." />
       ) : (
         <>
           <ActivityFilters

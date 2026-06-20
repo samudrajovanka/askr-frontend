@@ -24,7 +24,7 @@ const WorkspaceCard = ({ workspace }: { workspace: Workspace }) => {
               {workspace.name.charAt(0).toUpperCase()}
             </div>
 
-            <BadgeWorkspaceRole role={workspace.role} />
+            <BadgeWorkspaceRole role={workspace.me.role} />
           </div>
 
           <div className="relative flex flex-col gap-1.5">

@@ -4,8 +4,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import TokenPageTemplate from "@/components/parts/template/TokenPageTemplate";
-import { hasPermission } from "@/lib/permissions";
-import { useWorkspace } from "@/query/workspace";
+import { usePermission } from "@/hooks/usePermission";
 import type { Token } from "@/types/token";
 import { tokenConfigMap } from "./token-config";
 
@@ -23,7 +22,7 @@ const TokenPage = () => {
   const [extraValue, setExtraValue] = useState("hex");
 
   const deleteMutation = config.useDeleteToken(workspaceSlug, projectSlug);
-  const workspaceQuery = useWorkspace(workspaceSlug);
+  const { hasPermission } = usePermission(workspaceSlug);
 
   const primitiveQuery = config.useTokens(
     workspaceSlug,
@@ -44,18 +43,9 @@ const TokenPage = () => {
     );
   }
 
-  const canCreate = hasPermission(
-    workspaceQuery.data?.data.data.workspace.role,
-    "token:create",
-  );
-  const canEdit = hasPermission(
-    workspaceQuery.data?.data.data.workspace.role,
-    "token:edit",
-  );
-  const canDelete = hasPermission(
-    workspaceQuery.data?.data.data.workspace.role,
-    "token:delete",
-  );
+  const canCreate = hasPermission("token:create");
+  const canEdit = hasPermission("token:update");
+  const canDelete = hasPermission("token:delete");
 
   const handleCreate = () => {
     setEditToken(null);

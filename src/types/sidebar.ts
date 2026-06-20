@@ -27,4 +27,5 @@ export type SidebarNavItem = {
   icon: ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
   >;
+  permission?: string;
 } & (SidebarNavItemButton | SidebarNavItemLink);

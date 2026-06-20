@@ -28,10 +28,9 @@ import {
 } from "@/components/ui/input-group";
 import type { UpsertRegistryPayload } from "@/endpoints/registry/type";
 import { upsertRegistrySchema } from "@/endpoints/registry/validator";
+import { usePermission } from "@/hooks/usePermission";
 import { isInvalidField } from "@/lib/helpers/field";
-import { hasPermission } from "@/lib/permissions";
 import { useUpsertRegistryConfig } from "@/query/registry";
-import { useWorkspace } from "@/query/workspace";
 import type { GetRegistryConfig } from "@/types/registry";
 import RegistryResyncAlert from "./RegistryResyncAlert";
 
@@ -47,11 +46,8 @@ const RegistrySetting = ({
   config,
 }: RegistrySettingProps) => {
   const mutation = useUpsertRegistryConfig(workspaceSlug, projectSlug);
-  const workspaceQuery = useWorkspace(workspaceSlug);
-  const canManage = hasPermission(
-    workspaceQuery.data?.data?.data?.workspace?.role,
-    "registry:manage",
-  );
+  const { hasPermission } = usePermission(workspaceSlug);
+  const canManage = hasPermission("registry:manage");
 
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [pendingConfigValue, setPendingConfigValue] =
@@ -139,6 +135,7 @@ const RegistrySetting = ({
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
+                      disabled={!canManage}
                       placeholder="https://npm.pkg.github.com"
                     />
                     {isInvalid && (
@@ -167,6 +164,7 @@ const RegistrySetting = ({
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
+                        disabled={!canManage}
                         placeholder="acme"
                       />
                     </InputGroup>
@@ -199,6 +197,7 @@ const RegistrySetting = ({
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
+                      disabled={!canManage}
                       placeholder="npm_xxxx..."
                     />
                     {isInvalid ? (

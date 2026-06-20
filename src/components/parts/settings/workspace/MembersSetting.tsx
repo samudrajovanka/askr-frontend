@@ -30,12 +30,11 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { roleWorkspaceLabels } from "@/constants/workspace";
-import { hasPermission } from "@/lib/permissions";
+import { usePermission } from "@/hooks/usePermission";
 import { useMe } from "@/query/auth";
 import {
   useRemoveMember,
   useUpdateWorkspaceMember,
-  useWorkspace,
   useWorkspaceMembers,
 } from "@/query/workspace";
 import type { RoleWorkspace } from "@/types/workspace";
@@ -50,19 +49,13 @@ const HEADERS: TableHeaderItem[] = [
 const MembersSetting = () => {
   const { data } = useMe();
   const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
-  const workspaceQuery = useWorkspace(workspaceSlug);
+  const { hasPermission } = usePermission(workspaceSlug);
   const membersQuery = useWorkspaceMembers(workspaceSlug);
   const updateRoleMutation = useUpdateWorkspaceMember(workspaceSlug);
   const removeMemberMutation = useRemoveMember(workspaceSlug);
 
-  const canManage = hasPermission(
-    workspaceQuery.data?.data?.data?.workspace?.role,
-    "workspace:update-member",
-  );
-  const canRemove = hasPermission(
-    workspaceQuery.data?.data?.data?.workspace?.role,
-    "workspace:remove-member",
-  );
+  const canUpdateRole = hasPermission("member:update_role");
+  const canRemove = hasPermission("member:delete");
 
   const [pendingRoleChange, setPendingRoleChange] = useState<{
     memberId: string;
@@ -144,7 +137,7 @@ const MembersSetting = () => {
                       </TableCell>
                       <TableCell>
                         <Select
-                          disabled={isSelf || !canManage}
+                          disabled={isSelf || !canUpdateRole}
                           value={member.role}
                           onValueChange={(value) => {
                             const newRole = value as RoleWorkspace;

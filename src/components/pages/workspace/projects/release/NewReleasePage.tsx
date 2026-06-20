@@ -9,12 +9,12 @@ import StepperLayout from "@/components/layout/StepperLayout";
 import ReleaseConfigureStep from "@/components/parts/release/new/ReleaseConfigureStep";
 import ReleasePublishStep from "@/components/parts/release/new/ReleasePublishStep";
 import ReleaseReviewStep from "@/components/parts/release/new/ReleaseReviewStep";
+import AccessRestrictedState from "@/components/parts/template/AccessRestrictedState";
 import { Button } from "@/components/ui/button";
 import { DEFAULT_VERSION, VERSION_BUMP_TYPES } from "@/constants/version";
+import { usePermission } from "@/hooks/usePermission";
 import { bumpVersion } from "@/lib/helpers/version";
-import { hasPermission } from "@/lib/permissions";
 import { useCreateRelease, useReleaseDiff } from "@/query/release";
-import { useWorkspace } from "@/query/workspace";
 import type { VersionBumpType } from "@/types/version";
 
 const NOTES_MAX_LENGTH = 200;
@@ -45,11 +45,9 @@ const NewReleasePage = () => {
   } = useReleaseDiff(workspaceSlug, projectSlug, true);
   const diff = diffData?.data.data.diff;
 
-  const workspaceQuery = useWorkspace(workspaceSlug);
-  const canPublish = hasPermission(
-    workspaceQuery.data?.data.data.workspace.role,
-    "release:publish",
-  );
+  const { hasPermission, isFetched: workspaceFetched } =
+    usePermission(workspaceSlug);
+  const canPublish = hasPermission("release:publish");
   const createReleaseMutation = useCreateRelease(workspaceSlug, projectSlug);
 
   useEffect(() => {
@@ -70,12 +68,14 @@ const NewReleasePage = () => {
     router.push(`/w/${workspaceSlug}/p/${projectSlug}/release`);
   }, [router, workspaceSlug, projectSlug]);
 
-  useEffect(() => {
-    if (workspaceQuery.isFetched && !canPublish) {
-      toast.error("You don't have permission to publish releases");
-      goToReleases();
-    }
-  }, [workspaceQuery.isFetched, canPublish, goToReleases]);
+  if (workspaceFetched && !canPublish) {
+    return (
+      <AccessRestrictedState
+        title="Cannot publish release"
+        description="You don't have permission to publish releases. Ask an admin or manager to publish for you."
+      />
+    );
+  }
 
   const handleNext = () => {
     if (step === 1) {

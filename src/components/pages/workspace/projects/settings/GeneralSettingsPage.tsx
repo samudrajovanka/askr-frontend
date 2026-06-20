@@ -5,6 +5,7 @@ import QueryHandling from "@/components/parts/query/QueryHandling";
 import DangerZoneSetting from "@/components/parts/settings/project/DangerZoneSetting";
 import GeneralSetting from "@/components/parts/settings/project/GeneralSetting";
 import GeneralSettingsLoading from "@/components/parts/settings/workspace/GeneralSettingsLoading";
+import { usePermission } from "@/hooks/usePermission";
 import { useProject } from "@/query/project";
 
 const GeneralSettingsPage = () => {
@@ -13,6 +14,9 @@ const GeneralSettingsPage = () => {
     projectSlug: string;
   }>();
   const projectQuery = useProject(workspaceSlug, projectSlug);
+  const { hasPermission } = usePermission(workspaceSlug);
+
+  const canDelete = hasPermission("project:delete");
 
   return (
     <QueryHandling
@@ -25,7 +29,12 @@ const GeneralSettingsPage = () => {
       }) => (
         <div className="flex flex-col gap-6">
           <GeneralSetting project={project} workspaceSlug={workspaceSlug} />
-          <DangerZoneSetting project={project} workspaceSlug={workspaceSlug} />
+          {canDelete && (
+            <DangerZoneSetting
+              project={project}
+              workspaceSlug={workspaceSlug}
+            />
+          )}
         </div>
       )}
     />

@@ -13,7 +13,7 @@ export type StepperProps = {
 
 const Stepper = ({ steps, currentStep, className }: StepperProps) => {
   return (
-    <div className={cn("flex items-start", className)}>
+    <div className={cn("flex items- justify-center", className)}>
       {steps.map((step, index) => {
         const stepNum = index + 1;
         const isDone = stepNum < currentStep;

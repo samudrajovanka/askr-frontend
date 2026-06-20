@@ -22,9 +22,9 @@ import {
   InputGroupText,
 } from "@/components/ui/input-group";
 import { createWorkspaceSchema } from "@/endpoints/workspace/validator";
+import { usePermission } from "@/hooks/usePermission";
 import { isInvalidField } from "@/lib/helpers/field";
 import { generateSlug } from "@/lib/helpers/string";
-import { hasPermission } from "@/lib/permissions";
 import { useUpdateWorkspace } from "@/query/workspace";
 import type { Workspace } from "@/types/workspace";
 
@@ -36,7 +36,8 @@ const GeneralSetting = ({ workspace }: WorkspaceSettingProps) => {
   const [slugTouched, setSlugTouched] = useState(true);
   const updateMutation = useUpdateWorkspace();
   const router = useRouter();
-  const canManage = hasPermission(workspace.role, "workspace:update");
+  const { hasPermission } = usePermission(workspace.slug);
+  const canUpdate = hasPermission("workspace:update");
 
   const form = useForm({
     defaultValues: {
@@ -99,6 +100,7 @@ const GeneralSetting = ({ workspace }: WorkspaceSettingProps) => {
                         );
                       }
                     }}
+                    disabled={!canUpdate}
                     placeholder="e.g. Acme Corp"
                   />
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -127,6 +129,7 @@ const GeneralSetting = ({ workspace }: WorkspaceSettingProps) => {
                         field.handleChange(e.target.value);
                         setSlugTouched(true);
                       }}
+                      disabled={!canUpdate}
                       placeholder="acme-corp"
                     />
                   </InputGroup>
@@ -153,7 +156,7 @@ const GeneralSetting = ({ workspace }: WorkspaceSettingProps) => {
                     !canSubmit ||
                     isSubmitting ||
                     updateMutation.isPending ||
-                    !canManage
+                    !canUpdate
                   }
                 >
                   {updateMutation.isPending ? "Saving..." : "Save Changes"}

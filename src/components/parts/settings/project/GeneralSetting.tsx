@@ -23,11 +23,10 @@ import {
 } from "@/components/ui/input-group";
 import { DESCRIPTION_MAX_LENGTH } from "@/constants/string";
 import { updateProjectSchema } from "@/endpoints/project/validator";
+import { usePermission } from "@/hooks/usePermission";
 import { isInvalidField } from "@/lib/helpers/field";
 import { generateSlug } from "@/lib/helpers/string";
-import { hasPermission } from "@/lib/permissions";
 import { useUpdateProject } from "@/query/project";
-import { useWorkspace } from "@/query/workspace";
 import type { Project, UpdateProjectPayload } from "@/types/project";
 
 type ProjectGeneralSettingProps = {
@@ -41,12 +40,9 @@ const GeneralSetting = ({
 }: ProjectGeneralSettingProps) => {
   const [slugTouched, setSlugTouched] = useState(true);
   const updateMutation = useUpdateProject(workspaceSlug);
-  const workspaceQuery = useWorkspace(workspaceSlug);
+  const { hasPermission } = usePermission(workspaceSlug);
   const router = useRouter();
-  const canManage = hasPermission(
-    workspaceQuery.data?.data?.data?.workspace?.role,
-    "project:update",
-  );
+  const canUpdate = hasPermission("project:update");
 
   const form = useForm({
     defaultValues: {
@@ -113,6 +109,7 @@ const GeneralSetting = ({
                         );
                       }
                     }}
+                    disabled={!canUpdate}
                     placeholder="e.g. Design System"
                   />
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -141,6 +138,7 @@ const GeneralSetting = ({
                         field.handleChange(e.target.value);
                         setSlugTouched(true);
                       }}
+                      disabled={!canUpdate}
                       placeholder="design-system"
                     />
                   </InputGroup>
@@ -171,6 +169,7 @@ const GeneralSetting = ({
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="Briefly describe what this project is for"
                       rows={3}
+                      disabled={!canUpdate}
                       maxLength={DESCRIPTION_MAX_LENGTH}
                     />
                     <InputGroupAddon align="block-end" className="justify-end">
@@ -197,7 +196,7 @@ const GeneralSetting = ({
                     !canSubmit ||
                     isSubmitting ||
                     updateMutation.isPending ||
-                    !canManage
+                    !canUpdate
                   }
                 >
                   {updateMutation.isPending ? "Saving..." : "Save Changes"}

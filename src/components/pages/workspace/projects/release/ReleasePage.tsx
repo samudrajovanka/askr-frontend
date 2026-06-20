@@ -11,9 +11,8 @@ import HeaderSection from "@/components/parts/template/HeaderSectionTemplate";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
 import { Skeleton } from "@/components/ui/skeleton";
-import { hasPermission } from "@/lib/permissions";
+import { usePermission } from "@/hooks/usePermission";
 import { useReleases } from "@/query/release";
-import { useWorkspace } from "@/query/workspace";
 import type { PaginationParams } from "@/types/pagination";
 
 const ReleasePage = () => {
@@ -29,11 +28,8 @@ const ReleasePage = () => {
   });
 
   const releasesQuery = useReleases(workspaceSlug, projectSlug, pagination);
-  const workspaceQuery = useWorkspace(workspaceSlug);
-  const canPublish = hasPermission(
-    workspaceQuery.data?.data.data.workspace.role,
-    "release:publish",
-  );
+  const { hasPermission } = usePermission(workspaceSlug);
+  const canPublish = hasPermission("release:publish");
 
   const handlePageChange = useCallback((page: number) => {
     setPagination((prev) => ({ ...prev, page }));

@@ -15,7 +15,10 @@ export type Workspace = {
   name: string;
   slug: string;
   createdById: string;
-  role: RoleWorkspace;
+  me: {
+    role: RoleWorkspace;
+    permissions: string[];
+  };
   projectCount?: number;
   createdAt: string;
   updatedAt: string;

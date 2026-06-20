@@ -8,5 +8,7 @@ export type QueryHandlingProps<T> = {
   renderError?: React.ReactNode;
   renderEmpty?: React.ReactNode;
   renderNotFound?: React.ReactNode;
+  renderForbidden?: React.ReactNode;
+  bypassForbidden?: boolean;
   checkEmpty?: (data: T) => boolean;
 };

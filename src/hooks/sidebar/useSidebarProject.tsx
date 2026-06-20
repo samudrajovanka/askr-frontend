@@ -9,6 +9,7 @@ import {
 import { usePathname } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { PROJECT_SIDEBAR_TYPE, SIDEBAR_NAV_TYPE } from "@/constants/sidebar";
+import { usePermission } from "@/hooks/usePermission";
 import type { ProjectSidebarType, SidebarNavItem } from "@/types/sidebar";
 
 type UseSidebarProjectProps = {
@@ -24,6 +25,7 @@ const useSidebarProject = ({
 }: UseSidebarProjectProps) => {
   const pathname = usePathname();
   const router = useRouter();
+  const { hasPermission } = usePermission(workspaceSlug);
 
   const handleChangeUrl = useCallback(
     (to: string, callback: () => void) => {
@@ -71,6 +73,7 @@ const useSidebarProject = ({
         title: "Activity",
         href: generateHref("activity"),
         icon: SquareStack,
+        permission: "log:read",
       },
       {
         type: SIDEBAR_NAV_TYPE.BUTTON,
@@ -82,8 +85,8 @@ const useSidebarProject = ({
             onTypeChange(PROJECT_SIDEBAR_TYPE.SETTING),
           ),
       },
-    ];
-  }, [generateHref, onTypeChange, handleChangeUrl]);
+    ].filter((item) => !item.permission || hasPermission(item.permission));
+  }, [generateHref, onTypeChange, handleChangeUrl, hasPermission]);
 
   const header = useMemo(
     () => ({

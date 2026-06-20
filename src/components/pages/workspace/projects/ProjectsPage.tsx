@@ -12,20 +12,16 @@ import QueryHandling from "@/components/parts/query/QueryHandling";
 import HeaderSection from "@/components/parts/template/HeaderSectionTemplate";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { BasicEmptyState } from "@/components/ui/empty";
-import { hasPermission } from "@/lib/permissions";
+import { usePermission } from "@/hooks/usePermission";
 import { useProjects } from "@/query/project";
-import { useWorkspace } from "@/query/workspace";
 
 const ProjectsPage = () => {
   const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
   const [dialogOpen, setDialogOpen] = useState(false);
   const projectsQuery = useProjects(workspaceSlug);
-  const workspaceQuery = useWorkspace(workspaceSlug);
+  const { hasPermission } = usePermission(workspaceSlug);
 
-  const canCreate = hasPermission(
-    workspaceQuery.data?.data?.data.workspace.role,
-    "project:create",
-  );
+  const canCreate = hasPermission("project:create");
 
   return (
     <>
@@ -100,11 +96,13 @@ const ProjectsPage = () => {
         )}
       />
 
-      <CreateProjectDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        workspaceSlug={workspaceSlug}
-      />
+      {canCreate && (
+        <CreateProjectDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          workspaceSlug={workspaceSlug}
+        />
+      )}
     </>
   );
 };

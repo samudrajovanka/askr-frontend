@@ -8,24 +8,24 @@ const roleColors: Record<
   { bg: string; text: string; border: string }
 > = {
   admin: {
-    bg: "bg-violet-500/10",
-    text: "text-violet-400",
-    border: "border-violet-500/20",
+    bg: "bg-violet-100",
+    text: "text-violet-700",
+    border: "border-violet-200",
   },
   designer: {
-    bg: "bg-sky-500/10",
-    text: "text-sky-400",
-    border: "border-sky-500/20",
+    bg: "bg-sky-100",
+    text: "text-sky-700",
+    border: "border-sky-200",
   },
   engineer: {
-    bg: "bg-emerald-500/10",
-    text: "text-emerald-400",
-    border: "border-emerald-500/20",
+    bg: "bg-emerald-100",
+    text: "text-emerald-700",
+    border: "border-emerald-200",
   },
   manager: {
-    bg: "bg-amber-500/10",
-    text: "text-amber-400",
-    border: "border-amber-500/20",
+    bg: "bg-amber-100",
+    text: "text-amber-700",
+    border: "border-amber-200",
   },
 };
 

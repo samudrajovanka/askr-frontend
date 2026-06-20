@@ -26,20 +26,17 @@ import {
 } from "@/components/ui/select";
 import { roleWorkspaceLabels } from "@/constants/workspace";
 import { createInvitationSchema } from "@/endpoints/workspace/validator";
+import { usePermission } from "@/hooks/usePermission";
 import { isInvalidField } from "@/lib/helpers/field";
-import { hasPermission } from "@/lib/permissions";
-import { useCreateInvitation, useWorkspace } from "@/query/workspace";
+import { useCreateInvitation } from "@/query/workspace";
 import type { RoleWorkspace } from "@/types/workspace";
 
 const InviteMemberDialog = () => {
   const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
   const [open, setOpen] = useState(false);
-  const workspaceQuery = useWorkspace(workspaceSlug);
+  const { hasPermission } = usePermission(workspaceSlug);
 
-  const canInvite = hasPermission(
-    workspaceQuery.data?.data?.data?.workspace?.role,
-    "workspace:invite",
-  );
+  const canInvite = hasPermission("member:create");
   const createInvitation = useCreateInvitation(workspaceSlug);
 
   const form = useForm({

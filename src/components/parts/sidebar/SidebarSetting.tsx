@@ -7,12 +7,14 @@ import { useMemo } from "react";
 import Logo from "@/components/parts/logo/Logo";
 import { buttonVariants } from "@/components/ui/button";
 import { SIDEBAR_NAV_TYPE } from "@/constants/sidebar";
+import { usePermission } from "@/hooks/usePermission";
 import type { SidebarNavItem as SidebarNavItemType } from "@/types/sidebar";
 import SidebarNavItem from "./SidebarNavItem";
 import SidebarWrapper from "./SidebarWrapper";
 
 const SidebarSetting = () => {
   const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
+  const { permissions } = usePermission(workspaceSlug);
 
   const navItems = useMemo<SidebarNavItemType[]>(() => {
     return [
@@ -27,9 +29,12 @@ const SidebarSetting = () => {
         title: "Members",
         href: `/w/${workspaceSlug}/settings/members`,
         icon: Users,
+        permission: "member:read",
       },
-    ];
-  }, [workspaceSlug]);
+    ].filter(
+      (item) => !item.permission || permissions?.includes(item.permission),
+    );
+  }, [workspaceSlug, permissions]);
 
   return (
     <SidebarWrapper>

@@ -4,9 +4,7 @@ import { useRouter } from "@bprogress/next/app";
 import { toast } from "sonner";
 import DangerZoneSection from "@/components/parts/settings/DangerZoneSection";
 import DeleteAction from "@/components/parts/settings/DeleteAction";
-import { hasPermission } from "@/lib/permissions";
 import { useDeleteProject } from "@/query/project";
-import { useWorkspace } from "@/query/workspace";
 import type { Project } from "@/types/project";
 
 const DangerZoneSetting = ({
@@ -18,13 +16,6 @@ const DangerZoneSetting = ({
 }) => {
   const router = useRouter();
   const deleteMutation = useDeleteProject(workspaceSlug);
-  const workspaceQuery = useWorkspace(workspaceSlug);
-  const canDelete = hasPermission(
-    workspaceQuery.data?.data?.data?.workspace?.role,
-    "project:delete",
-  );
-
-  if (!canDelete) return null;
 
   return (
     <DangerZoneSection>
