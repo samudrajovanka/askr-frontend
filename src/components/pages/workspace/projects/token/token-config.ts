@@ -58,7 +58,7 @@ import {
 } from "@/query/token";
 import type { Token, TokenLayer } from "@/types/token";
 
-type TokenConfig = {
+export type TokenConfig = {
   icon: LucideIcon;
   title: string;
   description: string;

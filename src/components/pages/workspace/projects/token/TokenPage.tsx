@@ -3,20 +3,22 @@
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import NotFoundState from "@/components/parts/template/NotFoundState";
 import TokenPageTemplate from "@/components/parts/template/TokenPageTemplate";
 import { usePermission } from "@/hooks/usePermission";
 import type { Token } from "@/types/token";
+import type { TokenConfig } from "./token-config";
 import { tokenConfigMap } from "./token-config";
 
-const TokenPage = () => {
-  const { workspaceSlug, projectSlug, category } = useParams<{
-    workspaceSlug: string;
-    projectSlug: string;
-    category: string;
-  }>();
-
-  const config = tokenConfigMap[category];
-
+const TokenPageContent = ({
+  config,
+  workspaceSlug,
+  projectSlug,
+}: {
+  config: TokenConfig;
+  workspaceSlug: string;
+  projectSlug: string;
+}) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editToken, setEditToken] = useState<Token | null>(null);
   const [extraValue, setExtraValue] = useState("hex");
@@ -34,14 +36,6 @@ const TokenPage = () => {
     projectSlug,
     "semantic",
   );
-
-  if (!config) {
-    return (
-      <p className="p-10 text-center text-muted-foreground">
-        Unknown token category: {category}
-      </p>
-    );
-  }
 
   const canCreate = hasPermission("token:create");
   const canEdit = hasPermission("token:update");
@@ -119,6 +113,33 @@ const TokenPage = () => {
           defaultLayer={activeTab}
         />
       )}
+    />
+  );
+};
+
+const TokenPage = () => {
+  const { workspaceSlug, projectSlug, category } = useParams<{
+    workspaceSlug: string;
+    projectSlug: string;
+    category: string;
+  }>();
+
+  const config = tokenConfigMap[category];
+
+  if (!config) {
+    return (
+      <NotFoundState
+        title="Invalid token category"
+        description={`Unknown token category: ${category}`}
+      />
+    );
+  }
+
+  return (
+    <TokenPageContent
+      config={config}
+      workspaceSlug={workspaceSlug}
+      projectSlug={projectSlug}
     />
   );
 };

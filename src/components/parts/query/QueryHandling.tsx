@@ -1,4 +1,5 @@
 import AccessRestrictedState from "../template/AccessRestrictedState";
+import NotFoundState from "../template/NotFoundState";
 import type { QueryHandlingProps } from "./types";
 
 const QueryHandling = <T,>({
@@ -20,12 +21,19 @@ const QueryHandling = <T,>({
 
   if (isError) {
     const status = (error as { status?: number })?.status;
+    const message = (error as { data?: { message?: string } })?.data?.message;
 
     if (status === 404) {
       return props.renderNotFound ? (
         props.renderNotFound
       ) : (
-        <p>Data not found</p>
+        <NotFoundState
+          title="Not found"
+          description={
+            message ??
+            "The resource you're looking for doesn't exist or has been removed."
+          }
+        />
       );
     }
 
@@ -37,7 +45,11 @@ const QueryHandling = <T,>({
       );
     }
 
-    return props.renderError ? props.renderError : <p>Error</p>;
+    return props.renderError ? (
+      props.renderError
+    ) : (
+      <p className="text-destructive">{message ?? "Something went wrong"}</p>
+    );
   }
 
   if (isSuccess && data) {

@@ -60,7 +60,10 @@ function EmptyTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="empty-title"
-      className={cn("typography-small font-medium tracking-tight", className)}
+      className={cn(
+        "typography-subheading font-medium tracking-tight",
+        className,
+      )}
       {...props}
     />
   );
@@ -71,7 +74,7 @@ function EmptyDescription({ className, ...props }: React.ComponentProps<"p">) {
     <div
       data-slot="empty-description"
       className={cn(
-        "text-sm/relaxed text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
+        "typography-regular text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
         className,
       )}
       {...props}
@@ -94,7 +97,7 @@ function EmptyContent({ className, ...props }: React.ComponentProps<"div">) {
 
 type BasicEmptyStateProps = {
   title: string;
-  message: string;
+  message: string | React.ReactNode;
   Icon: LucideIcon;
   renderContent?: React.ReactNode;
   className?: string;
