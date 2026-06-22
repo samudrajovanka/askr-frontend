@@ -4,7 +4,7 @@ import { useRouter } from "@bprogress/next/app";
 import { ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Workspace } from "@/types/workspace";
-import BadgeWorkspaceRole from "./BadgeWorkspaceRole";
+import BadgeWorkspaceRole from "../badge/BadgeWorkspaceRole";
 
 const WorkspaceCard = ({ workspace }: { workspace: Workspace }) => {
   const router = useRouter();

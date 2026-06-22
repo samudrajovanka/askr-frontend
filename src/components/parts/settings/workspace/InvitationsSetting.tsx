@@ -5,11 +5,12 @@ import { Mail, XCircle } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import BadgeInvitationStatus from "@/components/parts/badge/BadgeInvitationStatus";
+import BadgeWorkspaceRole from "@/components/parts/badge/BadgeWorkspaceRole";
 import QueryHandling from "@/components/parts/query/QueryHandling";
 import TableFactory, {
   type TableHeaderItem,
 } from "@/components/parts/table/TableFactory";
-import BadgeWorkspaceRole from "@/components/parts/workspace/BadgeWorkspaceRole";
 import { BasicAlertDialog } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -26,6 +27,9 @@ import {
   INVITATION_STATUS,
   invitationStatusLabels,
 } from "@/constants/invitation";
+import { ROLE_WORKSPACE } from "@/constants/workspace";
+import { usePermission } from "@/hooks/usePermission";
+import { useMe } from "@/query/auth";
 import {
   useCancelInvitation,
   useWorkspaceInvitations,
@@ -34,6 +38,7 @@ import {
 const HEADERS: TableHeaderItem[] = [
   { title: "Email" },
   { title: "Role" },
+  { title: "Status" },
   { title: "Invited By" },
   { title: "Sent" },
   { title: "Expires" },
@@ -50,6 +55,15 @@ const InvitationsSetting = () => {
     status: selectedStatuses.join(","),
   });
   const cancelInvitation = useCancelInvitation(workspaceSlug);
+  const meQuery = useMe();
+  const { role } = usePermission(workspaceSlug);
+
+  const currentUserId = meQuery.data?.data?.data?.user?.id;
+  const isAdmin = role === ROLE_WORKSPACE.ADMIN;
+
+  const canCancelInvitation = (invitedById: string) => {
+    return isAdmin || currentUserId === invitedById;
+  };
 
   const handleCancelInvitation = async (invitationId: string) => {
     await cancelInvitation.mutateAsync(invitationId);
@@ -127,6 +141,9 @@ const InvitationsSetting = () => {
                   <TableCell>
                     <BadgeWorkspaceRole role={invitation.role} />
                   </TableCell>
+                  <TableCell>
+                    <BadgeInvitationStatus status={invitation.status} />
+                  </TableCell>
                   <TableCell className="typography-small">
                     <div className="flex flex-col">
                       <p className="typography-small font-medium">
@@ -144,31 +161,35 @@ const InvitationsSetting = () => {
                     {format(new Date(invitation.expiresAt), "dd MMM yyyy")}
                   </TableCell>
                   <TableCell>
-                    <BasicAlertDialog
-                      trigger={{
-                        variant: "ghost-desctructive",
-                        size: "icon-sm",
-                        children: <XCircle className="size-4" />,
-                      }}
-                      title="Cancel invitation?"
-                      description={
-                        <>
-                          This will cancel the invitation for{" "}
-                          <strong>{invitation.email}</strong>.
-                        </>
-                      }
-                      cancelButton={{
-                        children: "Back",
-                      }}
-                      actionButton={{
-                        variant: "destructive",
-                        onClick: () => handleCancelInvitation(invitation.id),
-                        disabled: cancelInvitation.isPending,
-                        children: cancelInvitation.isPending
-                          ? "Cancelling..."
-                          : "Sure",
-                      }}
-                    />
+                    {invitation.status === INVITATION_STATUS.PENDING &&
+                      canCancelInvitation(invitation.invitedById) && (
+                        <BasicAlertDialog
+                          trigger={{
+                            variant: "ghost-desctructive",
+                            size: "icon-sm",
+                            children: <XCircle className="size-4" />,
+                          }}
+                          title="Cancel invitation?"
+                          description={
+                            <>
+                              This will cancel the invitation for{" "}
+                              <strong>{invitation.email}</strong>.
+                            </>
+                          }
+                          cancelButton={{
+                            children: "Back",
+                          }}
+                          actionButton={{
+                            variant: "destructive",
+                            onClick: () =>
+                              handleCancelInvitation(invitation.id),
+                            disabled: cancelInvitation.isPending,
+                            children: cancelInvitation.isPending
+                              ? "Cancelling..."
+                              : "Sure",
+                          }}
+                        />
+                      )}
                   </TableCell>
                 </TableRow>
               )}

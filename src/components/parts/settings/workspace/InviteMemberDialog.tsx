@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { roleWorkspaceLabels } from "@/constants/workspace";
+import { ROLE_WORKSPACE, roleWorkspaceLabels } from "@/constants/workspace";
 import { createInvitationSchema } from "@/endpoints/workspace/validator";
 import { usePermission } from "@/hooks/usePermission";
 import { isInvalidField } from "@/lib/helpers/field";
@@ -34,15 +34,22 @@ import type { RoleWorkspace } from "@/types/workspace";
 const InviteMemberDialog = () => {
   const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
   const [open, setOpen] = useState(false);
-  const { hasPermission } = usePermission(workspaceSlug);
+  const { hasPermission, role } = usePermission(workspaceSlug);
 
   const canInvite = hasPermission("member:create");
+  const isAdmin = role === ROLE_WORKSPACE.ADMIN;
   const createInvitation = useCreateInvitation(workspaceSlug);
+
+  const availableRoles = Object.entries(roleWorkspaceLabels).filter(
+    ([value]) => isAdmin || value !== ROLE_WORKSPACE.ADMIN,
+  );
 
   const form = useForm({
     defaultValues: {
       email: "",
-      role: "admin" as RoleWorkspace,
+      role: (isAdmin
+        ? ROLE_WORKSPACE.ADMIN
+        : ROLE_WORKSPACE.DESIGNER) as RoleWorkspace,
     },
     validators: {
       onChange: createInvitationSchema,
@@ -121,13 +128,11 @@ const InviteMemberDialog = () => {
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(roleWorkspaceLabels).map(
-                      ([value, label]) => (
-                        <SelectItem key={value} value={value}>
-                          {label}
-                        </SelectItem>
-                      ),
-                    )}
+                    {availableRoles.map(([value, label]) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </Field>
