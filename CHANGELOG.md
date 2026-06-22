@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/samudrajovanka/askr-frontend/compare/v1.0.0...v1.0.1) (2026-06-22)
+
+
+### Bug Fixes
+
+* **fetch:** convert boolean isSignedIn ([38a79f4](https://github.com/samudrajovanka/askr-frontend/commit/38a79f429df345f981caa742c7249ce4febf7c71))
+
 ## 1.0.0 (2026-06-22)
 
 
