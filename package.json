@@ -9,7 +9,10 @@
     "biome:format": "biome format --write",
     "biome:lint": "biome lint --write",
     "biome:check": "biome check --write",
-    "prepare:install": "lefthook install"
+    "prepare:install": "lefthook install",
+    "release:prod:patch": "standard-version --release-as patch",
+    "release:prod:minor": "standard-version --release-as minor",
+    "release:prod:major": "standard-version --release-as major"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
@@ -42,6 +45,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "lefthook": "^2.1.6",
+    "standard-version": "^9.5.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   },
