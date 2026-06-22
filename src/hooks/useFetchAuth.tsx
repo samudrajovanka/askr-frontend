@@ -22,6 +22,6 @@ export const useFetchAuth = <TArgs extends unknown[], TResult>(
   return {
     execute,
     userId,
-    isSignedIn,
+    isSignedIn: !!isSignedIn,
   };
 };
