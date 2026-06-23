@@ -8,6 +8,9 @@ const footerLinks = [
   { label: "How It Works", href: "#how-it-works" },
   { label: "Sign In", href: "/auth/sign-in" },
   { label: "Sign Up", href: "/auth/sign-up" },
+  ...(app.feedbackFormUrl
+    ? [{ label: "Send Feedback", href: app.feedbackFormUrl, external: true }]
+    : []),
 ];
 
 const FooterHomepage = () => {
@@ -30,15 +33,27 @@ const FooterHomepage = () => {
             </p>
 
             <nav className="flex flex-col gap-2">
-              {footerLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="typography-small text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {footerLinks.map((link) =>
+                link.external ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="typography-small text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="typography-small text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {link.label}
+                  </Link>
+                ),
+              )}
             </nav>
           </div>
         </div>

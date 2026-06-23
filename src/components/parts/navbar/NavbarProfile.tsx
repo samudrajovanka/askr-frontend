@@ -1,7 +1,7 @@
 "use client";
 
 import { useClerk } from "@clerk/nextjs";
-import { Mail } from "lucide-react";
+import { Mail, MessageSquare } from "lucide-react";
 import { useState } from "react";
 import QueryHandling from "@/components/parts/query/QueryHandling";
 import { BasicAvatar } from "@/components/ui/avatar";
@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
+import app from "@/config/app";
 import { useMe } from "@/query/auth";
 import { useMyInvitations } from "@/query/invitation";
 import packageJson from "../../../../package.json";
@@ -68,6 +69,20 @@ const NavbarProfile = () => {
                     </Badge>
                   )}
                 </DropdownMenuItem>
+                {app.feedbackFormUrl && (
+                  <DropdownMenuItem
+                    render={
+                      <a
+                        href={app.feedbackFormUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <MessageSquare className="size-4" />
+                        <span>Send Feedback</span>
+                      </a>
+                    }
+                  />
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   variant="destructive"
