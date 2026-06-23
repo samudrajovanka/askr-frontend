@@ -92,9 +92,9 @@ const NavbarProfile = () => {
                   Log out
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <div className="px-2 py-1 typography-xsmall text-muted-foreground/70 font-mono text-center">
+                <p className="px-2 py-1 typography-xsmall text-muted-foreground/70 font-mono text-center">
                   v{packageJson.version}
-                </div>
+                </p>
               </DropdownMenuContent>
             </DropdownMenu>
           );

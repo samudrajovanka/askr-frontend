@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import Logo from "@/components/parts/logo/Logo";
 import app from "@/config/app";
+import packageJson from "../../../../package.json";
 
 const footerLinks = [
   { label: "Features", href: "#features" },
@@ -59,10 +60,11 @@ const FooterHomepage = () => {
         </div>
       </div>
       <div className="border-t border-border">
-        <div className="container-layout py-3">
-          <p className="typography-small text-muted-foreground">
+        <div className="container-layout py-3 typography-small text-muted-foreground flex flex-col md:flex-row gap-1 items-center justify-between">
+          <p>
             &copy; {currentYear} {app.name}. All rights reserved.
           </p>
+          <p>v{packageJson.version}</p>
         </div>
       </div>
     </footer>
