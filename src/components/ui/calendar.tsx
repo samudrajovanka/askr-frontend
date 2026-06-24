@@ -238,6 +238,7 @@ type DatePickerProps = {
   onChange?: (value: string) => void;
   placeholder?: string;
   className?: string;
+  disabled?: boolean;
   calendarProps?: Omit<
     React.ComponentProps<typeof Calendar>,
     "mode" | "selected" | "onSelect"
@@ -249,6 +250,7 @@ function DatePicker({
   onChange,
   placeholder = "Pick a date",
   className,
+  disabled,
   calendarProps,
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
@@ -269,6 +271,7 @@ function DatePicker({
           render={
             <Button
               variant="outline"
+              disabled={disabled}
               className={cn(
                 "h-8 w-full justify-start gap-2 text-left font-normal pr-8",
                 !dateValue && "text-muted-foreground",

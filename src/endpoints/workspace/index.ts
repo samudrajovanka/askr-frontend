@@ -8,6 +8,7 @@ import type {
   WorkspaceInvitation,
   WorkspaceInvitationsFilter,
   WorkspaceMember,
+  WorkspaceUsage,
 } from "@/types/workspace";
 
 export const getWorkspaces = async (token: string) => {
@@ -165,6 +166,17 @@ export const cancelInvitation = async (
     `/workspaces/${slug}/invitations/${invitationId}/cancel`,
     {
       method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+};
+
+export const getWorkspaceUsage = async (token: string, slug: string) => {
+  return await fetcher<SuccessResponseData<WorkspaceUsage>>(
+    `/workspaces/${slug}/usage`,
+    {
       headers: {
         Authorization: `Bearer ${token}`,
       },

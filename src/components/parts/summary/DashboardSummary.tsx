@@ -3,6 +3,7 @@ import { Box, GitCompare, Package } from "lucide-react";
 import SummaryCard from "@/components/parts/card/SummaryCard";
 import QueryHandling from "@/components/parts/query/QueryHandling";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useProjectUsage } from "@/query/project";
 import { useReleaseDiff, useReleases } from "@/query/release";
 import { useTokenSummary } from "@/query/token";
 
@@ -16,6 +17,7 @@ const DashboardSummary = ({
   projectSlug,
 }: DashboardSummaryProps) => {
   const summaryQuery = useTokenSummary(workspaceSlug, projectSlug);
+  const projectUsageQuery = useProjectUsage(workspaceSlug, projectSlug);
   const releasesQuery = useReleases(workspaceSlug, projectSlug);
   const diffQuery = useReleaseDiff(workspaceSlug, projectSlug);
 
@@ -32,7 +34,26 @@ const DashboardSummary = ({
           <SummaryCard
             icon={<Box className="size-5" />}
             label="Total Tokens"
-            value={summary.total ?? 0}
+            value={
+              <div className="flex flex-col gap-0.5">
+                <span className="typography-heading text-xl">
+                  {summary.total ?? 0}
+                </span>
+                <QueryHandling
+                  queryResult={projectUsageQuery}
+                  renderLoading={<Skeleton className="h-3 w-full" />}
+                  render={({
+                    data: {
+                      data: { token },
+                    },
+                  }) => (
+                    <span className="typography-xsmall text-muted-foreground">
+                      / {token.limit}
+                    </span>
+                  )}
+                />
+              </div>
+            }
           />
         )}
       />

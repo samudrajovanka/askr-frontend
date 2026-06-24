@@ -1,8 +1,10 @@
 "use client";
 
 import { useForm, useStore } from "@tanstack/react-form";
-import { Search } from "lucide-react";
+import { Info, Search } from "lucide-react";
+import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { BasicAvatar } from "@/components/ui/avatar";
 import { DatePicker } from "@/components/ui/calendar";
 import { Field, FieldLabel } from "@/components/ui/field";
@@ -21,6 +23,7 @@ import {
 import { auditEventTypeLabel } from "@/constants/audit";
 import { useDebounce } from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
+import { useWorkspaceUsage } from "@/query/workspace";
 import type { AuditEventType } from "@/types/audit";
 import type { Project } from "@/types/project";
 import type { WorkspaceMember } from "@/types/workspace";
@@ -49,9 +52,15 @@ const ActivityFilters = ({
   allowEventTypes,
   onFiltersChange,
 }: ActivityFiltersProps) => {
+  const { workspaceSlug } = useParams<{ workspaceSlug: string }>();
   const [searchInput, setSearchInput] = useState("");
   const isInitial = useRef(true);
   const debouncedSearch = useDebounce(searchInput, 400);
+
+  const { data: usageData, isLoading } = useWorkspaceUsage(workspaceSlug);
+  const auditLogRetention = usageData?.data?.data?.auditLogRetention;
+
+  const isDateDisabled = isLoading || !!auditLogRetention?.limit;
 
   const form = useForm({
     defaultValues: {
@@ -204,6 +213,7 @@ const ActivityFilters = ({
               value={field.state.value}
               onChange={field.handleChange}
               placeholder="Pick a date"
+              disabled={isDateDisabled}
             />
           </Field>
         )}
@@ -216,6 +226,7 @@ const ActivityFilters = ({
               value={field.state.value}
               onChange={field.handleChange}
               placeholder="Pick a date"
+              disabled={isDateDisabled}
             />
           </Field>
         )}
@@ -235,6 +246,20 @@ const ActivityFilters = ({
           </InputGroup>
         )}
       </form.Field>
+
+      {auditLogRetention?.limit && (
+        <div className="col-span-full">
+          <Alert variant="info">
+            <Info />
+            <AlertTitle>Date filter disabled</AlertTitle>
+            <AlertDescription>
+              Filtering by date is disabled because audit logs are retained for{" "}
+              {auditLogRetention.limit} {auditLogRetention.unit ?? "days"} on
+              your current plan.
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
     </div>
   );
 };

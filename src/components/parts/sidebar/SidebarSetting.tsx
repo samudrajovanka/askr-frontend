@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Settings, Users } from "lucide-react";
+import { ArrowLeft, CreditCard, Settings, Users } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
@@ -30,6 +30,12 @@ const SidebarSetting = () => {
         href: `/w/${workspaceSlug}/settings/members`,
         icon: Users,
         permission: "member:read",
+      },
+      {
+        type: SIDEBAR_NAV_TYPE.LINK,
+        title: "Billing",
+        href: `/w/${workspaceSlug}/settings/billing`,
+        icon: CreditCard,
       },
     ].filter(
       (item) => !item.permission || permissions?.includes(item.permission),

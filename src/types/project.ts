@@ -3,6 +3,7 @@ import type {
   createProjectSchema,
   updateProjectSchema,
 } from "@/endpoints/project/validator";
+import type { UsageMetric } from "./workspace";
 
 export type Project = {
   id: string;
@@ -17,3 +18,7 @@ export type Project = {
 
 export type CreateProjectPayload = z.infer<typeof createProjectSchema>;
 export type UpdateProjectPayload = z.infer<typeof updateProjectSchema>;
+
+export type ProjectUsage = {
+  token: UsageMetric;
+};

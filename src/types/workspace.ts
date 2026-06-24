@@ -60,3 +60,25 @@ export type WorkspaceInvitation = {
 export type WorkspaceInvitationsFilter = {
   status?: string;
 };
+
+export type UsageMetric = {
+  current: number;
+  limit: number;
+  unit?: string;
+};
+
+export type StaticUsageMetric = {
+  limit: number;
+  unit?: string;
+};
+
+export type ProjectUsageMetric = {
+  token: UsageMetric;
+};
+
+export type WorkspaceUsage = {
+  projects: UsageMetric;
+  members: UsageMetric;
+  auditLogRetention: StaticUsageMetric;
+  projectsUsage: Record<string, ProjectUsageMetric>;
+};

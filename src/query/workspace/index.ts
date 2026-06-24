@@ -9,6 +9,7 @@ import {
   getWorkspaceInvitations,
   getWorkspaceMembers,
   getWorkspaces,
+  getWorkspaceUsage,
   removeMember,
   updateWorkspace,
   updateWorkspaceMember,
@@ -142,8 +143,8 @@ export const useRemoveMember = (slug: string) => {
 
 export const getWorkspaceInvitationsKey = (slug: string) => [
   "workspace",
-  "invitations",
   slug,
+  "invitations",
 ];
 
 export const useWorkspaceInvitations = (
@@ -186,5 +187,21 @@ export const useCancelInvitation = (slug: string) => {
         queryKey: getWorkspaceInvitationsKey(slug),
       });
     },
+  });
+};
+
+export const getWorkspaceUsageKey = (slug: string) => [
+  "workspace",
+  slug,
+  "usage",
+];
+
+export const useWorkspaceUsage = (slug: string) => {
+  const { execute: fetchUsage, isSignedIn } = useFetchAuth(getWorkspaceUsage);
+
+  return useQuery({
+    queryKey: getWorkspaceUsageKey(slug),
+    enabled: isSignedIn && !!slug,
+    queryFn: () => fetchUsage(slug),
   });
 };

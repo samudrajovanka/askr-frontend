@@ -2,6 +2,7 @@ import { fetcher } from "@/lib/helpers/fetcher";
 import type {
   CreateProjectPayload,
   Project,
+  ProjectUsage,
   UpdateProjectPayload,
 } from "@/types/project";
 import type { SuccessResponseData } from "@/types/response";
@@ -76,6 +77,21 @@ export const deleteProject = async (
     `/workspaces/${workspaceSlug}/projects/${projectSlug}`,
     {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+};
+
+export const getProjectUsage = async (
+  token: string,
+  workspaceSlug: string,
+  projectSlug: string,
+) => {
+  return await fetcher<SuccessResponseData<ProjectUsage>>(
+    `/workspaces/${workspaceSlug}/projects/${projectSlug}/usage`,
+    {
       headers: {
         Authorization: `Bearer ${token}`,
       },

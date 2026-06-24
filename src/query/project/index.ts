@@ -5,6 +5,7 @@ import {
   deleteProject,
   getProject,
   getProjects,
+  getProjectUsage,
   updateProject,
 } from "@/endpoints/project";
 import { useFetchAuth } from "@/hooks/useFetchAuth";
@@ -96,5 +97,20 @@ export const useDeleteProject = (workspaceSlug: string) => {
         queryKey: getProjectKey(workspaceSlug, projectSlug),
       });
     },
+  });
+};
+
+export const getProjectUsageKey = (
+  workspaceSlug: string,
+  projectSlug: string,
+) => ["project", workspaceSlug, projectSlug, "usage"];
+
+export const useProjectUsage = (workspaceSlug: string, projectSlug: string) => {
+  const { execute: fetchUsage, isSignedIn } = useFetchAuth(getProjectUsage);
+
+  return useQuery({
+    queryKey: getProjectUsageKey(workspaceSlug, projectSlug),
+    enabled: isSignedIn && !!workspaceSlug && !!projectSlug,
+    queryFn: () => fetchUsage(workspaceSlug, projectSlug),
   });
 };
