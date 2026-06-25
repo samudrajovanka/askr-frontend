@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  REGION: asia-southeast2 
+  REGION: asia-southeast1
   SERVICE_NAME: askr-frontend
   IMAGE: asia-southeast2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID_DEV }}/askr-repo/askr-frontend:${{ github.sha }}
 
