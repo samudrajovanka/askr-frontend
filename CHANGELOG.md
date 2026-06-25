@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.2](https://github.com/samudrajovanka/askr-frontend/compare/v1.0.1...v1.0.2) (2026-06-25)
+
+
+### Features
+
+* add feedback url action ([bd2c636](https://github.com/samudrajovanka/askr-frontend/commit/bd2c636f3ce22b059abb3cf5386513ff6fde9f09))
+* add limitation ([a615a9e](https://github.com/samudrajovanka/askr-frontend/commit/a615a9e2742b03978098438bb8059cdecfe3be62))
+
+
+### Bug Fixes
+
+* add version on footer ([d8a5cd2](https://github.com/samudrajovanka/askr-frontend/commit/d8a5cd22492b325ed968a1094bb293b4ddc1d6d8))
+
 ### [1.0.1](https://github.com/samudrajovanka/askr-frontend/compare/v1.0.0...v1.0.1) (2026-06-22)
 
 
