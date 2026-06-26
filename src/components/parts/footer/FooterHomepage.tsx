@@ -41,7 +41,7 @@ const FooterHomepage = () => {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="typography-small text-muted-foreground transition-colors hover:text-foreground"
+                    className="typography-small text-muted-foreground transition-colors hover:text-primary"
                   >
                     {link.label}
                   </a>
@@ -49,7 +49,7 @@ const FooterHomepage = () => {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="typography-small text-muted-foreground transition-colors hover:text-foreground"
+                    className="typography-small text-muted-foreground transition-colors hover:text-primary"
                   >
                     {link.label}
                   </Link>

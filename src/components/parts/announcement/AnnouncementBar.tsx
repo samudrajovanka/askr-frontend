@@ -45,7 +45,7 @@ const AnnouncementBar = ({
   return (
     <div
       className={cn(
-        "relative flex w-full items-center justify-center gap-3 border-b border-border px-4 py-2",
+        "relative flex flex-col md:flex-row w-full items-center justify-center gap-[0.5] md:gap-3 border-b border-border px-5 py-3",
         "bg-secondary text-secondary-foreground typography-regular",
         className,
       )}

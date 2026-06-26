@@ -103,7 +103,7 @@ const NavbarHomepage = () => {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="rounded-lg p-2 typography-regular text-muted-foreground transition-colors hover:text-foreground"
+                className="rounded-lg p-2 typography-regular text-muted-foreground transition-colors"
               >
                 {link.label}
               </NavLink>
