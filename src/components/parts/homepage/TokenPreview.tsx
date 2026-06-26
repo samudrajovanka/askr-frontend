@@ -14,9 +14,9 @@ const TokenPreview = () => {
           <div className="size-3 rounded-full bg-chart-4/60" />
           <div className="size-3 rounded-full bg-chart-3/60" />
         </div>
-        <div className="space-y-3 font-mono text-sm text-left">
+        <div className="space-y-3 font-mono typography-small text-left">
           {cssValues.map((css) => (
-            <div key={css.name} className="flex items-center">
+            <div key={css.name} className="flex items-center flex-wrap">
               <span className="text-muted-foreground">{css.name}:</span>
               <span className="text-primary ml-2">{css.value}</span>
               <span className="text-muted-foreground">;</span>

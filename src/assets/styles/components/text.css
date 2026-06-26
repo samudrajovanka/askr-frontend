@@ -24,7 +24,7 @@
   }
 
   .typography-small {
-    @apply text-xs md:text-sm leading-normal;
+    @apply text-sm leading-normal;
   }
 
   .typography-xsmall {

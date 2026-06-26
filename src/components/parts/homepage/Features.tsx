@@ -72,7 +72,7 @@ const Features = () => {
               <CardTitle className="typography-subheading-2">
                 {feature.title}
               </CardTitle>
-              <CardDescription className="typography-small text-muted-foreground">
+              <CardDescription className="text-muted-foreground">
                 {feature.description}
               </CardDescription>
             </CardHeader>

@@ -7,7 +7,7 @@ type NavLinkProps = ComponentPropsWithoutRef<"a"> & {
 };
 
 const navLinkClassName =
-  "rounded-lg px-2 typography-small text-muted-foreground transition-colors hover:text-foreground";
+  "rounded-lg px-2 typography-regular text-muted-foreground transition-colors hover:text-foreground";
 
 const NavLink = ({ href, children, className, ...props }: NavLinkProps) => {
   const isExternal = href.startsWith("http://") || href.startsWith("https://");
