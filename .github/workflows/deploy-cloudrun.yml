@@ -47,6 +47,7 @@ jobs:
             --build-arg NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL="/workspaces" \
             --build-arg NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL="/workspaces" \
             --build-arg NEXT_PUBLIC_FEEDBACK_FORM_URL="${{ secrets.NEXT_PUBLIC_FEEDBACK_FORM_URL }}" \
+            --build-arg NEXT_PUBLIC_VERSION_BADGE="${{ secrets.NEXT_PUBLIC_VERSION_BADGE }}" \
             -t ${{ env.IMAGE }} .
 
       - name: Push Docker image

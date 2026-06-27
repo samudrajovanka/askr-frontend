@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 import Logo from "@/components/parts/logo/Logo";
+import AppVersion from "@/components/ui/app-version";
 import app from "@/config/app";
-import packageJson from "../../../../package.json";
 
 const footerLinks = [
   { label: "Features", href: "#features" },
@@ -64,7 +64,7 @@ const FooterHomepage = () => {
           <p>
             &copy; {currentYear} {app.name}. All rights reserved.
           </p>
-          <p>v{packageJson.version}</p>
+          <AppVersion />
         </div>
       </div>
     </footer>

@@ -7,10 +7,10 @@ const QueryHandling = <T,>({
   bypassForbidden = true,
   ...props
 }: QueryHandlingProps<T>) => {
-  const { data, isLoading, isFetching, isError, isSuccess, error } =
+  const { data, isLoading, isPending, isFetching, isError, isSuccess, error } =
     queryResult;
 
-  if (isLoading && isFetching) {
+  if (isLoading || isFetching || isPending) {
     return props.renderLoading !== undefined ? (
       props.renderLoading
     ) : (

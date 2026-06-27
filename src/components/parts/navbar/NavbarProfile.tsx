@@ -4,6 +4,7 @@ import { useClerk } from "@clerk/nextjs";
 import { Mail, MessageSquare } from "lucide-react";
 import { useState } from "react";
 import QueryHandling from "@/components/parts/query/QueryHandling";
+import AppVersion from "@/components/ui/app-version";
 import { BasicAvatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -19,7 +20,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import app from "@/config/app";
 import { useMe } from "@/query/auth";
 import { useMyInvitations } from "@/query/invitation";
-import packageJson from "../../../../package.json";
 import MyInvitationsDialog from "./MyInvitationsDialog";
 
 const NavbarProfile = () => {
@@ -92,9 +92,9 @@ const NavbarProfile = () => {
                   Log out
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <p className="px-2 py-1 typography-xsmall text-muted-foreground/70 font-mono text-center">
-                  v{packageJson.version}
-                </p>
+                <div className="px-2 py-[0.5] text-center">
+                  <AppVersion />
+                </div>
               </DropdownMenuContent>
             </DropdownMenu>
           );
