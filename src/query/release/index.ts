@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import {
   createRelease as createReleaseFn,
+  getLatestRelease,
   getReleaseDiff,
   getReleases,
 } from "@/endpoints/release";
@@ -47,6 +48,31 @@ export const useReleases = (
   });
 };
 
+export const getLatestReleaseKey = (
+  workspaceSlug: string,
+  projectSlug: string,
+) => [workspaceSlug, projectSlug, "releases", "latest"];
+
+export const useLatestRelease = (
+  workspaceSlug: string,
+  projectSlug: string,
+) => {
+  const { execute, isSignedIn } = useFetchAuth(getLatestRelease);
+
+  return useQuery({
+    queryKey: getLatestReleaseKey(workspaceSlug, projectSlug),
+    enabled: isSignedIn && !!workspaceSlug && !!projectSlug,
+    queryFn: () => execute(workspaceSlug, projectSlug),
+    refetchInterval: (query) => {
+      const release = query.state.data?.data?.data?.release;
+      if (!release) return false;
+      return release.status === "pending" || release.status === "running"
+        ? 5000
+        : false;
+    },
+  });
+};
+
 export const useReleaseDiff = (
   workspaceSlug: string,
   projectSlug: string,
@@ -78,6 +104,9 @@ export const useCreateRelease = (
       });
       queryClient.invalidateQueries({
         queryKey: getReleaseDiffKey(workspaceSlug, projectSlug),
+      });
+      queryClient.invalidateQueries({
+        queryKey: getLatestReleaseKey(workspaceSlug, projectSlug),
       });
     },
   });

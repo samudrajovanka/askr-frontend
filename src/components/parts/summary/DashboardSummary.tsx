@@ -4,7 +4,7 @@ import SummaryCard from "@/components/parts/card/SummaryCard";
 import QueryHandling from "@/components/parts/query/QueryHandling";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProjectUsage } from "@/query/project";
-import { useReleaseDiff, useReleases } from "@/query/release";
+import { useLatestRelease, useReleaseDiff } from "@/query/release";
 import { useTokenSummary } from "@/query/token";
 
 type DashboardSummaryProps = {
@@ -18,7 +18,7 @@ const DashboardSummary = ({
 }: DashboardSummaryProps) => {
   const summaryQuery = useTokenSummary(workspaceSlug, projectSlug);
   const projectUsageQuery = useProjectUsage(workspaceSlug, projectSlug);
-  const releasesQuery = useReleases(workspaceSlug, projectSlug);
+  const latestReleaseQuery = useLatestRelease(workspaceSlug, projectSlug);
   const diffQuery = useReleaseDiff(workspaceSlug, projectSlug);
 
   return (
@@ -59,31 +59,25 @@ const DashboardSummary = ({
       />
 
       <QueryHandling
-        queryResult={releasesQuery}
+        queryResult={latestReleaseQuery}
         renderLoading={<Skeleton className="h-28 w-full" />}
         render={({
           data: {
-            data: { releases },
+            data: { release },
           },
         }) => {
-          const latestRelease = (() => {
-            if (!releases?.length) return null;
-            const successful = releases.filter((r) => r.status === "success");
-            return successful.length > 0 ? successful[0] : null;
-          })();
-
           return (
             <SummaryCard
               icon={<Package className="size-5" />}
               label="Latest Release"
               value={
-                latestRelease ? (
+                release ? (
                   <div className="flex flex-col gap-0.5">
                     <span className="typography-heading text-xl">
-                      {latestRelease.version}
+                      {release.version}
                     </span>
                     <span className="typography-xsmall text-muted-foreground">
-                      {format(new Date(latestRelease.createdAt), "MMM d, yyyy")}
+                      {format(new Date(release.createdAt), "MMM d, yyyy")}
                     </span>
                   </div>
                 ) : (

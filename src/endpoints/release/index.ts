@@ -1,6 +1,6 @@
 import { fetcher } from "@/lib/helpers/fetcher";
 import type { PaginationParams } from "@/types/pagination";
-import type { ReleaseDiff, SafeRelease } from "@/types/release";
+import type { Release, ReleaseDiff, SafeRelease } from "@/types/release";
 import type { SuccessResponseData } from "@/types/response";
 import type { VersionBumpType } from "@/types/version";
 
@@ -22,6 +22,21 @@ export const getReleases = async (
         Authorization: `Bearer ${token}`,
       },
       params,
+    },
+  );
+};
+
+export const getLatestRelease = async (
+  token: string,
+  workspaceSlug: string,
+  projectSlug: string,
+) => {
+  return await fetcher<SuccessResponseData<{ release: Release | null }>>(
+    `/workspaces/${workspaceSlug}/projects/${projectSlug}/releases/latest`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     },
   );
 };

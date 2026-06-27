@@ -5,7 +5,7 @@ import type { VersionBumpType } from "./version";
 export type ReleaseStatus =
   (typeof RELEASE_STATUSES)[keyof typeof RELEASE_STATUSES];
 
-export type SafeRelease = {
+export type Release = {
   id: string;
   createdAt: string;
   updatedAt: string;
@@ -17,6 +17,9 @@ export type SafeRelease = {
   tokenCount: number | null;
   packageName: string;
   createdById: string;
+};
+
+export type SafeRelease = Release & {
   creator?: {
     email: string;
     name: string;
