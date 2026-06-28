@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import type { UseSidebarReturn } from "@/types/sidebar";
 
 type SidebarHeaderType = {
-  header: UseSidebarReturn["header"];
+  header: Exclude<UseSidebarReturn["header"], undefined>;
   className?: string;
 };
 

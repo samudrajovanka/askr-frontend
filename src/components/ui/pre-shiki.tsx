@@ -9,7 +9,6 @@ type Props = {
   className?: string;
 };
 
-/** Extracts raw text content from a React node tree (Shiki renders spans with code). */
 function extractText(node: ReactNode): string {
   if (node == null || node === false) return "";
   if (typeof node === "string" || typeof node === "number") return String(node);
