@@ -51,7 +51,7 @@ const NavbarHomepage = () => {
                     size: "default",
                   })}
                 >
-                  Workspace
+                  Dashboard
                   <ArrowRight className="size-4" />
                 </Link>
               </>
