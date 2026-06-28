@@ -3,6 +3,7 @@
 import { type ReactNode, useRef } from "react";
 import CopyButton from "@/components/ui/copy-button";
 import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader } from "./card";
 
 type Props = {
   children?: ReactNode;
@@ -23,19 +24,36 @@ function extractText(node: ReactNode): string {
 const PreShiki = ({ children, className }: Props) => {
   const preRef = useRef<HTMLPreElement>(null);
   const text = extractText(children);
+  let language = "code";
+
+  const child = Array.isArray(children) ? children[0] : children;
+  if (child && typeof child === "object" && "props" in child) {
+    const childClassName = child.props?.className;
+    const match = childClassName?.match(/language-(\w+)/);
+
+    if (match) {
+      language = match[1];
+    }
+  }
 
   return (
-    <div className="relative my-6 overflow-hidden rounded-lg border border-border">
-      <div className="absolute right-2 top-2 z-10">
-        <CopyButton
-          value={text}
-          className="text-muted-foreground hover:text-foreground"
-        />
-      </div>
-      <pre ref={preRef} className={cn(className, "overflow-x-auto p-4 m-0")}>
-        {children}
-      </pre>
-    </div>
+    <Card className="my-6 pt-0">
+      <CardHeader className="py-2 bg-secondary">
+        <div className="flex justify-between items-center">
+          <span className="font-mono">{language}</span>
+
+          <CopyButton
+            value={text}
+            className="text-muted-foreground hover:text-foreground ml-auto"
+          />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <pre ref={preRef} className={cn(className, "overflow-x-auto")}>
+          {children}
+        </pre>
+      </CardContent>
+    </Card>
   );
 };
 

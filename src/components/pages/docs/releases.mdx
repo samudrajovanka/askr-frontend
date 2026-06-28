@@ -32,7 +32,7 @@ import Code from "@/components/ui/code";
   
     Each release produces a standard npm package:
   
-    ```css
+    ```
     @acme/web-design-system-tokens/
       package.json
       tokens.css      ← :root { --color-blue-500: #2563eb; ... }
@@ -52,8 +52,8 @@ import Code from "@/components/ui/code";
     Primitive tokens write their raw value, and semantic tokens write a <Code>var()</Code> reference.
     
     ```css
-      --color-blue-500: #2563eb;
-      --color-bg-primary: var(--color-blue-500);
+    --color-blue-500: #2563eb;
+    --color-bg-primary: var(--color-blue-500);
     ```
   
     ### JavaScript / TypeScript output
