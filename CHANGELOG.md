@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.4](https://github.com/samudrajovanka/askr-frontend/compare/v1.0.3...v1.0.4) (2026-06-28)
+
+
+### Features
+
+* add announcement banner beta ([a4af3fe](https://github.com/samudrajovanka/askr-frontend/commit/a4af3fe7be2424cebc5f54f2393f517da92c5bc2))
+
+
+### Bug Fixes
+
+* add beta version badge from env and adjust query handling ([a8c9531](https://github.com/samudrajovanka/askr-frontend/commit/a8c95311d7aa9cb3132db85b22ab1c4cdb5b8b76))
+* adjust latest version on dashboard ([6558880](https://github.com/samudrajovanka/askr-frontend/commit/6558880b85d8abcc9631404e6eaf0311f1b57002))
+* adjust text size small and token preview ([54145fa](https://github.com/samudrajovanka/askr-frontend/commit/54145fa678afb74ffce5f58b68fdc137743a11fd))
+* **navbar-homepage:** change workspace to dashboard ([2e4f010](https://github.com/samudrajovanka/askr-frontend/commit/2e4f01021b04d0b1822d4780fe560bca78214692))
+* **navbar,announcement:** adjust size and color ([89a562f](https://github.com/samudrajovanka/askr-frontend/commit/89a562f3924a31fb9e078a41102325ec47737ddb))
+* revert render not found query handling ([da31b3e](https://github.com/samudrajovanka/askr-frontend/commit/da31b3efb77055375f5d38084cbd82529c34b47d))
+
 ### [1.0.3](https://github.com/samudrajovanka/askr-frontend/compare/v1.0.2...v1.0.3) (2026-06-25)
 
 ### [1.0.2](https://github.com/samudrajovanka/askr-frontend/compare/v1.0.1...v1.0.2) (2026-06-25)
