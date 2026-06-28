@@ -19,11 +19,11 @@ const Hero = () => {
 
       <div className="flex w-full flex-col items-center px-6 py-20 text-center md:py-24 container-layout">
         <h1 className="max-w-3xl typography-hero">
-          Design Tokens, <span className="text-primary">Simplified.</span>
+          Design Systems, <span className="text-primary">Simplified.</span>
         </h1>
 
         <p className="mt-6 max-w-2xl text-muted-foreground typography-subheading-2 font-normal">
-          Create, manage, and publish design tokens for your entire team. Keep
+          Create, manage, and publish design systems for your entire team. Keep
           your design system consistent across every product and platform.
         </p>
 

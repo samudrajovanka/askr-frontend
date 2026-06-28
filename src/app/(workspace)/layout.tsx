@@ -27,7 +27,7 @@ export default async function Layout({
       <div className="relative min-h-screen w-full">
         <MobileBlocker />
 
-        <div className="hidden md:block min-h-screen w-full">{children}</div>
+        {children}
       </div>
     </HydrationBoundary>
   );

@@ -30,4 +30,8 @@
   .typography-xsmall {
     @apply text-[10px] md:text-xs leading-[1.3];
   }
+
+  .link {
+    @apply text-primary underline underline-offset-4 hover:text-primary/80 transition-colors;
+  }
 }

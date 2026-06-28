@@ -6,7 +6,7 @@ const Code = ({ className, ...props }: CodeProps) => {
   return (
     <code
       className={cn(
-        "rounded bg-muted px-1 py-0.5 font-mono self-start",
+        "rounded-md bg-gray-200 px-1 py-0.5 font-mono self-start",
         className,
       )}
       {...props}

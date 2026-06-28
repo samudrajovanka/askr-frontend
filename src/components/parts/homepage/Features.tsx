@@ -31,7 +31,7 @@ const features: Feature[] = [
     icon: GitBranch,
     title: "Version Control",
     description:
-      "Semantic versioning with full release history. Track every change to your design tokens over time.",
+      "Semantic versioning with full release history. Track every change to your design systems over time.",
   },
   {
     icon: Users,
@@ -43,7 +43,7 @@ const features: Feature[] = [
     icon: Package,
     title: "Export & Publish",
     description:
-      "Generate CSS variables and publish your tokens as npm packages. Integrate into any codebase instantly.",
+      "Generate and publish your design systems as npm packages. Integrate into any codebase instantly.",
   },
 ];
 
@@ -55,8 +55,8 @@ const Features = () => {
     >
       <SectionHeaderHomepageTemplate
         tag="Features"
-        title="Everything you need to manage design tokens"
-        description="A complete platform for creating, versioning, and distributing your design system tokens."
+        title="Everything you need to manage design systems"
+        description="A complete platform for creating, versioning, and distributing your design system systems."
       />
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">

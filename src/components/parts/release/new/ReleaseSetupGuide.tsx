@@ -35,8 +35,8 @@ const ReleaseSetupGuide = ({
       icon: Settings,
       title: "Set up your registry",
       description: canManageRegistry
-        ? "Configure your npm registry to publish design tokens as a package."
-        : "Ask an admin to configure the npm registry so you can publish design tokens as a package.",
+        ? "Configure your npm registry to publish design systems as a package."
+        : "Ask an admin to configure the npm registry so you can publish design systems as a package.",
       completed: isRegistryConfigured,
       action: canManageRegistry ? (
         <Link
@@ -58,7 +58,7 @@ const ReleaseSetupGuide = ({
       icon: Rocket,
       title: "Create your first release",
       description: canPublish
-        ? "Package your design tokens into a versioned release ready for integration."
+        ? "Package your design systems into a versioned release ready for integration."
         : "Ask an admin or manager to create the first release for you.",
       completed: hasReleases,
       action: canPublish ? (

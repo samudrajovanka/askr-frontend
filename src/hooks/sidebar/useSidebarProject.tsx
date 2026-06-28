@@ -1,4 +1,3 @@
-import { useRouter } from "@bprogress/next/app";
 import {
   LayoutDashboard,
   PencilRuler,
@@ -6,11 +5,14 @@ import {
   Settings,
   SquareStack,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { PROJECT_SIDEBAR_TYPE, SIDEBAR_NAV_TYPE } from "@/constants/sidebar";
 import { usePermission } from "@/hooks/usePermission";
-import type { ProjectSidebarType, SidebarNavItem } from "@/types/sidebar";
+import type {
+  ProjectSidebarType,
+  SidebarNavItem,
+  UseSidebarReturn,
+} from "@/types/sidebar";
 
 type UseSidebarProjectProps = {
   workspaceSlug: string;
@@ -22,20 +24,8 @@ const useSidebarProject = ({
   workspaceSlug,
   projectSlug,
   onTypeChange,
-}: UseSidebarProjectProps) => {
-  const pathname = usePathname();
-  const router = useRouter();
+}: UseSidebarProjectProps): UseSidebarReturn => {
   const { hasPermission } = usePermission(workspaceSlug);
-
-  const handleChangeUrl = useCallback(
-    (to: string, callback: () => void) => {
-      if (!pathname.includes(to)) {
-        router.push(to);
-      }
-      callback();
-    },
-    [pathname, router],
-  );
 
   const generateHref = useCallback(
     (path: string) => {
@@ -55,12 +45,8 @@ const useSidebarProject = ({
       {
         type: SIDEBAR_NAV_TYPE.BUTTON,
         title: "Tokens",
-        href: generateHref("token/"),
         icon: PencilRuler,
-        action: () =>
-          handleChangeUrl(generateHref("token/color"), () =>
-            onTypeChange(PROJECT_SIDEBAR_TYPE.TOKEN),
-          ),
+        action: () => onTypeChange(PROJECT_SIDEBAR_TYPE.TOKEN),
       },
       {
         type: SIDEBAR_NAV_TYPE.LINK,
@@ -78,15 +64,11 @@ const useSidebarProject = ({
       {
         type: SIDEBAR_NAV_TYPE.BUTTON,
         title: "Settings",
-        href: generateHref("settings/general"),
         icon: Settings,
-        action: () =>
-          handleChangeUrl(generateHref("settings/general"), () =>
-            onTypeChange(PROJECT_SIDEBAR_TYPE.SETTING),
-          ),
+        action: () => onTypeChange(PROJECT_SIDEBAR_TYPE.SETTING),
       },
     ].filter((item) => !item.permission || hasPermission(item.permission));
-  }, [generateHref, onTypeChange, handleChangeUrl, hasPermission]);
+  }, [generateHref, onTypeChange, hasPermission]);
 
   const header = useMemo(
     () => ({

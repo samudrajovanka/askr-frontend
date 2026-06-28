@@ -34,7 +34,7 @@ const ProjectCard = ({ project, workspaceSlug }: Props) => {
               {project.name}
             </h3>
             {project.description && (
-              <p className="text-sm text-muted-foreground line-clamp-2">
+              <p className="typography-small text-muted-foreground line-clamp-2">
                 {project.description}
               </p>
             )}

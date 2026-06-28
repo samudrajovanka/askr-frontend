@@ -103,7 +103,7 @@ export const tokenConfigMap: Record<string, TokenConfig> = {
   [TOKEN_CATEGORIES.COLOR]: {
     icon: Palette,
     title: "Color Tokens",
-    description: "Manage your project's color design tokens",
+    description: "Manage your project's color tokens",
     tokenTypeLabel: "color token",
     emptyTitle: "No color tokens yet",
     emptyMessage:
@@ -122,7 +122,7 @@ export const tokenConfigMap: Record<string, TokenConfig> = {
   [TOKEN_CATEGORIES.SPACING]: {
     icon: Ruler,
     title: "Spacing Tokens",
-    description: "Manage your project's spacing design tokens",
+    description: "Manage your project's spacing tokens",
     tokenTypeLabel: "spacing token",
     emptyTitle: "No spacing tokens yet",
     emptyMessage:
@@ -135,7 +135,7 @@ export const tokenConfigMap: Record<string, TokenConfig> = {
   [TOKEN_CATEGORIES.TEXT]: {
     icon: Type,
     title: "Text Tokens",
-    description: "Manage your project's text design tokens",
+    description: "Manage your project's text tokens",
     tokenTypeLabel: "text token",
     emptyTitle: "No text tokens yet",
     emptyMessage:
@@ -148,7 +148,7 @@ export const tokenConfigMap: Record<string, TokenConfig> = {
   [TOKEN_CATEGORIES.FONT]: {
     icon: CaseSensitive,
     title: "Font Tokens",
-    description: "Manage your project's font design tokens",
+    description: "Manage your project's font tokens",
     tokenTypeLabel: "font token",
     emptyTitle: "No font tokens yet",
     emptyMessage:
@@ -161,7 +161,7 @@ export const tokenConfigMap: Record<string, TokenConfig> = {
   [TOKEN_CATEGORIES.FONT_WEIGHT]: {
     icon: Bold,
     title: "Font Weight Tokens",
-    description: "Manage your project's font weight design tokens",
+    description: "Manage your project's font weight tokens",
     tokenTypeLabel: "font weight token",
     emptyTitle: "No font weight tokens yet",
     emptyMessage:
@@ -174,7 +174,7 @@ export const tokenConfigMap: Record<string, TokenConfig> = {
   [TOKEN_CATEGORIES.LEADING]: {
     icon: AlignJustify,
     title: "Leading Tokens",
-    description: "Manage your project's leading design tokens",
+    description: "Manage your project's leading tokens",
     tokenTypeLabel: "leading token",
     emptyTitle: "No leading tokens yet",
     emptyMessage:
@@ -187,7 +187,7 @@ export const tokenConfigMap: Record<string, TokenConfig> = {
   [TOKEN_CATEGORIES.TRACKING]: {
     icon: Space,
     title: "Tracking Tokens",
-    description: "Manage your project's tracking design tokens",
+    description: "Manage your project's tracking tokens",
     tokenTypeLabel: "tracking token",
     emptyTitle: "No tracking tokens yet",
     emptyMessage:
@@ -200,7 +200,7 @@ export const tokenConfigMap: Record<string, TokenConfig> = {
   [TOKEN_CATEGORIES.RADIUS]: {
     icon: CornerUpLeft,
     title: "Radius Tokens",
-    description: "Manage your project's radius design tokens",
+    description: "Manage your project's radius tokens",
     tokenTypeLabel: "radius token",
     emptyTitle: "No radius tokens yet",
     emptyMessage:
@@ -213,7 +213,7 @@ export const tokenConfigMap: Record<string, TokenConfig> = {
   [TOKEN_CATEGORIES.SHADOW]: {
     icon: Layers,
     title: "Shadow Tokens",
-    description: "Manage your project's shadow design tokens",
+    description: "Manage your project's shadow tokens",
     tokenTypeLabel: "shadow token",
     emptyTitle: "No shadow tokens yet",
     emptyMessage:
@@ -226,7 +226,7 @@ export const tokenConfigMap: Record<string, TokenConfig> = {
   [TOKEN_CATEGORIES.BORDER]: {
     icon: Square,
     title: "Border Tokens",
-    description: "Manage your project's border design tokens",
+    description: "Manage your project's border tokens",
     tokenTypeLabel: "border token",
     emptyTitle: "No border tokens yet",
     emptyMessage:

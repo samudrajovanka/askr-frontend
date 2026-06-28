@@ -1,0 +1,134 @@
+import CodeBlock from "@/components/ui/code-block";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+<article>
+  <header>
+    # Documentation
+  
+    Learn the core concepts behind Askr's design platform.
+  </header>
+  
+  ---
+  
+  <section>
+    ## What is Askr?
+  
+    Askr is a centralized design platform that serves as the single source of truth for your design system. Instead of hardcoding design system values across multiple web apps, you define them once in Askr and publish them as an package that all your apps can consume.
+  </section>
+  
+  ---
+  
+  <section>
+    ## Key Concepts
+  
+    Understanding the core building blocks will help you navigate Askr effectively
+  
+    <br />
+  
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Workspace</CardTitle>
+          <CardDescription>Your organization. Houses projects and team members.</CardDescription>
+        </CardHeader>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Project</CardTitle>
+          <CardDescription>A design systems collection. Each project holds a set of design systems that get versioned and published together as an npm package.</CardDescription>
+        </CardHeader>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Token</CardTitle>
+          <CardDescription>An individual design value. Tokens come in 10 categories with two layers: primitive and semantic.</CardDescription>
+        </CardHeader>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Release</CardTitle>
+          <CardDescription>A versioned snapshot of your design systems, published to your registry.</CardDescription>
+        </CardHeader>
+      </Card>
+    </div>
+  </section>
+  
+  ---
+  
+  <section>
+    ## Primitive vs Semantic Tokens
+  
+    Askr uses a two layer token system that separates raw values from their intended usage
+  
+    <br />
+  
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Primitive Tokens</CardTitle>
+          <CardDescription>Raw values that define the basis of your design. It is recommended that these values NOT be used directly in components.</CardDescription>
+        </CardHeader>
+        <CardContent className="mt-auto">
+          ```css
+            color.blue.500  → #2563EB
+            spacing.4       → 16px
+          ```
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Semantic Tokens</CardTitle>
+          <CardDescription>Tokens that reference primitives. Use these in your components and apps.</CardDescription>
+        </CardHeader>
+        <CardContent className="mt-auto">
+
+          ```css
+            color.bg.primary  → color.blue.500
+            spacing.md        → spacing.4
+          ```
+        </CardContent>
+      </Card>
+    </div>
+  </section>
+  
+  ---
+  
+  <section>
+    ## Who is This For?
+  
+    <br />
+  
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Admin</CardTitle>
+          <CardDescription>Design system owner. Full access like manage workspaces, manage projects, manage design systems, publish releases, invite members, configure registry.</CardDescription>
+        </CardHeader>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Designer</CardTitle>
+          <CardDescription>Design systems author. Create and edit design systems, define the visual language, preview changes before publish.</CardDescription>
+        </CardHeader>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Engineer</CardTitle>
+          <CardDescription>Design systems consumer. Read-only platform access. Install the design systems package via registry.</CardDescription>
+        </CardHeader>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Manager</CardTitle>
+          <CardDescription>Governance oversight. View activity logs, track changes, monitor releases, ensure design consistency across teams.</CardDescription>
+        </CardHeader>
+      </Card>
+    </div>
+  </section>
+</article>

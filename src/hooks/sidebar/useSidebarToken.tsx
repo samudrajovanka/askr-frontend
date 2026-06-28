@@ -5,7 +5,7 @@ import {
   tokenCategoryIcons,
   tokenCategoryLabels,
 } from "@/constants/token";
-import type { SidebarNavItem } from "@/types/sidebar";
+import type { SidebarNavItem, UseSidebarReturn } from "@/types/sidebar";
 
 type UseSidebarTokenProps = {
   workspaceSlug: string;
@@ -19,7 +19,7 @@ const useSidebarToken = ({
   workspaceSlug,
   projectSlug,
   headerAction,
-}: UseSidebarTokenProps) => {
+}: UseSidebarTokenProps): UseSidebarReturn => {
   const navItems = useMemo<SidebarNavItem[]>(() => {
     return CATEGORIES.map((category) => ({
       type: SIDEBAR_NAV_TYPE.LINK,

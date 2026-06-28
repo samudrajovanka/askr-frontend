@@ -11,8 +11,8 @@ export const versionBumpTypeLabels = {
 } as const;
 
 export const versionBumpTypeDescriptions = {
-  [VERSION_BUMP_TYPES.MAJOR]: "Breaking — tokens deleted or renamed",
-  [VERSION_BUMP_TYPES.MINOR]: "Additive — new tokens added",
+  [VERSION_BUMP_TYPES.MAJOR]: "Breaking — design systems deleted or renamed",
+  [VERSION_BUMP_TYPES.MINOR]: "Additive — new design systems added",
   [VERSION_BUMP_TYPES.PATCH]: "Preserving — only values changed",
 } as const;
 

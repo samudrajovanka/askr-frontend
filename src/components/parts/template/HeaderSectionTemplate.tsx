@@ -10,7 +10,7 @@ const HeaderSection = ({ title, description, rightComponent }: HeaderProps) => {
       <div>
         <h1 className="typography-heading">{title}</h1>
         {description && (
-          <p className="mt-1 typography-small text-muted-foreground">
+          <p className="mt-1 typography-regular text-muted-foreground">
             {description}
           </p>
         )}

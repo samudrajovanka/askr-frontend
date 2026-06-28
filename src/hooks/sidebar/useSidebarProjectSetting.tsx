@@ -2,7 +2,7 @@ import { Package, Settings } from "lucide-react";
 import { useMemo } from "react";
 import { SIDEBAR_NAV_TYPE } from "@/constants/sidebar";
 import { usePermission } from "@/hooks/usePermission";
-import type { SidebarNavItem } from "@/types/sidebar";
+import type { SidebarNavItem, UseSidebarReturn } from "@/types/sidebar";
 
 type UseSidebarProjectSettingProps = {
   workspaceSlug: string;
@@ -14,7 +14,7 @@ const useSidebarProjectSetting = ({
   workspaceSlug,
   projectSlug,
   headerAction,
-}: UseSidebarProjectSettingProps) => {
+}: UseSidebarProjectSettingProps): UseSidebarReturn => {
   const { permissions } = usePermission(workspaceSlug);
 
   const navItems = useMemo<SidebarNavItem[]>(

@@ -1,17 +1,13 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import Logo from "@/components/parts/logo/Logo";
-import { Button, buttonVariants } from "@/components/ui/button";
 import { PROJECT_SIDEBAR_TYPE } from "@/constants/sidebar";
 import useSidebarProject from "@/hooks/sidebar/useSidebarProject";
 import useSidebarProjectSetting from "@/hooks/sidebar/useSidebarProjectSetting";
 import useSidebarToken from "@/hooks/sidebar/useSidebarToken";
 import type { ProjectSidebarType } from "@/types/sidebar";
-import SidebarNavItem from "./SidebarNavItem";
+import SidebarMenu from "./SidebarMenu";
 import SidebarWrapper from "./SidebarWrapper";
 
 const SidebarProject = () => {
@@ -71,48 +67,9 @@ const SidebarProject = () => {
     return headerProjectNavs;
   }, [activeNavbar, headerProjectNavs, headerTokenNavs, headerSettingNavs]);
 
-  const renderHeader = () => {
-    const isActionHeader = "action" in activeHeader;
-    const commonProps = {
-      className: buttonVariants({
-        variant: "ghost",
-        className: "relative",
-      }),
-    };
-
-    if (isActionHeader) {
-      return (
-        <Button
-          onClick={activeHeader.action}
-          variant="ghost"
-          className="relative"
-        >
-          <ArrowLeft className="size-4 absolute left-2" />
-          {activeHeader.title}
-        </Button>
-      );
-    }
-
-    return (
-      <Link href={`/w/${workspaceSlug}/projects`} {...commonProps}>
-        <ArrowLeft className="size-4 absolute left-2" />
-        {activeHeader.title}
-      </Link>
-    );
-  };
-
   return (
-    <SidebarWrapper>
-      <nav className="p-4 h-full bg-background">
-        <Logo className="mb-6" />
-        <div className="flex flex-col gap-1">
-          {renderHeader()}
-
-          {activeNavItems.map((item, idx) => (
-            <SidebarNavItem key={`${item.title}-${idx}`} item={item} />
-          ))}
-        </div>
-      </nav>
+    <SidebarWrapper logoLink="/workspaces" header={activeHeader}>
+      <SidebarMenu navItems={activeNavItems} />
     </SidebarWrapper>
   );
 };

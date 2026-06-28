@@ -18,8 +18,12 @@ const SidebarNavItem = ({ item }: SidebarNavItemProps) => {
   const pathname = usePathname();
 
   const isActive = item.href
-    ? pathname === item.href || pathname.startsWith(`${item.href}/`)
+    ? item.exactMatch
+      ? pathname === item.href
+      : pathname.startsWith(`${item.href}`)
     : false;
+
+  const Icon = item.icon ? <item.icon className="size-4" /> : null;
 
   if (isSidebarNavItemButton(item)) {
     return (
@@ -29,7 +33,7 @@ const SidebarNavItem = ({ item }: SidebarNavItemProps) => {
         variant={isActive ? "ghost-primary" : "ghost"}
         className="justify-start"
       >
-        <item.icon className="size-4" />
+        {Icon}
         {item.title}
       </Button>
     );
@@ -44,7 +48,7 @@ const SidebarNavItem = ({ item }: SidebarNavItemProps) => {
         className: "justify-start",
       })}
     >
-      <item.icon className="size-4" />
+      {Icon}
       {item.title}
     </Link>
   );

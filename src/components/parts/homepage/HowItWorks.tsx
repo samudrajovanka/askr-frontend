@@ -16,14 +16,14 @@ const steps: Step[] = [
     icon: FolderPlus,
     title: "Create your workspace",
     description:
-      "Set up a workspace for your team and create projects to organize your design tokens.",
+      "Set up a workspace for your team and create projects to organize your design systems.",
   },
   {
     step: 2,
     icon: Layers,
-    title: "Define your tokens",
+    title: "Define your design systems",
     description:
-      "Add colors, spacing, typography, shadows, borders, and more. Organize tokens across semantic layers.",
+      "Configure your design systems rules in one unified structure.",
   },
   {
     step: 3,

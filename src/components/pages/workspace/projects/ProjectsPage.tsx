@@ -60,7 +60,7 @@ const ProjectsPage = () => {
           <BasicEmptyState
             Icon={FolderGit2}
             title="No projects yet"
-            message="Create your first project to start managing design tokens for your team."
+            message="Create your first project to start managing design design systems for your team."
             actionPlus={
               canCreate
                 ? {

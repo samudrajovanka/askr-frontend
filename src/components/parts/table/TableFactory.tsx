@@ -46,9 +46,9 @@ const TableFactory = <T,>({
   const colSpan = headers.length;
 
   return (
-    <div className={cn("rounded-lg border bg-card", className)}>
+    <div className={cn("rounded-lg border bg-card overflow-hidden", className)}>
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-secondary">
           <TableRow>
             {headers.map((header, i) => (
               <TableHead key={i} className={header.className}>

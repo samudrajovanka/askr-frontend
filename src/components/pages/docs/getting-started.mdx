@@ -1,0 +1,120 @@
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import Code from "@/components/ui/code";
+
+<article>
+  <header>
+    # Getting Started
+  
+    This guide walks through the Askr workflow: from organizing your workspace to publishing design systems your apps can consume. It assumes you have an account and understand the core concepts covered in the [Overview](/docs).
+  </header>
+  
+  ---
+  
+  <section>
+    ## Organize Your Workspace
+  
+    A workspace is your organization's container. Every project and member lives inside a workspace. Members are invited at the workspace level and their role (Admin, Designer, Engineer, Manager) applies to every project inside.
+  </section>
+  
+  ---
+  
+  <section>
+    ## Create a Project
+  
+    A project is one versioned set of design system published as a package. Give each project a descriptive name and slug. The slug becomes part of how your team references the package.
+  </section>
+  
+  ---
+  
+  <section>
+    ## Define Design Systems
+  
+    Tokens come in two layers: primitives and semantics. Getting the layering right early matters; refactoring a flat list later is painful. Askr follows Tailwind CSS variable namespacing so generated CSS works with Tailwind v4 or vanilla CSS without translation, and ten categories cover the common design surfaces.
+  
+    See the [Tokens reference](/docs/tokens) for the full naming convention table, category breakdown, and status lifecycle.
+  
+    <br />
+  
+    <Alert variant="info">
+      <AlertTitle>Good to know:</AlertTitle>
+      <AlertDescription>For now, the design system configuration supported by Askr is limited to design tokens.</AlertDescription>
+    </Alert>
+  </section>
+  
+  ---
+  
+  <section>
+    ## Configure the Registry
+  
+    Before you can publish, Askr needs to know where to push the package. Open <Code>Project Settings → Registry</Code> and provide:
+  
+    - **Registry URL** — your registry URL
+    - **Auth token** — a token with publish rights on that registry
+    - **Package scope** — your org scope, e.g. <Code>acme</Code>
+  
+    <br />
+  
+    <Alert variant="info">
+      <AlertTitle>Good to know:</AlertTitle>
+      <AlertDescription>Registry URL only <Code>npm.pkg.github.com</Code> available for now.</AlertDescription>
+    </Alert>
+  </section>
+  
+  ---
+  
+  <section>
+    ## Publish a Release
+  
+    When design systems are ready, go to <Code>Releases → Publish</Code>. Askr snapshots the current design systems state, generates the package artifacts, and pushes to your registry. The published package will be named using the pattern <Code>@&lt;scope&gt;/&lt;project-slug&gt;-&lt;system-type&gt;</Code> (for example: <Code>@acme/web-design-system-tokens</Code>).
+  
+    See the [Releases reference](/docs/releases) for the full versioning rules, generated package structure, publish flow walkthrough, and release states.
+  </section>
+  
+  
+  ---
+  
+  <section>
+    ## Consume Tokens in Your App
+  
+    Once <Code>@acme/web-design-system-tokens</Code> is published, any web app in your org can install and use it.
+  
+    Install:
+  
+    ```bash
+    npm install @acme/web-design-system-tokens
+    ```
+  
+    Use CSS variables — best for stylesheets and `style` attributes:
+  
+    ```css
+    @import "@acme/web-design-system-tokens/tokens.css";
+  
+    .my-component {
+      background: var(--color-bg-primary);
+      padding: var(--spacing-4);
+      border-radius: var(--radius-md);
+    }
+    ```
+  
+    Use TypeScript constants — best when you need the raw value in JS (e.g. passing to a styled-component prop or a chart library):
+  
+    ```typescript
+    import { tokens } from "@acme/web-design-system-tokens";
+  
+    const theme = {
+      background: tokens.color.background,
+      padding: tokens.spacing["4"],
+      radius: tokens.radius.md,
+    };
+    ```
+  </section>
+</article>
+
+---
+
+## Next Steps
+
+- Audit your existing tokens: any value hardcoded in a component is a candidate for a new semantic token
+- Invite team members and assign roles — Engineers get read-only access plus the published package
+- Watch the Activity Log after every release to confirm who shipped what
+- Set up a CI hook that runs `npm install @acme/tokens@latest` on every release to catch breaking changes early

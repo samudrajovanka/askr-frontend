@@ -1,0 +1,116 @@
+import Code from "@/components/ui/code";
+
+<article>
+    <header>
+        # Tokens
+    
+        Tokens are the atomic values that make up your design system. Askr organizes them into two layers, ten categories, and a small set of rules that keep everything predictable from authoring through code generation.
+    </header>
+    
+    ---
+    
+    <section>
+        ## Primitive vs Semantic
+    
+        Every token in Askr belongs to one of two layers: **primitive** or **semantic**. Getting this layering right early is critical. Designing with a single flat token list leads to heavy refactoring cycles as design systems scale, whereas separate layers allow designs to change values globally without changing component-level mappings.
+    
+        <br />
+    
+        ### Primitive tokens
+    
+        Raw values. The concrete numbers and colors that define your visual foundation. It is recommended that these values NOT be used directly in components.
+    
+        ```css
+        color.blue.500  → #2563EB
+        color.gray.100  → #F3F4F6
+        spacing.4       → 16px
+        radius.md       → 8px
+        ```
+    
+        ### Semantic tokens
+    
+        Purpose-driven references to primitives. This is what your components import. When the brand shifts from blue to indigo, you update one semantic mapping instead of hunting through every component.
+    
+        ```css
+        color.bg.primary    → color.white
+        color.text.primary  → color.gray.900
+        color.border        → color.gray.100
+        spacing.md          → spacing.4
+        ```
+    </section>
+    
+    ---
+    
+    <section>
+        ## Naming Conventions
+    
+        Askr follows Tailwind CSS variable namespacing so the generated CSS drops straight into Tailwind v4 or vanilla CSS without translation.
+
+        <br />
+    
+        | Category | Namespace | Example | CSS output |
+        |---|---|---|---|
+        | Color | `color.` | `color.blue.500` | `--color-blue-500` |
+        | Spacing | `spacing.` | `spacing.4` | `--spacing-4` |
+        | Text size | `text.` | `text.sm` | `--text-sm` |
+        | Font family | `font.` | `font.sans` | `--font-sans` |
+        | Font weight | `font.weight.` | `font.weight.bold` | `--font-weight-bold` |
+        | Line height | `leading.` | `leading.normal` | `--leading-normal` |
+        | Letter spacing | `tracking.` | `tracking.tight` | `--tracking-tight` |
+        | Radius | `radius.` | `radius.md` | `--radius-md` |
+        | Shadow | `shadow.` | `shadow.card` | `--shadow-card` |
+        | Border width | `border.width.` | `border.width.sm` | `--border-width-sm` |
+    
+        Rules:
+    
+        - Lowercase
+        - Dot-separated
+        - No spaces
+        - Typography tokens get their prefix auto-generated from the type you pick — you only input the suffix (<Code>sm → text.sm</Code>, <Code>bold → font.weight.bold</Code>)
+    </section>
+    
+    ---
+    
+    <section>
+        ## Token Categories
+    
+        Ten categories are available. You don't need to use all of them on day one — start with Color and Spacing, add others as your system matures.
+
+        <br />
+    
+        | Category | Format | Example |
+        |---|---|---|
+        | Color | Hex | `#2563EB` |
+        | Spacing | CSS length values (e.g. px, rem, em, %) | `16px`, `1rem`, `10%` |
+        | Text size | CSS length values (e.g. px, rem, em) | `14px`, `0.875rem` |
+        | Font family | Font family fallback string | `Inter, sans-serif`, `Georgia, serif` |
+        | Font weight | Number or keyword string | `700`, `bold`, `normal` |
+        | Line height | Number (relative) or CSS length | `1.5`, `24px`, `120%` |
+        | Letter spacing | CSS length (e.g. em, px, %) | `-0.02em`, `1px` |
+        | Radius | CSS length values (px, rem, %) | `8px`, `0.5rem`, `50%` |
+        | Shadow | CSS box-shadow syntax shorthand | `0 1px 3px #00000050` |
+        | Border | Width value only (CSS length) | `1px`, `0.25rem` |
+    </section>
+    
+    ---
+    
+    <section>
+        ## Token Status
+    
+        Every token carries a status that signals its readiness for use:
+    
+        | Status | Meaning |
+        |---|---|
+        | `stable` | Safe to consume. This is the default. |
+        | `experimental` | In use but subject to change. Use with caution. |
+        | `deprecated` | Still present but slated for removal. Avoid new usages. |
+    </section>
+    
+    ---
+    
+    <section>
+        ## Soft Delete
+    
+        Removing a token is a soft delete: the row stays in the database and is hidden from the default list. Please note that the restore feature for deleted tokens is currently **coming soon**.
+    </section>
+</article>

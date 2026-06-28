@@ -24,8 +24,24 @@ export type SidebarNavItemLink = {
 
 export type SidebarNavItem = {
   title: string;
-  icon: ForwardRefExoticComponent<
+  icon?: ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
   >;
   permission?: string;
+  exactMatch?: boolean;
 } & (SidebarNavItemButton | SidebarNavItemLink);
+
+type SidebarHeaderAction = {
+  title: string;
+  action: () => void;
+};
+
+type SidebarHeaderLink = {
+  title: string;
+  href: string;
+};
+
+export type UseSidebarReturn = {
+  navItems: SidebarNavItem[];
+  header?: SidebarHeaderAction | SidebarHeaderLink;
+};

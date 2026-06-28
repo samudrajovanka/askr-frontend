@@ -1,0 +1,94 @@
+import Code from "@/components/ui/code";
+
+<article>
+  <header>
+    # Releases
+  
+    A release is an immutable snapshot of every token in a project at publish time. Once published, <Code>1.0.0</Code> always resolves to the same artifact, future edits to tokens don't affect already-published versions. This page covers the mechanics: versioning, what gets generated, the publish flow, and how packages are laid out.
+  
+    A quick walkthrough of triggering your first release lives in the [Getting Started](/docs/getting-started) guide.
+  </header>
+
+  ---
+  
+  <section>
+    ## Versioning
+  
+    Askr follows semver strictly. Tag the right bump or consumers will get surprises:
+  
+    <br />
+
+    | Bump | When to use |
+    |---|---|
+    | `major` (+1.0.0) | Tokens removed, renamed, or their type changed |
+    | `minor` (+1.0.0) | New tokens added; nothing removed or renamed |
+    | `patch` (x.x.+1) | A token value changes without renaming or removing anything |
+  </section>
+
+  ---
+  
+  <section>
+    ## Generated Artifacts
+  
+    Each release produces a standard npm package:
+  
+    ```css
+    @acme/web-design-system-tokens/
+      package.json
+      tokens.css      ← :root { --color-blue-500: #2563eb; ... }
+      index.js        ← entrypoint
+      index.d.ts      ← TypeScript declarations
+      _tokens.js      ← Tokens in CSS format
+      _tokens.d.ts    ← TypeScript declarations
+      _resolved.js    ← Resolved tokens in value format
+      _resolved.d.ts  ← TypeScript declarations
+      tokens.json     ← JSON
+    ```
+  
+    ### CSS output
+  
+    <Code>:root \{\}</Code> only, Tailwind <Code>@theme \{\}</Code> wrapper is on the roadmap. The naming convention is already Tailwind-compatible, so wiring the <Code>css</Code> into a <Code>@theme \{\}</Code> block later is a one-liner change in your app's stylesheet, not a token rename.
+  
+    Primitive tokens write their raw value, and semantic tokens write a <Code>var()</Code> reference.
+    
+    ```css
+      --color-blue-500: #2563eb;
+      --color-bg-primary: var(--color-blue-500);
+    ```
+  
+    ### JavaScript / TypeScript output
+  
+    `tokens.js` export a two objects: <Code>tokens</Code> and <Code>resolvedTokens</Code>. <Code>tokens</Code> mirroring the namespace dotted paths with <Code>var()</Code> strings for semantic tokens, and <Code>resolvedTokens</Code> mirroring the namespace dotted paths with resolved values for semantic tokens:
+  
+    ```typescript
+    import { tokens, resolvedTokens } from "@acme/web-design-system-tokens";
+  
+    tokens.color.blue["500"];           // "#2563eb"  — primitive
+    resolvedTokens.color.bg.primary;    // "#2563eb" — resolved value for semantic token
+    tokens.color.bg.primary;            // "var(--color-blue-500)" — semantic resolves to a CSS var
+    tokens.spacing["4"];                // "16px"
+    tokens.radius.md;                   // "var(--radius-md)"
+    ```
+  </section>
+
+  ---
+  
+  <section>
+    ## Package Naming
+  
+    The package name is <Code>@&lt;scope&gt;/&lt;project-slug&gt;-&lt;system-type&gt;</Code>. Scope is user-defined in the project's Registry settings and for the <Code>/&lt;project-slug&gt;-&lt;system-type&gt;</Code> suffix is fixed by the platform.
+  </section>
+
+  ---
+  
+  <section>
+    ## Publish Flow
+  
+    1. **Releases → Publish** opens the wizard
+    2. **Review the diff** — every added, modified, and removed token since the last release, with before/after values
+    3. **Pick a version bump** and write release notes
+    4. **Publish** — Askr generates the artifacts (CSS / JS / TS / `.d.ts`) and pushes the package to your registry
+  
+    Publishing happens server-side from the Askr backend, not from the browser, your registry credentials stay encrypted and are never exposed to the client.
+  </section>
+</article>

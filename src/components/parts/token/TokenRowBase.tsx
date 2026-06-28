@@ -1,10 +1,9 @@
 "use client";
 
-import { Check, Copy } from "lucide-react";
-import { type ReactNode, useState } from "react";
-import { toast } from "sonner";
+import type { ReactNode } from "react";
 import TokenActions from "@/components/parts/token/TokenActions";
 import { Badge } from "@/components/ui/badge";
+import CopyButton from "@/components/ui/copy-button";
 import type { Token } from "@/types/token";
 
 type Props = {
@@ -26,17 +25,6 @@ const TokenRowBase = ({
   canDelete = true,
   renderPreview,
 }: Props) => {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(displayValue);
-    setCopied(true);
-    toast.success("Copied to clipboard", {
-      description: `${token.name}: ${displayValue}`,
-    });
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
     <div
       id={`token-${token.layer}-${token.name}`}
@@ -71,18 +59,12 @@ const TokenRowBase = ({
               → {token.reference}
             </span>
           )}
-          <button
-            type="button"
-            onClick={handleCopy}
-            className="typography-xsmall text-muted-foreground font-mono hover:text-foreground transition-colors flex items-center gap-1.5 group/copy cursor-pointer"
+          <CopyButton
+            value={displayValue}
+            className="typography-xsmall text-muted-foreground font-mono hover:text-foreground"
           >
-            {copied ? (
-              <Check className="size-3 text-primary animate-in fade-in zoom-in duration-200" />
-            ) : (
-              <Copy className="size-3 opacity-0 group-hover/copy:opacity-100 transition-opacity" />
-            )}
             {displayValue}
-          </button>
+          </CopyButton>
         </div>
       </div>
 

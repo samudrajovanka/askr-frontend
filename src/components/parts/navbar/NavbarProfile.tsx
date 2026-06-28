@@ -1,7 +1,8 @@
 "use client";
 
 import { useClerk } from "@clerk/nextjs";
-import { Mail, MessageSquare } from "lucide-react";
+import { BookOpenText, Mail, MessageSquare } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import QueryHandling from "@/components/parts/query/QueryHandling";
 import AppVersion from "@/components/ui/app-version";
@@ -69,6 +70,14 @@ const NavbarProfile = () => {
                     </Badge>
                   )}
                 </DropdownMenuItem>
+                <DropdownMenuItem
+                  render={
+                    <Link href="/docs">
+                      <BookOpenText className="size-4" />
+                      <span>Documentation</span>
+                    </Link>
+                  }
+                />
                 {app.feedbackFormUrl && (
                   <DropdownMenuItem
                     render={

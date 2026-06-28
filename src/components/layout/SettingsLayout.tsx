@@ -1,10 +1,10 @@
 import Navbar from "@/components/parts/navbar/Navbar";
-import SidebarSetting from "@/components/parts/sidebar/SidebarSetting";
+import SidebarWorkspaceSetting from "@/components/parts/sidebar/SidebarWorkspaceSetting";
 
 const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex min-h-dvh">
-      <SidebarSetting />
+      <SidebarWorkspaceSetting />
 
       <div className="sidebar-margin flex-1">
         <Navbar withoutLogo showWorkspaceSwitcher />

@@ -1,6 +1,6 @@
 @layer components {
   .container-layout {
-    @apply container mx-auto px-4;
+    @apply container xl:max-w-7xl mx-auto px-4;
   }
 
   .navbar-wrapper {

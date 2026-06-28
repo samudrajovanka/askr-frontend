@@ -12,6 +12,7 @@ import NavLink from "./NavLink";
 const navLinks = [
   { label: "Features", href: "#features" },
   { label: "How It Works", href: "#how-it-works" },
+  { label: "Docs", href: "/docs" },
 ];
 
 const NavbarHomepage = () => {
@@ -21,7 +22,7 @@ const NavbarHomepage = () => {
 
   return (
     <header className="navbar-wrapper sticky top-0 z-50">
-      <div className="flex h-16 w-full justify-between items-center px-6">
+      <div className="flex h-(--navbar-height) w-full justify-between items-center px-6">
         <div className="flex jus items-center gap-6">
           <Logo />
 

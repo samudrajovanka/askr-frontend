@@ -44,7 +44,7 @@ const WorkspacesPage = () => {
           <BasicEmptyState
             Icon={Network}
             title="No workspaces yet"
-            message="Create your first workspace to start managing design tokens across your team and projects."
+            message="Create your first workspace to start managing design design systems across your team and projects."
             actionPlus={{
               title: "Create your first Workspace",
               onClick: () => setDialogOpen(true),

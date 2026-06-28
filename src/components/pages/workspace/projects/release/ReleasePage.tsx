@@ -43,7 +43,7 @@ const ReleasePage = () => {
     <div className="flex flex-col gap-6">
       <HeaderSection
         title="Release"
-        description="Publish your design tokens as an npm package"
+        description="Publish your design systems as an npm package"
         rightComponent={
           releasesQuery.data?.data.data.releases.length && canPublish ? (
             <Button onClick={redirectToCreate}>

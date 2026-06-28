@@ -31,13 +31,13 @@ const WorkspaceCard = ({ workspace }: { workspace: Workspace }) => {
             <h3 className="text-lg font-semibold tracking-tight text-foreground transition-colors duration-200 group-hover/card:text-primary">
               {workspace.name}
             </h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="typography-small text-muted-foreground">
               {workspace.projectCount ?? 0}{" "}
               {(workspace.projectCount ?? 0) === 1 ? "project" : "projects"}
             </p>
           </div>
 
-          <div className="relative mt-auto flex w-full items-center gap-1.5 text-xs font-medium text-muted-foreground/60 transition-colors duration-200 group-hover/card:text-primary/70">
+          <div className="relative mt-auto flex w-full items-center gap-1.5 typography-xsmall font-medium text-muted-foreground/60 transition-colors duration-200 group-hover/card:text-primary/70">
             <span>Open Workspace</span>
             <ArrowRight
               size={14}
