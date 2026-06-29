@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.6](https://github.com/samudrajovanka/askr-frontend/compare/v1.0.5...v1.0.6) (2026-06-29)
+
+
+### Bug Fixes
+
+* **release:** remove refetch latest release ([5cd8b24](https://github.com/samudrajovanka/askr-frontend/commit/5cd8b24411fd1c79e8a1c8d08dd7fec25506a757))
+
 ### [1.0.5](https://github.com/samudrajovanka/askr-frontend/compare/v1.0.4...v1.0.5) (2026-06-29)
 
 
