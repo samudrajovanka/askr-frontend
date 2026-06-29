@@ -1,15 +1,7 @@
-import DocsSidebar from "@/components/parts/sidebar/SidebarDocs";
+import DocsLayout from "@/components/layout/DocsLayout";
 
-const DocsLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <>
-      <DocsSidebar />
-
-      <div className="sidebar-margin">
-        <main className="container-layout py-10">{children}</main>
-      </div>
-    </>
-  );
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  return <DocsLayout>{children}</DocsLayout>;
 };
 
-export default DocsLayout;
+export default Layout;

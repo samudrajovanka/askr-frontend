@@ -31,7 +31,7 @@ const SidebarWrapper = ({
   return (
     <aside
       className={cn(
-        "sidebar-width border-r border-border fixed left-0 top-0 h-dvh flex flex-col gap-2",
+        "sidebar-width border-r border-border sticky left-0 top-0 h-dvh flex flex-col gap-2",
         {
           "top-(--navbar-height) h-[calc(100dvh-var(--navbar-height))]":
             isUnderNav,

@@ -6,7 +6,7 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="flex min-h-dvh">
       <SidebarWorkspaceSetting />
 
-      <div className="sidebar-margin flex-1">
+      <div className="flex-1">
         <Navbar withoutLogo showWorkspaceSwitcher />
 
         <main className="container-layout py-10">{children}</main>
