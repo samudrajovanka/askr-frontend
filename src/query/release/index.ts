@@ -63,13 +63,6 @@ export const useLatestRelease = (
     queryKey: getLatestReleaseKey(workspaceSlug, projectSlug),
     enabled: isSignedIn && !!workspaceSlug && !!projectSlug,
     queryFn: () => execute(workspaceSlug, projectSlug),
-    refetchInterval: (query) => {
-      const release = query.state.data?.data?.data?.release;
-      if (!release) return false;
-      return release.status === "pending" || release.status === "running"
-        ? 5000
-        : false;
-    },
   });
 };
 
