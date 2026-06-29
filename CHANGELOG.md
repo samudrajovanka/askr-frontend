@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.5](https://github.com/samudrajovanka/askr-frontend/compare/v1.0.4...v1.0.5) (2026-06-29)
+
+
+### Features
+
+* add documentation page and adjust sidebar ([2f1916e](https://github.com/samudrajovanka/askr-frontend/commit/2f1916e2da608990469d1fd227b07c57da1ab202))
+
+
+### Bug Fixes
+
+* adjust sidebar layout and docs layout ([2ecf228](https://github.com/samudrajovanka/askr-frontend/commit/2ecf2287673ae439c019ef47ee2fab0ea6cd55fb))
+* **docs:** adjust docs release file ([cb6843b](https://github.com/samudrajovanka/askr-frontend/commit/cb6843b22e7f50f3acb0462541058d6c0e48f466))
+* pre shiki component ([daae57a](https://github.com/samudrajovanka/askr-frontend/commit/daae57a7065399dc6fc7a304b53889c9775f20f3))
+* **pre-shiki:** error mismatch render ([8709b58](https://github.com/samudrajovanka/askr-frontend/commit/8709b589fde624ac82b7c3a01dddc8e50dbcd24e))
+* **sidebar-header:** adjust typing ([ad4a400](https://github.com/samudrajovanka/askr-frontend/commit/ad4a4008ac092b1859d02b47ebc53afb8fee803c))
+
 ### [1.0.4](https://github.com/samudrajovanka/askr-frontend/compare/v1.0.3...v1.0.4) (2026-06-28)
 
 
