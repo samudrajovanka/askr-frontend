@@ -19,6 +19,11 @@ export type Release = {
   createdById: string;
 };
 
+export type LatestRelease = Pick<
+  Release,
+  "id" | "createdAt" | "version" | "tokenCount"
+>;
+
 export type SafeRelease = Release & {
   creator?: {
     email: string;

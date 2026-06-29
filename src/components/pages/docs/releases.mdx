@@ -38,10 +38,6 @@ import Code from "@/components/ui/code";
       tokens.css      ← :root { --color-blue-500: #2563eb; ... }
       index.js        ← entrypoint
       index.d.ts      ← TypeScript declarations
-      _tokens.js      ← Tokens in CSS format
-      _tokens.d.ts    ← TypeScript declarations
-      _resolved.js    ← Resolved tokens in value format
-      _resolved.d.ts  ← TypeScript declarations
       tokens.json     ← JSON
     ```
   
@@ -58,16 +54,18 @@ import Code from "@/components/ui/code";
   
     ### JavaScript / TypeScript output
   
-    `tokens.js` export a two objects: <Code>tokens</Code> and <Code>resolvedTokens</Code>. <Code>tokens</Code> mirroring the namespace dotted paths with <Code>var()</Code> strings for semantic tokens, and <Code>resolvedTokens</Code> mirroring the namespace dotted paths with resolved values for semantic tokens:
+    The package index directly exports from <Code>@acme/web-design-system-tokens</Code>, providing the <Code>tokens</Code> object and a <Code>resolveToken</Code> function. The <Code>tokens</Code> object mirrors the namespace dotted paths, yielding <Code>var()</Code> strings for semantic tokens, while <Code>resolveToken</Code> is a utility function used to resolve the actual values of those semantic tokens:
   
     ```typescript
-    import { tokens, resolvedTokens } from "@acme/web-design-system-tokens";
+    import { tokens, resolveToken } from "@acme/web-design-system-tokens";
   
-    tokens.color.blue["500"];           // "#2563eb"  — primitive
-    resolvedTokens.color.bg.primary;    // "#2563eb" — resolved value for semantic token
-    tokens.color.bg.primary;            // "var(--color-blue-500)" — semantic resolves to a CSS var
-    tokens.spacing["4"];                // "16px"
-    tokens.radius.md;                   // "var(--radius-md)"
+    tokens.color.blue["500"].DEFAULT;               // "#2563eb" - primitive
+    tokens.color.bg.primary.DEFAULT;                // "var(--color-blue-500)" - semantic resolves to a CSS var
+    tokens.spacing["4"].DEFAULT;                    // "16px"
+    tokens.radius.md.DEFAULT;                       // "var(--radius-md)"
+
+    resolveToken(tokens.color.bg.primary.DEFAULT);  // "#2563eb" - get resolved value by css var
+    resolveToken('color.bg.primary');               // "#2563eb" - get resolved value by token path
     ```
   </section>
 
