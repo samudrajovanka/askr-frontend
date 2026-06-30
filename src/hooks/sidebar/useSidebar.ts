@@ -21,7 +21,6 @@ const useSidebar = () => {
 
     const handleChange = (e: MediaQueryListEvent | MediaQueryList) => {
       const mobile = e.matches;
-      console.log("change", mobile);
       setIsMobile(mobile);
       if (mobile) {
         setIsCollapsed(true);

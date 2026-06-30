@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Code from "@/components/ui/code";
+import { Code } from "@/components/ui/code";
 import {
   Field,
   FieldDescription,

@@ -1,4 +1,5 @@
-import Code from "@/components/ui/code";
+import { Code } from "@/components/ui/code";
+import { TextHyperlink } from "@/components/ui/text";
 
 <article>
     <header>
@@ -10,13 +11,13 @@ import Code from "@/components/ui/code";
     ---
     
     <section>
-        ## Primitive vs Semantic
+        <TextHyperlink as="h2" id="primitive-vs-semantic">Primitive vs Semantic</TextHyperlink>
     
         Every token in Askr belongs to one of two layers: **primitive** or **semantic**. Getting this layering right early is critical. Designing with a single flat token list leads to heavy refactoring cycles as design systems scale, whereas separate layers allow designs to change values globally without changing component-level mappings.
     
         <br />
     
-        ### Primitive tokens
+        <TextHyperlink as="h3" id="primitive-tokens">What is Askr?</TextHyperlink>
     
         Raw values. The concrete numbers and colors that define your visual foundation. It is recommended that these values NOT be used directly in components.
     
@@ -27,7 +28,7 @@ import Code from "@/components/ui/code";
         radius.md       → 8px
         ```
     
-        ### Semantic tokens
+        <TextHyperlink as="h3" id="semantic-tokens">Semantic tokens</TextHyperlink>
     
         Purpose-driven references to primitives. This is what your components import. When the brand shifts from blue to indigo, you update one semantic mapping instead of hunting through every component.
     
@@ -42,7 +43,7 @@ import Code from "@/components/ui/code";
     ---
     
     <section>
-        ## Naming Conventions
+        <TextHyperlink as="h2" id="naming-conventions">Naming Conventions</TextHyperlink>
     
         Askr follows Tailwind CSS variable namespacing so the generated CSS drops straight into Tailwind v4 or vanilla CSS without translation.
 
@@ -72,7 +73,7 @@ import Code from "@/components/ui/code";
     ---
     
     <section>
-        ## Token Categories
+        <TextHyperlink as="h2" id="token-categories">Token Categories</TextHyperlink>
     
         Ten categories are available. You don't need to use all of them on day one — start with Color and Spacing, add others as your system matures.
 
@@ -95,7 +96,7 @@ import Code from "@/components/ui/code";
     ---
     
     <section>
-        ## Token Status
+        <TextHyperlink as="h2" id="token-status">Token Status</TextHyperlink>
     
         Every token carries a status that signals its readiness for use:
     
@@ -109,7 +110,7 @@ import Code from "@/components/ui/code";
     ---
     
     <section>
-        ## Soft Delete
+        <TextHyperlink as="h2" id="soft-delete">Soft Delete</TextHyperlink>
     
         Removing a token is a soft delete: the row stays in the database and is hidden from the default list. Please note that the restore feature for deleted tokens is currently **coming soon**.
     </section>

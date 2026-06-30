@@ -3,7 +3,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { BasicEmptyState } from "@/components/ui/empty";
 import NavbarHomepage from "../parts/navbar/NavbarHomepage";
-import Code from "../ui/code";
+import { Code } from "../ui/code";
 
 type NotFoundLayoutProps = {
   title?: string;

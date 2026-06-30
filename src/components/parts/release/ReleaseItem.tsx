@@ -3,7 +3,7 @@ import { CheckCircle2, Clock, Loader2, XCircle } from "lucide-react";
 import { BasicAvatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import Code from "@/components/ui/code";
+import { Code } from "@/components/ui/code";
 import { SimpleTooltip } from "@/components/ui/tooltip";
 import { RELEASE_STATUSES } from "@/constants/release";
 import type { SafeRelease } from "@/types/release";

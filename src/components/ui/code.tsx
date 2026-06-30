@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 type CodeProps = React.HTMLAttributes<HTMLSpanElement>;
 
-const Code = ({ className, ...props }: CodeProps) => {
+export const Code = ({ className, ...props }: CodeProps) => {
   return (
     <code
       className={cn(
@@ -13,5 +13,3 @@ const Code = ({ className, ...props }: CodeProps) => {
     />
   );
 };
-
-export default Code;

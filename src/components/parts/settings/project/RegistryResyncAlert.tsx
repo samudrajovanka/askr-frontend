@@ -3,7 +3,7 @@
 import { toast } from "sonner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import Code from "@/components/ui/code";
+import { Code } from "@/components/ui/code";
 import { useSyncPackageName } from "@/query/registry";
 import type { SafeRegistryConfig } from "@/types/registry";
 

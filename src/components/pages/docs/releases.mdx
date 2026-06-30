@@ -1,4 +1,5 @@
-import Code from "@/components/ui/code";
+import { Code } from "@/components/ui/code";
+import { TextHyperlink } from "@/components/ui/text";
 
 <article>
   <header>
@@ -12,7 +13,7 @@ import Code from "@/components/ui/code";
   ---
   
   <section>
-    ## Versioning
+    <TextHyperlink as="h2" id="versioning">Versioning</TextHyperlink>
   
     Askr follows semver strictly. Tag the right bump or consumers will get surprises:
   
@@ -28,7 +29,7 @@ import Code from "@/components/ui/code";
   ---
   
   <section>
-    ## Generated Artifacts
+    <TextHyperlink as="h2" id="generated-artifacts">Generated Artifacts</TextHyperlink>
   
     Each release produces a standard npm package:
   
@@ -42,6 +43,7 @@ import Code from "@/components/ui/code";
     ```
   
     ### CSS output
+    <TextHyperlink as="h3" id="css-output">CSS output</TextHyperlink>
   
     <Code>:root \{\}</Code> only, Tailwind <Code>@theme \{\}</Code> wrapper is on the roadmap. The naming convention is already Tailwind-compatible, so wiring the <Code>css</Code> into a <Code>@theme \{\}</Code> block later is a one-liner change in your app's stylesheet, not a token rename.
   
@@ -52,7 +54,7 @@ import Code from "@/components/ui/code";
     --color-bg-primary: var(--color-blue-500);
     ```
   
-    ### JavaScript / TypeScript output
+    <TextHyperlink as="h3" id="javascript-typescript-output">JavaScript / TypeScript output</TextHyperlink>
   
     The package index directly exports from <Code>@acme/web-design-system-tokens</Code>, providing the <Code>tokens</Code> object and a <Code>resolveToken</Code> function. The <Code>tokens</Code> object mirrors the namespace dotted paths, yielding <Code>var()</Code> strings for semantic tokens, while <Code>resolveToken</Code> is a utility function used to resolve the actual values of those semantic tokens:
   
@@ -72,7 +74,7 @@ import Code from "@/components/ui/code";
   ---
   
   <section>
-    ## Package Naming
+    <TextHyperlink as="h2" id="package-naming">Package Naming</TextHyperlink>
   
     The package name is <Code>@&lt;scope&gt;/&lt;project-slug&gt;-&lt;system-type&gt;</Code>. Scope is user-defined in the project's Registry settings and for the <Code>/&lt;project-slug&gt;-&lt;system-type&gt;</Code> suffix is fixed by the platform.
   </section>
@@ -80,7 +82,7 @@ import Code from "@/components/ui/code";
   ---
   
   <section>
-    ## Publish Flow
+    <TextHyperlink as="h2" id="publish-flow">Publish Flow</TextHyperlink>
   
     1. **Releases → Publish** opens the wizard
     2. **Review the diff** — every added, modified, and removed token since the last release, with before/after values
