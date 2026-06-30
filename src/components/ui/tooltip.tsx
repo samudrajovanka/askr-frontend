@@ -21,9 +21,17 @@ function Tooltip({ ...props }: TooltipPrimitive.Root.Props) {
   return <TooltipPrimitive.Root data-slot="tooltip" {...props} />;
 }
 
-function TooltipTrigger({ ...props }: TooltipPrimitive.Trigger.Props) {
+type TooltipTriggerProps = TooltipPrimitive.Trigger.Props;
+
+function TooltipTrigger({ ...props }: TooltipTriggerProps) {
   return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
 }
+
+type TooltipContentProps = TooltipPrimitive.Popup.Props &
+  Pick<
+    TooltipPrimitive.Positioner.Props,
+    "align" | "alignOffset" | "side" | "sideOffset"
+  >;
 
 function TooltipContent({
   className,
@@ -33,11 +41,7 @@ function TooltipContent({
   alignOffset = 0,
   children,
   ...props
-}: TooltipPrimitive.Popup.Props &
-  Pick<
-    TooltipPrimitive.Positioner.Props,
-    "align" | "alignOffset" | "side" | "sideOffset"
-  >) {
+}: TooltipContentProps) {
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Positioner
@@ -67,15 +71,21 @@ function SimpleTooltip({
   children,
   content,
   className,
+  contentProps,
+  renderTrigger,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   content: string;
   className?: string;
+  contentProps?: TooltipContentProps;
+  renderTrigger?: TooltipTriggerProps["render"];
 }) {
   return (
     <Tooltip>
-      <TooltipTrigger className={className}>{children}</TooltipTrigger>
-      <TooltipContent>{content}</TooltipContent>
+      <TooltipTrigger className={className} render={renderTrigger}>
+        {!renderTrigger && children}
+      </TooltipTrigger>
+      <TooltipContent {...contentProps}>{content}</TooltipContent>
     </Tooltip>
   );
 }

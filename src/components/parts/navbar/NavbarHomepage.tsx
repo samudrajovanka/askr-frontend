@@ -7,6 +7,7 @@ import { useState } from "react";
 
 import Logo from "@/components/parts/logo/Logo";
 import { Button, buttonVariants } from "@/components/ui/button";
+import NavbarWrapper from "./NavbarWrapper";
 import NavLink from "./NavLink";
 
 const navLinks = [
@@ -21,7 +22,7 @@ const NavbarHomepage = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="navbar-wrapper sticky top-0 z-50">
+    <NavbarWrapper>
       <div className="flex h-(--navbar-height) w-full justify-between items-center px-6">
         <div className="flex jus items-center gap-6">
           <Logo />
@@ -156,7 +157,7 @@ const NavbarHomepage = () => {
           </div>
         </div>
       )}
-    </header>
+    </NavbarWrapper>
   );
 };
 

@@ -5,6 +5,7 @@ import WorkspaceSwitcher from "@/components/parts/switcher/WorkspaceSwitcher";
 import { usePermission } from "@/hooks/usePermission";
 import ProjectSwitcher from "../switcher/ProjectSwitcher";
 import NavbarProfile from "./NavbarProfile";
+import NavbarWrapper from "./NavbarWrapper";
 import NavLink from "./NavLink";
 
 type NavbarProps = {
@@ -24,7 +25,7 @@ const Navbar = ({
   const canViewActivity = hasPermission("log:read");
 
   return (
-    <header className="navbar-wrapper sticky top-0 z-50">
+    <NavbarWrapper>
       <div className="flex h-(--navbar-height) w-full items-center px-6">
         <div className="flex items-center gap-4">
           {!withoutLogo && <Logo />}
@@ -57,7 +58,7 @@ const Navbar = ({
           <NavbarProfile />
         </div>
       </div>
-    </header>
+    </NavbarWrapper>
   );
 };
 

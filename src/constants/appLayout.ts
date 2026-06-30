@@ -1,0 +1,1 @@
+export const MIN_SIDEBAR_SHOW_BREAKPOINT = 960;

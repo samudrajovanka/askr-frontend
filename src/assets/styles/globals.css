@@ -69,6 +69,8 @@
   --tracking-normal: -0.02em;
   --spacing: 0.25rem;
   --navbar-height: 4rem;
+  --z-index-navbar: 48;
+  --z-index-sidebar: 49;
 }
 
 .dark {
