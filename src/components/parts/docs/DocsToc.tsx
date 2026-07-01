@@ -62,7 +62,7 @@ const DocsToc = () => {
   if (items.length === 0) return null;
 
   return (
-    <aside className="sticky top-(--safe-scroll-margin) w-56 px-5 hidden md:block self-start typography-small">
+    <aside className="sticky top-[calc(var(--safe-scroll-margin)-2.5rem)] w-56 py-10 px-5 hidden md:block self-start typography-small">
       <p className="text-foreground mb-3 font-semibold">On this page</p>
 
       <nav aria-label="Table of contents">
