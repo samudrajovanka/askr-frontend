@@ -24,7 +24,7 @@ export const TextHyperlink = ({
     <Text
       id={id}
       className={cn(
-        "scroll-m-20 flex items-center gap-1 relative w-fit group/text-hyperlink hover:underline",
+        "scroll-m-(--safe-scroll-margin) flex items-center gap-1 relative w-fit group/text-hyperlink hover:underline",
         TYPOGRAPHY_CLASSNAME[Text],
         className,
       )}

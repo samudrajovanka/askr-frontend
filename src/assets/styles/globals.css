@@ -71,6 +71,7 @@
   --navbar-height: 4rem;
   --z-index-navbar: 48;
   --z-index-sidebar: 49;
+  --safe-scroll-margin: 7rem;
 }
 
 .dark {
